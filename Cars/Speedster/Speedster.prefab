@@ -745,6 +745,9 @@ MonoBehaviour:
   engineRPM: 600
   speed: 0
   _torqueMultiplier: 4
+  _speedo: {fileID: 0}
+  _gear: {fileID: 0}
+  _rpmGage: {fileID: 0}
 --- !u!114 &114000013617481534
 MonoBehaviour:
   m_ObjectHideFlags: 1

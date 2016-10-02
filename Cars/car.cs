@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class car : MonoBehaviour {
@@ -24,7 +25,7 @@ public class car : MonoBehaviour {
 	public float[] _gears = new float[]{-3.833f, 0f, 3.833f, 2.235f, 1.458f, 1.026f};
 	private float _nextGear;
 	public float _gearChangeTime = 0.5f;
-	private float _time = 0.0F;
+	private float _time = 0.0f;
 
 	public enum DriveWheel { Front, Back, All }
 	public DriveWheel _driveWheel;
@@ -32,6 +33,11 @@ public class car : MonoBehaviour {
 	public float engineRPM = 600;
 	public float speed = 0;
 	public int _torqueMultiplier = 4;
+
+	private float _UITime = 0.0f;
+	public Text _speedo;
+	public Text _gear;
+	public Text _rpmGage;
 
 	// Use this for initialization
 	void Awake () {
@@ -59,6 +65,16 @@ public class car : MonoBehaviour {
 	void Update () {
 		_MovementInputValue = Input.GetAxis (_MovementAxisName);
 		_TurnInputValue = Input.GetAxis (_TurnAxisName);
+
+		var localVelocity = transform.InverseTransformDirection(_Rigidbody.velocity);
+
+		_UITime += Time.deltaTime;
+		if (_UITime > 0.5f) {
+			_UITime = 0.0f;
+			_speedo.text = Mathf.Round (localVelocity.z * 3.6f) + "km/h";
+			_gear.text = "Gear: " + (_curGear - 1);
+			_rpmGage.text = "Rpm: " + Mathf.Round (engineRPM / 100) * 100;
+		}
 	}
 
 	private void FixedUpdate ()
