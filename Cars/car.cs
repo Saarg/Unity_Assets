@@ -100,7 +100,7 @@ public class car : MonoBehaviour {
 		if (_curGear < 0) {
 			_curGear = 0;
 		} else if (_curGear > _gears.Length - 1) {
-			_curGear = 5;
+			_curGear = _gears.Length-1;
 		}
 	}
 

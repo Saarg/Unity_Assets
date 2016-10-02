@@ -611,7 +611,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 59807e3d72bf648dd99ce4af754e49ca, type: 2}
+  - {fileID: 2100000, guid: 438557576de3045038587010926112e3, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -804,7 +804,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012458536726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 875a88e2f92e54a28a33451a1a3a042a, type: 3}
+  m_Script: {fileID: 11500000, guid: edc24add62e424041acb06e5f53b70da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _wheelModel: {fileID: 1000010164410612}
@@ -816,7 +816,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013670210048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 875a88e2f92e54a28a33451a1a3a042a, type: 3}
+  m_Script: {fileID: 11500000, guid: edc24add62e424041acb06e5f53b70da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _wheelModel: {fileID: 1000013428010514}
@@ -828,7 +828,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011297689854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 875a88e2f92e54a28a33451a1a3a042a, type: 3}
+  m_Script: {fileID: 11500000, guid: edc24add62e424041acb06e5f53b70da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _wheelModel: {fileID: 1000012636144374}
@@ -840,7 +840,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013072038822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 588f85e099ac843539ca3b27e2fd4f7a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b7fc1efb61cb45db98e96228f9f7d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
@@ -853,45 +853,25 @@ MonoBehaviour:
   TorqueCurve:
     serializedVersion: 2
     m_Curve:
-    - time: -0.32637453
-      value: 29.842833
-      inSlope: 0
-      outSlope: 0
+    - time: -6.674347
+      value: 49.42697
+      inSlope: -0.0025770625
+      outSlope: -0.0025770625
       tangentMode: 0
-    - time: 1482.9208
-      value: 58.070408
-      inSlope: 0.023645865
-      outSlope: 0.023645865
+    - time: 2781.6184
+      value: 72.69654
+      inSlope: -0.00035945332
+      outSlope: -0.00035945332
       tangentMode: 0
-    - time: 2548.4058
-      value: 78.75197
-      inSlope: 0
-      outSlope: 0
+    - time: 3960.3567
+      value: 66.11867
+      inSlope: -0.012634366
+      outSlope: -0.012634366
       tangentMode: 0
-    - time: 3772.6836
-      value: 68.82839
-      inSlope: -0.02495011
-      outSlope: -0.02495011
-      tangentMode: 0
-    - time: 4394.38
-      value: 47.425835
-      inSlope: -0.045106713
-      outSlope: -0.045106713
-      tangentMode: 0
-    - time: 4720.063
-      value: 26.571108
-      inSlope: -0.063746326
-      outSlope: -0.063746326
-      tangentMode: 0
-    - time: 5370.02
-      value: -0.080758035
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 5994.7295
-      value: -0.000000059604645
-      inSlope: -0.00067154405
-      outSlope: -0.00067154405
+    - time: 5994.724
+      value: -0.5845022
+      inSlope: -0.0004967913
+      outSlope: -0.0004967913
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -908,7 +888,7 @@ MonoBehaviour:
   - 1.026
   _gearChangeTime: 0.5
   _driveWheel: 0
-  engineRPM: 0
+  engineRPM: 600
   speed: 0
   _torqueMultiplier: 4
   _speedo: {fileID: 0}
@@ -922,7 +902,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012946806006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 875a88e2f92e54a28a33451a1a3a042a, type: 3}
+  m_Script: {fileID: 11500000, guid: edc24add62e424041acb06e5f53b70da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _wheelModel: {fileID: 1000011271635884}
