@@ -157,8 +157,5 @@ public class tank : MonoBehaviour {
 	{
 		LWheel[1].steerAngle += _TurnInputValue - LWheel[1].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
 		RWheel[1].steerAngle += _TurnInputValue - RWheel[1].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
-
-		LWheel[4].steerAngle = -_TurnInputValue - LWheel[4].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
-		RWheel[4].steerAngle = -_TurnInputValue - RWheel[4].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
 	}
 }
