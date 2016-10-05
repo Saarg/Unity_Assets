@@ -104,29 +104,61 @@ public class tank : MonoBehaviour {
 		float torque = _MovementInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
 
 		foreach (WheelCollider wheel in LWheel) {
-			wheel.motorTorque = torque / LWheel.Length;
+			if (wheel.isGrounded) {
+				wheel.motorTorque = torque / LWheel.Length;
+			}
 			wheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		}
 		foreach (WheelCollider wheel in RWheel) {
-			wheel.motorTorque = torque / RWheel.Length;
+			if (wheel.isGrounded) {
+				wheel.motorTorque = torque / RWheel.Length;
+			}
 			wheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		}
 
-		speed = 2 * LWheel[3].radius * Mathf.PI * LWheel[3].rpm * 60f / 1000f;
-		engineRPM = _torqueMultiplier * LWheel[3].rpm * _gears [_curGear];
-	}
 
+		// Update speed and rpm
+		int groundedCount = 0;
+		speed = 0;
+		engineRPM = 0;
+		foreach (WheelCollider wheel in RWheel) {
+			if (wheel.isGrounded) {
+				groundedCount++;
+				speed += 2 * wheel.radius * Mathf.PI * wheel.rpm * 60f / 1000f;
+				engineRPM += _torqueMultiplier * wheel.rpm * _gears [_curGear];
+
+				break;
+			}
+		}
+		foreach (WheelCollider wheel in LWheel) {
+			if (wheel.isGrounded) {
+				groundedCount++;
+				speed += 2 * wheel.radius * Mathf.PI * wheel.rpm * 60f / 1000f;
+				engineRPM += _torqueMultiplier * wheel.rpm * _gears [_curGear];
+
+				break;
+			}
+		}
+
+		if (groundedCount > 0) {
+			speed = speed / groundedCount;
+			engineRPM = engineRPM / groundedCount;
+		}
+
+		if (engineRPM < 600) {
+			engineRPM = 600;
+		}
+		if (engineRPM > 10000) {
+			engineRPM = 10000;
+		}
+	}
 
 	private void Turn ()
 	{
-		float torque = _TurnInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
-	
-		foreach (WheelCollider wheel in LWheel) {
-			wheel.motorTorque += torque/10;
-		}
+		LWheel[1].steerAngle += _TurnInputValue - LWheel[1].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
+		RWheel[1].steerAngle += _TurnInputValue - RWheel[1].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
 
-		foreach (WheelCollider wheel in RWheel) {
-			wheel.motorTorque -= torque/10;
-		}
+		LWheel[4].steerAngle = -_TurnInputValue - LWheel[4].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
+		RWheel[4].steerAngle = -_TurnInputValue - RWheel[4].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
 	}
 }

@@ -526,7 +526,7 @@ Transform:
   m_Children:
   - {fileID: 4000011348780870}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010548030828
 Transform:
@@ -553,7 +553,7 @@ Transform:
   m_Children:
   - {fileID: 4000010548030828}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010579520818
 Transform:
@@ -569,7 +569,6 @@ Transform:
   - {fileID: 4000013767260322}
   - {fileID: 4000010202776274}
   - {fileID: 4000012740815186}
-  - {fileID: 4000013575053366}
   - {fileID: 4000011003692540}
   - {fileID: 4000013245155640}
   - {fileID: 4000010210913946}
@@ -578,6 +577,7 @@ Transform:
   - {fileID: 4000012722730598}
   - {fileID: 4000012038929584}
   - {fileID: 4000010662320524}
+  - {fileID: 4000013575053366}
   - {fileID: 4000011179314630}
   - {fileID: 4000011631102864}
   m_Father: {fileID: 0}
@@ -595,7 +595,7 @@ Transform:
   m_Children:
   - {fileID: 4000012875955984}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010686253376
 Transform:
@@ -649,7 +649,7 @@ Transform:
   m_Children:
   - {fileID: 4000011922636110}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011179314630
 Transform:
@@ -684,7 +684,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014273425138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.89, z: 0}
+  m_LocalPosition: {x: 0, y: 0.06, z: 0.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4000010579520818}
@@ -728,7 +728,7 @@ Transform:
   m_Children:
   - {fileID: 4000010708521068}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012069671414
 Transform:
@@ -755,7 +755,7 @@ Transform:
   m_Children:
   - {fileID: 4000012758258688}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012740815186
 Transform:
@@ -822,7 +822,7 @@ Transform:
   m_Children:
   - {fileID: 4000012799927016}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000013423045050
 Transform:
@@ -848,7 +848,7 @@ Transform:
   m_LocalScale: {x: 4, y: 1, z: 8}
   m_Children: []
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 4
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000013767260322
 Transform:
@@ -876,7 +876,7 @@ Transform:
   m_Children:
   - {fileID: 4000012069671414}
   m_Father: {fileID: 4000010579520818}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000014164608790
 Transform:
@@ -1387,7 +1387,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013155003046}
   serializedVersion: 2
-  m_Mass: 3000
+  m_Mass: 5000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -1446,43 +1446,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 1
   turnRadius: 30
-  _maxHandlingSpeed: 80
+  _maxHandlingSpeed: 100
   LWheel:
+  - {fileID: 146000013041708826}
   - {fileID: 146000012115495130}
   - {fileID: 146000013350113090}
   - {fileID: 146000012770110260}
   - {fileID: 146000012084378458}
-  - {fileID: 146000013041708826}
   - {fileID: 146000013984006562}
   RWheel:
-  - {fileID: 146000012607948278}
   - {fileID: 146000013488514588}
   - {fileID: 146000012497619726}
   - {fileID: 146000010661906366}
   - {fileID: 146000012267981166}
   - {fileID: 146000011106812196}
+  - {fileID: 146000012607948278}
   TorqueCurve:
     serializedVersion: 2
     m_Curve:
-    - time: -5020.0854
-      value: 402.42627
+    - time: -5001.2
+      value: 100.10016
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - time: 17.975342
-      value: 401.3764
+      value: 99.72815
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 3012.0815
-      value: 575.2619
+    - time: 2983.7537
+      value: 250.56638
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - time: 6866.9575
       value: 120.19954
-      inSlope: -0.23542382
-      outSlope: -0.23542382
+      inSlope: -0.100188345
+      outSlope: -0.100188345
       tangentMode: 0
     - time: 10088.058
       value: -0.19711304
@@ -1492,7 +1492,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  _brakeTorque: 500
+  _brakeTorque: 1000
   _centerOfMass: {fileID: 4000011631102864}
   _curGear: 2
   _gears:
@@ -1814,9 +1814,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1825,13 +1825,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000011106812196
 WheelCollider:
@@ -1843,9 +1843,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1854,13 +1854,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000012084378458
 WheelCollider:
@@ -1872,9 +1872,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1883,13 +1883,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000012115495130
 WheelCollider:
@@ -1901,9 +1901,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1912,13 +1912,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000012267981166
 WheelCollider:
@@ -1930,9 +1930,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1941,13 +1941,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000012497619726
 WheelCollider:
@@ -1959,9 +1959,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1970,13 +1970,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000012607948278
 WheelCollider:
@@ -1988,9 +1988,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -1999,13 +1999,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000012770110260
 WheelCollider:
@@ -2017,9 +2017,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -2028,13 +2028,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000013041708826
 WheelCollider:
@@ -2046,9 +2046,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -2057,13 +2057,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000013350113090
 WheelCollider:
@@ -2075,9 +2075,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -2086,13 +2086,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000013488514588
 WheelCollider:
@@ -2104,9 +2104,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -2115,13 +2115,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
 --- !u!146 &146000013984006562
 WheelCollider:
@@ -2133,9 +2133,9 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 80000
-    damper: 8000
+    damper: 5000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.7
+  m_SuspensionDistance: 1
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -2144,11 +2144,11 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_Enabled: 1
