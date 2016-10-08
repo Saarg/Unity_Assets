@@ -11,6 +11,9 @@ public class car : MonoBehaviour {
 	public WheelCollider FRWheel;
 	public WheelCollider RLWheel;
 	public WheelCollider RRWheel;
+
+	public int _engineRedline = 7500;
+	public int _engineIdle = 7500;
 	public AnimationCurve TorqueCurve;
 	public int _brakeTorque = 500;
 
@@ -32,6 +35,7 @@ public class car : MonoBehaviour {
 
 	public float engineRPM = 600;
 	public float speed = 0;
+	private float _CurrentTorque;
 	public int _torqueMultiplier = 4;
 
 	private float _UITime = 0.0f;
@@ -107,6 +111,7 @@ public class car : MonoBehaviour {
 	private void Move ()
 	{
 		float torque = _MovementInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
+		//float torque = _MovementInputValue * _CurrentTorque;
 
 		if (_driveWheel == DriveWheel.Front) {
 			FLWheel.motorTorque = torque/2;
@@ -129,16 +134,62 @@ public class car : MonoBehaviour {
 		RLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 
+		// Downforce
+		_Rigidbody.AddForce(-transform.up*100*_Rigidbody.velocity.magnitude);
+
+		WheelHit wheelHit;
+		switch (_driveWheel)
+		{
+		case DriveWheel.All:
+			FLWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			FRWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			RLWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			RRWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			break;
+
+		case DriveWheel.Back:
+			RLWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			RRWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			break;
+
+		case DriveWheel.Front:
+			FLWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			FRWheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+			break;
+		}
 		speed = 2 * RLWheel.radius * Mathf.PI * RLWheel.rpm * 60f / 1000f;
-		engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
+	}
+
+	private void AdjustTorque(float forwardSlip)
+	{
+		if (forwardSlip >= 0.3f && engineRPM >= _engineIdle)
+		{
+			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, 0.5f);
+		}
+		else
+		{
+			engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
+			if (engineRPM > _engineRedline)
+			{
+				engineRPM = _engineRedline;
+			} else if (engineRPM < _engineIdle) {
+				engineRPM = _engineIdle;
+			} 
+		}
 	}
 
 
 	private void Turn ()
 	{
-		FLWheel.steerAngle += _TurnInputValue - FLWheel.steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
-		FRWheel.steerAngle += _TurnInputValue - FLWheel.steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
-
-
+		FLWheel.steerAngle = _TurnInputValue*turnRadius;
+		FRWheel.steerAngle = _TurnInputValue*turnRadius;
 	}
 }

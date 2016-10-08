@@ -281,7 +281,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013534436062}
   m_LocalRotation: {x: 0.0000028036156, y: -0.00000013979096, z: -2.8534425e-10, w: 1}
-  m_LocalPosition: {x: 106, y: 0.33920556, z: -121.00003}
+  m_LocalPosition: {x: 59.3, y: 0.3, z: -159}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000012563226832}
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
-  turnRadius: 45
+  turnRadius: 30
   _maxHandlingSpeed: 300
   FLWheel: {fileID: 146000013080118780}
   FRWheel: {fileID: 146000011708041060}
@@ -694,40 +694,35 @@ MonoBehaviour:
   TorqueCurve:
     serializedVersion: 2
     m_Curve:
-    - time: -6558.881
-      value: 248.6551
+    - time: 498.22314
+      value: 99.890045
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 157.02673
-      value: 252.18037
-      inSlope: 0
-      outSlope: 0
+    - time: 2805.4597
+      value: 151.1225
+      inSlope: 0.04822838
+      outSlope: 0.04822838
       tangentMode: 0
-    - time: 2835.1445
-      value: 469.77356
-      inSlope: 0.27177235
-      outSlope: 0.27177235
-      tangentMode: 0
-    - time: 5694.8447
-      value: 750.3282
+    - time: 5528.6094
+      value: 214.95764
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - time: 6537.584
-      value: 711.6741
+      value: 176.30353
       inSlope: -0.102969676
       outSlope: -0.102969676
       tangentMode: 0
-    - time: 7014.896
-      value: 627.54004
+    - time: 7204.879
+      value: 58.19232
       inSlope: -0.27032125
       outSlope: -0.27032125
       tangentMode: 0
-    - time: 7800.861
-      value: -1.3582458
-      inSlope: -0.23179592
-      outSlope: -0.23179592
+    - time: 7682.121
+      value: -26.152422
+      inSlope: -0.07420226
+      outSlope: -0.07420226
       tangentMode: 0
     - time: 9997.375
       value: 0.9538574
@@ -838,8 +833,8 @@ WheelCollider:
   m_Center: {x: 0, y: 0.3, z: 0}
   m_Radius: 0.4
   m_SuspensionSpring:
-    spring: 50000
-    damper: 5000
+    spring: 30000
+    damper: 3500
     targetPosition: 0.2
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -867,8 +862,8 @@ WheelCollider:
   m_Center: {x: 0, y: 0.3, z: 0}
   m_Radius: 0.4
   m_SuspensionSpring:
-    spring: 50000
-    damper: 5000
+    spring: 30000
+    damper: 3500
     targetPosition: 0.2
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -896,8 +891,8 @@ WheelCollider:
   m_Center: {x: 0, y: 0.3, z: 0}
   m_Radius: 0.4
   m_SuspensionSpring:
-    spring: 50000
-    damper: 5000
+    spring: 30000
+    damper: 3500
     targetPosition: 0.2
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -925,8 +920,8 @@ WheelCollider:
   m_Center: {x: 0, y: 0.3, z: 0}
   m_Radius: 0.4
   m_SuspensionSpring:
-    spring: 50000
-    damper: 5000
+    spring: 30000
+    damper: 3500
     targetPosition: 0.2
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0

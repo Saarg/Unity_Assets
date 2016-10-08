@@ -278,7 +278,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013072038822}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 142.68, y: 1.15, z: 29.7}
+  m_LocalPosition: {x: 94.07, y: 1.15, z: -139.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000011718184450}
@@ -850,11 +850,13 @@ MonoBehaviour:
   FRWheel: {fileID: 146000013049454360}
   RLWheel: {fileID: 146000013797049416}
   RRWheel: {fileID: 146000013740085720}
+  _engineRedline: 4500
+  _engineIdle: 600
   TorqueCurve:
     serializedVersion: 2
     m_Curve:
-    - time: -6.674347
-      value: 49.42697
+    - time: 537.2024
+      value: 50.241207
       inSlope: -0.0025770625
       outSlope: -0.0025770625
       tangentMode: 0
@@ -1003,7 +1005,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 30000
+    spring: 15000
     damper: 3000
     targetPosition: 0.5
   m_SuspensionDistance: 0.4
@@ -1032,7 +1034,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 30000
+    spring: 15000
     damper: 3000
     targetPosition: 0.5
   m_SuspensionDistance: 0.4
@@ -1061,7 +1063,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 30000
+    spring: 15000
     damper: 3000
     targetPosition: 0.5
   m_SuspensionDistance: 0.4
@@ -1090,7 +1092,7 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 30000
+    spring: 15000
     damper: 3000
     targetPosition: 0.5
   m_SuspensionDistance: 0.4
