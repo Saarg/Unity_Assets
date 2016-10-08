@@ -9,6 +9,9 @@ public class tank : MonoBehaviour {
 	public float _maxHandlingSpeed = 80f;
 	public WheelCollider[] LWheel;
 	public WheelCollider[] RWheel;
+
+	public int _engineRedline = 7500;
+	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
 	public int _brakeTorque = 500;
 
@@ -116,46 +119,61 @@ public class tank : MonoBehaviour {
 			wheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		}
 
+		// Downforce
+		_Rigidbody.AddForce(-transform.up*100*_Rigidbody.velocity.magnitude);
 
-		// Update speed and rpm
-		int groundedCount = 0;
-		speed = 0;
-		engineRPM = 0;
+
+		WheelHit wheelHit;
 		foreach (WheelCollider wheel in RWheel) {
-			if (wheel.isGrounded) {
-				groundedCount++;
-				speed += 2 * wheel.radius * Mathf.PI * wheel.rpm * 60f / 1000f;
-				engineRPM += _torqueMultiplier * wheel.rpm * _gears [_curGear];
-
-				break;
-			}
+			wheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
 		}
 		foreach (WheelCollider wheel in LWheel) {
-			if (wheel.isGrounded) {
-				groundedCount++;
-				speed += 2 * wheel.radius * Mathf.PI * wheel.rpm * 60f / 1000f;
-				engineRPM += _torqueMultiplier * wheel.rpm * _gears [_curGear];
+			wheel.GetGroundHit(out wheelHit);
+			AdjustTorque(wheelHit.forwardSlip);
+		}
 
-				break;
+		speed = 2 * RWheel[3].radius * Mathf.PI * RWheel[3].rpm * 60f / 1000f;
+	}
+
+	private void AdjustTorque(float forwardSlip)
+	{
+		if (forwardSlip >= 0.3f && engineRPM >= _engineIdle)
+		{
+			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, 0.5f);
+		}
+		else
+		{
+			int groudedCount = 0;
+			float avgRPM = 0;
+			foreach (WheelCollider wheel in RWheel) {
+				if (wheel.isGrounded) {
+					groudedCount++;
+					avgRPM += wheel.rpm;
+				}
 			}
-		}
+			foreach (WheelCollider wheel in LWheel) {
+				if (wheel.isGrounded) {
+					groudedCount++;
+					avgRPM += wheel.rpm;
+				}
+			}
+			avgRPM = avgRPM / groudedCount;
 
-		if (groundedCount > 0) {
-			speed = speed / groundedCount;
-			engineRPM = engineRPM / groundedCount;
-		}
-
-		if (engineRPM < 600) {
-			engineRPM = 600;
-		}
-		if (engineRPM > 10000) {
-			engineRPM = 10000;
+			engineRPM = _torqueMultiplier * avgRPM * _gears [_curGear];
+			if (engineRPM > _engineRedline) {
+				engineRPM = _engineRedline;
+			} else if (engineRPM > _engineIdle) {
+				//engineRPM = _engineIdle;
+			} else {
+				engineRPM = _engineIdle;
+			}
 		}
 	}
 
 	private void Turn ()
 	{
-		LWheel[1].steerAngle += _TurnInputValue - LWheel[1].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
-		RWheel[1].steerAngle += _TurnInputValue - RWheel[1].steerAngle/turnRadius * (speed/_maxHandlingSpeed + 1);
+		LWheel[1].steerAngle = _TurnInputValue*turnRadius;
+		RWheel[1].steerAngle = _TurnInputValue*turnRadius;
 	}
 }

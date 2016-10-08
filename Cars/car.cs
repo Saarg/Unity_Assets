@@ -13,7 +13,7 @@ public class car : MonoBehaviour {
 	public WheelCollider RRWheel;
 
 	public int _engineRedline = 7500;
-	public int _engineIdle = 7500;
+	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
 	public int _brakeTorque = 500;
 
