@@ -228,7 +228,7 @@ GameObject:
   - 92: {fileID: 92000010985952782}
   - 124: {fileID: 124000013720075694}
   - 81: {fileID: 81000012346573024}
-  - 146: {fileID: 146000011727124866}
+  - 114: {fileID: 114000011572439686}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -745,6 +745,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wheelModel: {fileID: 1000010164410612}
+--- !u!114 &114000011572439686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013681167582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d6246aa34a442a68d7cfb4770d29f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000011778777410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -787,6 +798,8 @@ MonoBehaviour:
   FRWheel: {fileID: 146000013049454360}
   RLWheel: {fileID: 146000013797049416}
   RRWheel: {fileID: 146000013740085720}
+  _madness: 0.5
+  _downforce: 50
   _engineRedline: 4500
   _engineIdle: 600
   TorqueCurve:
@@ -904,35 +917,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!146 &146000011727124866
-WheelCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013681167582}
-  m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
-  m_SuspensionSpring:
-    spring: 35000
-    damper: 4500
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
-  m_Mass: 20
-  m_WheelDampingRate: 0.25
-  m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
-    m_Stiffness: 1
-  m_Enabled: 1
 --- !u!146 &146000012437712934
 WheelCollider:
   m_ObjectHideFlags: 1
