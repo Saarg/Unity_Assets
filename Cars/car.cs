@@ -12,6 +12,8 @@ public class car : MonoBehaviour {
 	public WheelCollider RLWheel;
 	public WheelCollider RRWheel;
 
+	[Range(0.1f, 1.0f)] public float _madness = 0.5f;
+	[Range(0, 100)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
@@ -53,6 +55,11 @@ public class car : MonoBehaviour {
 	{
 		// When the tank is turned on, make sure it's not kinematic.
 		_Rigidbody.isKinematic = false;
+
+		WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
+		tmp.extremumValue -= _madness / 10;
+		RLWheel.sidewaysFriction = tmp;
+		RRWheel.sidewaysFriction = tmp;
 
 		// Also reset the input values.
 		_MovementInputValue = 0f;
@@ -133,9 +140,13 @@ public class car : MonoBehaviour {
 		FRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
+		if (Input.GetButton ("Handbreak1")) {
+			FLWheel.brakeTorque = _brakeTorque;
+			FRWheel.brakeTorque = _brakeTorque;
+		}
 
 		// Downforce
-		_Rigidbody.AddForce(-transform.up*100*_Rigidbody.velocity.magnitude);
+		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
 
 		WheelHit wheelHit;
 		switch (_driveWheel)
@@ -170,9 +181,9 @@ public class car : MonoBehaviour {
 
 	private void AdjustTorque(float forwardSlip)
 	{
-		if (forwardSlip >= 0.3f && engineRPM >= _engineIdle)
+		if (forwardSlip >= _madness && engineRPM >= _engineIdle)
 		{
-			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, 0.5f);
+			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _madness);
 		}
 		else
 		{
