@@ -57,7 +57,7 @@ public class car : MonoBehaviour {
 		_Rigidbody.isKinematic = false;
 
 		WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-		tmp.extremumValue -= _madness / 10;
+		tmp.extremumValue = 1-_madness / 10;
 		RLWheel.sidewaysFriction = tmp;
 		RRWheel.sidewaysFriction = tmp;
 
@@ -140,42 +140,47 @@ public class car : MonoBehaviour {
 		FRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
-		if (Input.GetButton ("Handbreak1")) {
-			FLWheel.brakeTorque = _brakeTorque;
-			FRWheel.brakeTorque = _brakeTorque;
-		}
+		if (Input.GetButton ("Handbreak1")) { // Mad mode!!!
+			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
+			tmp.extremumValue = 1-_madness;
+			RLWheel.sidewaysFriction = tmp;
+			RRWheel.sidewaysFriction = tmp;
+		} else { // Easy mode...
+			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
+			tmp.extremumValue = 1-_madness / 10;
+			RLWheel.sidewaysFriction = tmp;
+			RRWheel.sidewaysFriction = tmp;
 
+			WheelHit wheelHit;
+			switch (_driveWheel) {
+			case DriveWheel.All:
+				FLWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				FRWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				RLWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				RRWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				break;
+
+			case DriveWheel.Back:
+				RLWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				RRWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				break;
+
+			case DriveWheel.Front:
+				FLWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				FRWheel.GetGroundHit (out wheelHit);
+				AdjustTorque (wheelHit.forwardSlip);
+				break;
+			}
+		}
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
-
-		WheelHit wheelHit;
-		switch (_driveWheel)
-		{
-		case DriveWheel.All:
-			FLWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			FRWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			RLWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			RRWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			break;
-
-		case DriveWheel.Back:
-			RLWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			RRWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			break;
-
-		case DriveWheel.Front:
-			FLWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			FRWheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
-			break;
-		}
 		speed = 2 * RLWheel.radius * Mathf.PI * RLWheel.rpm * 60f / 1000f;
 	}
 
