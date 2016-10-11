@@ -181,6 +181,7 @@ GameObject:
   - 124: {fileID: 124000011658626750}
   - 92: {fileID: 92000013386681996}
   - 81: {fileID: 81000013459541690}
+  - 114: {fileID: 114000011009943078}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1535,6 +1536,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _wheelModel: {fileID: 1000012329630448}
+--- !u!114 &114000011009943078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011854732220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d6246aa34a442a68d7cfb4770d29f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000011352141602
 MonoBehaviour:
   m_ObjectHideFlags: 1
