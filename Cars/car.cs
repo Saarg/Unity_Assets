@@ -143,12 +143,12 @@ public class car : MonoBehaviour {
 		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		if (Input.GetButton ("Handbreak1")) { // Mad mode!!!
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1-_madness / 10;
+			tmp.extremumValue = 1-_madness;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 		} else { // Easy mode...
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1;
+			tmp.extremumValue = 1-_madness / 10;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 
