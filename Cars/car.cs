@@ -13,6 +13,7 @@ public class car : MonoBehaviour {
 	public WheelCollider RRWheel;
 
 	[Range(0.1f, 1.0f)] public float _madness = 0.5f;
+	[Range(0.3f, 0.8f)] public float _tractionControl = 0.5f;
 	[Range(0, 100)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
@@ -142,12 +143,12 @@ public class car : MonoBehaviour {
 		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		if (Input.GetButton ("Handbreak1")) { // Mad mode!!!
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1-_madness;
+			tmp.extremumValue = 1-_madness / 10;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 		} else { // Easy mode...
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1-_madness / 10;
+			tmp.extremumValue = 1;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 
@@ -186,9 +187,9 @@ public class car : MonoBehaviour {
 
 	private void AdjustTorque(float forwardSlip)
 	{
-		if (forwardSlip >= _madness && engineRPM >= _engineIdle)
+		if (forwardSlip >= _tractionControl && engineRPM >= _engineIdle)
 		{
-			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _madness);
+			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _tractionControl);
 		}
 		else
 		{
@@ -205,7 +206,7 @@ public class car : MonoBehaviour {
 
 	private void Turn ()
 	{
-		FLWheel.steerAngle = _TurnInputValue*turnRadius;
-		FRWheel.steerAngle = _TurnInputValue*turnRadius;
+		FLWheel.steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
+		FRWheel.steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
 	}
 }
