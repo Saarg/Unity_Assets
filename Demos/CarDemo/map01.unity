@@ -7152,20 +7152,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af6b94d0796a493890fca39a3b12d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deadzone: 0.1
   _inputs:
   - name: Acceleration1
-    keys:
+    posKeys:
     - z
     - up
+    negKeys: []
     axis: 05000000
     buttons: 
+    deadzone: 0.1
+    value: 0
+  - name: Steering1
+    posKeys:
+    - d
+    - right
+    negKeys:
+    - q
+    - left
+    axis: 00000000
+    buttons: 
+    deadzone: 0.2
+    value: 0
+  - name: ShiftUp1
+    posKeys:
+    - e
+    negKeys: []
+    axis: 
+    buttons: 05000000
+    deadzone: 0
+    value: 0
+  - name: ShiftDown1
+    posKeys:
+    - a
+    negKeys: []
+    axis: 
+    buttons: 04000000
+    deadzone: 0
+    value: 0
+  - name: Break1
+    posKeys:
+    - s
+    - down
+    negKeys: []
+    axis: 04000000
+    buttons: 
+    deadzone: 0.1
     value: 0
   - name: Handbreak1
-    keys:
+    posKeys:
     - space
+    negKeys: []
     axis: 
     buttons: 01000000
+    deadzone: 0
     value: 0
 --- !u!1001 &2125234098
 Prefab:

@@ -81,7 +81,7 @@ public class car : MonoBehaviour {
 
 	void Update () {
 		_MovementInputValue = _controls.getValue (_MovementAxisName);
-		_TurnInputValue = Input.GetAxis (_TurnAxisName);
+		_TurnInputValue = _controls.getValue (_TurnAxisName);
 
 		var localVelocity = transform.InverseTransformDirection(_Rigidbody.velocity);
 
@@ -105,11 +105,11 @@ public class car : MonoBehaviour {
 	protected void Gearbox ()
 	{
 		_time = _time + Time.deltaTime;
-		if (Input.GetButton ("ShiftUp1") && _time > _nextGear) {
+		if (_controls.getValue ("ShiftUp1") == 1 && _time > _nextGear) {
 			_curGear++;
 			_nextGear = _time + _gearChangeTime;
 		}
-		if (Input.GetButton ("ShiftDown1") && _time > _nextGear) {
+		if (_controls.getValue ("ShiftDown1") == 1 && _time > _nextGear) {
 			_curGear--;
 			_nextGear = _time + _gearChangeTime;
 		}
@@ -143,10 +143,10 @@ public class car : MonoBehaviour {
 		}
 
 		// Aply brake
-		FLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
-		FRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
-		RLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
-		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
+		FLWheel.brakeTorque = _brakeTorque*_controls.getValue ("Break1");
+		FRWheel.brakeTorque = _brakeTorque*_controls.getValue ("Break1");
+		RLWheel.brakeTorque = _brakeTorque*_controls.getValue ("Break1");
+		RRWheel.brakeTorque = _brakeTorque*_controls.getValue ("Break1");
 
 		// Compute RPM
 		switch (_driveWheel) {

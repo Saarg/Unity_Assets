@@ -4,6 +4,8 @@ using System.Collections;
 
 public class tank : MonoBehaviour {
 
+	private MultiOSControls _controls;
+
 	public int playerNumber = 1;
 	public float turnRadius = 30f;
 	public float _maxHandlingSpeed = 80f;
@@ -41,6 +43,8 @@ public class tank : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+		_controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+
 		_Rigidbody = GetComponent<Rigidbody> ();
 		_Rigidbody.centerOfMass = _centerOfMass.localPosition;
 	}
@@ -65,8 +69,8 @@ public class tank : MonoBehaviour {
 	}
 
 	void Update () {
-		_MovementInputValue = Input.GetAxis (_MovementAxisName);
-		_TurnInputValue = Input.GetAxis (_TurnAxisName);
+		_MovementInputValue = _controls.getValue (_MovementAxisName);
+		_TurnInputValue = _controls.getValue (_TurnAxisName);
 
 		var localVelocity = transform.InverseTransformDirection(_Rigidbody.velocity);
 
@@ -90,11 +94,11 @@ public class tank : MonoBehaviour {
 	protected void Gearbox ()
 	{
 		_time = _time + Time.deltaTime;
-		if (Input.GetButton ("ShiftUp1") && _time > _nextGear) {
+		if (_controls.getValue ("ShiftUp1") == 1 && _time > _nextGear) {
 			_curGear++;
 			_nextGear = _time + _gearChangeTime;
 		}
-		if (Input.GetButton ("ShiftDown1") && _time > _nextGear) {
+		if (_controls.getValue ("ShiftDown1") == 1 && _time > _nextGear) {
 			_curGear--;
 			_nextGear = _time + _gearChangeTime;
 		}
@@ -117,13 +121,13 @@ public class tank : MonoBehaviour {
 			if (wheel.isGrounded) {
 				wheel.motorTorque = torque / LWheel.Length;
 			}
-			wheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
+			wheel.brakeTorque = _brakeTorque*_controls.getValue ("Break1");
 		}
 		foreach (WheelCollider wheel in RWheel) {
 			if (wheel.isGrounded) {
 				wheel.motorTorque = torque / RWheel.Length;
 			}
-			wheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
+			wheel.brakeTorque = _brakeTorque*_controls.getValue ("Break1");
 		}
 
 		// Compute RPM
