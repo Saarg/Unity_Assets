@@ -4,6 +4,8 @@ using System.Collections;
 
 public class car : MonoBehaviour {
 
+	private MultiOSControls _controls;
+
 	public int playerNumber = 1;
 	public float turnRadius = 30f;
 	public float _maxHandlingSpeed = 80f;
@@ -47,6 +49,8 @@ public class car : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+		_controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+
 		_Rigidbody = GetComponent<Rigidbody> ();
 		_Rigidbody.centerOfMass = _centerOfMass.localPosition;
 	}
@@ -76,7 +80,7 @@ public class car : MonoBehaviour {
 	}
 
 	void Update () {
-		_MovementInputValue = Input.GetAxis (_MovementAxisName);
+		_MovementInputValue = _controls.getValue (_MovementAxisName);
 		_TurnInputValue = Input.GetAxis (_TurnAxisName);
 
 		var localVelocity = transform.InverseTransformDirection(_Rigidbody.velocity);
@@ -170,7 +174,7 @@ public class car : MonoBehaviour {
 		engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
 
 		// Car behavior and skids
-		if (Input.GetButton ("Handbreak1")) { // Mad mode!!!
+		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
 			tmp.extremumValue = 1-_madness;
 			RLWheel.sidewaysFriction = tmp;
