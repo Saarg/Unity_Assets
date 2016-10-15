@@ -20,28 +20,27 @@ public class car : MonoBehaviour {
 	public AnimationCurve TorqueCurve;
 	public int _brakeTorque = 500;
 
-	private string _MovementAxisName;
-	private string _TurnAxisName; 
-	private Rigidbody _Rigidbody;
+	protected string _MovementAxisName;
+	protected string _TurnAxisName; 
+	protected Rigidbody _Rigidbody;
 	public Transform _centerOfMass;
-	private float _MovementInputValue;
-	private float _TurnInputValue;
+	protected float _MovementInputValue;
+	protected float _TurnInputValue;
 
 	public int _curGear = 2;
 	public float[] _gears = new float[]{-3.833f, 0f, 3.833f, 2.235f, 1.458f, 1.026f};
-	private float _nextGear;
+	protected float _nextGear;
 	public float _gearChangeTime = 0.5f;
-	private float _time = 0.0f;
+	protected float _time = 0.0f;
 
 	public enum DriveWheel { Front, Back, All }
 	public DriveWheel _driveWheel;
 
 	public float engineRPM = 600;
 	public float speed = 0;
-	private float _CurrentTorque;
 	public int _torqueMultiplier = 4;
 
-	private float _UITime = 0.0f;
+	protected float _UITime = 0.0f;
 	public Text _speedo;
 	public Text _gear;
 	public Text _rpmGage;
@@ -52,9 +51,9 @@ public class car : MonoBehaviour {
 		_Rigidbody.centerOfMass = _centerOfMass.localPosition;
 	}
 
-	private void OnEnable ()
+	protected void OnEnable ()
 	{
-		// When the tank is turned on, make sure it's not kinematic.
+		// When the car is turned on, make sure it's not kinematic.
 		_Rigidbody.isKinematic = false;
 
 		WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
@@ -67,11 +66,13 @@ public class car : MonoBehaviour {
 		_TurnInputValue = 0f;
 	}
 
-	private void Start ()
+	protected void Start ()
 	{
 		// The axes names are based on player number.
 		_MovementAxisName = "Acceleration" + playerNumber;
 		_TurnAxisName = "Steering" + playerNumber;
+
+		engineRPM = _engineIdle;
 	}
 
 	void Update () {
@@ -89,7 +90,7 @@ public class car : MonoBehaviour {
 		}
 	}
 
-	private void FixedUpdate ()
+	protected void FixedUpdate ()
 	{
 		// Adjust the rigidbodies position and orientation in FixedUpdate.
 		Move ();
@@ -97,7 +98,7 @@ public class car : MonoBehaviour {
 		Gearbox ();
 	}
 
-	private void Gearbox ()
+	protected void Gearbox ()
 	{
 		_time = _time + Time.deltaTime;
 		if (Input.GetButton ("ShiftUp1") && _time > _nextGear) {
@@ -116,11 +117,12 @@ public class car : MonoBehaviour {
 		}
 	}
 
-	private void Move ()
+	protected void Move ()
 	{
+		// Compute torque with engineRPM and torquecurve
 		float torque = _MovementInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
-		//float torque = _MovementInputValue * _CurrentTorque;
 
+		// Aply torque
 		if (_driveWheel == DriveWheel.Front) {
 			FLWheel.motorTorque = torque/2;
 			FRWheel.motorTorque = torque/2;
@@ -136,11 +138,38 @@ public class car : MonoBehaviour {
 			RRWheel.motorTorque = torque/4;
 		}
 
-
+		// Aply brake
 		FLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		FRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RLWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		RRWheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
+
+		// Compute RPM
+		switch (_driveWheel) {
+		case DriveWheel.All:
+			engineRPM = _torqueMultiplier * FLWheel.rpm * _gears [_curGear];
+			engineRPM += _torqueMultiplier * FRWheel.rpm * _gears [_curGear];
+			engineRPM += _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
+			engineRPM += _torqueMultiplier * RRWheel.rpm * _gears [_curGear];
+			engineRPM /= 4;
+			break;
+
+		case DriveWheel.Back:
+			engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
+			engineRPM += _torqueMultiplier * RRWheel.rpm * _gears [_curGear];
+			engineRPM /= 2;
+			break;
+
+		case DriveWheel.Front:
+			engineRPM = _torqueMultiplier * FLWheel.rpm * _gears [_curGear];
+			engineRPM += _torqueMultiplier * FRWheel.rpm * _gears [_curGear];
+			engineRPM /= 2;
+			break;
+		}
+
+		engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
+
+		// Car behavior and skids
 		if (Input.GetButton ("Handbreak1")) { // Mad mode!!!
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
 			tmp.extremumValue = 1-_madness;
@@ -152,59 +181,58 @@ public class car : MonoBehaviour {
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 
-			WheelHit wheelHit;
+			// Adjust torque
 			switch (_driveWheel) {
 			case DriveWheel.All:
-				FLWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
-				FRWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
-				RLWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
-				RRWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
+				AdjustTorque (FLWheel);
+				AdjustTorque (FRWheel);
+				AdjustTorque (RLWheel);
+				AdjustTorque (RRWheel);
 				break;
 
 			case DriveWheel.Back:
-				RLWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
-				RRWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
+				AdjustTorque (RLWheel);
+				AdjustTorque (RRWheel);
 				break;
 
 			case DriveWheel.Front:
-				FLWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
-				FRWheel.GetGroundHit (out wheelHit);
-				AdjustTorque (wheelHit.forwardSlip);
+				AdjustTorque (FLWheel);
+				AdjustTorque (FRWheel);
 				break;
 			}
 		}
+
+		// Lock idle < rpm < redline
+		if (engineRPM >= _engineRedline)
+		{
+			engineRPM = _engineRedline;
+			FLWheel.motorTorque = 0;
+			FRWheel.motorTorque = 0;
+			RLWheel.motorTorque = 0;
+			RRWheel.motorTorque = 0;
+		} else if (engineRPM < _engineIdle) {
+			engineRPM = _engineIdle;
+		} 
+
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
+		// Speed
 		speed = 2 * RLWheel.radius * Mathf.PI * RLWheel.rpm * 60f / 1000f;
 	}
 
-	private void AdjustTorque(float forwardSlip)
+	protected void AdjustTorque(WheelCollider wheel)
 	{
+		WheelHit wheelHit;
+		wheel.GetGroundHit (out wheelHit);
+		float forwardSlip = wheelHit.forwardSlip;
+
 		if (forwardSlip >= _tractionControl && engineRPM >= _engineIdle)
 		{
 			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _tractionControl);
 		}
-		else
-		{
-			engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
-			if (engineRPM > _engineRedline)
-			{
-				engineRPM = _engineRedline;
-			} else if (engineRPM < _engineIdle) {
-				engineRPM = _engineIdle;
-			} 
-		}
 	}
 
-
-	private void Turn ()
+	protected void Turn ()
 	{
 		FLWheel.steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
 		FRWheel.steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));

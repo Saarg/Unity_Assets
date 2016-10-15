@@ -10,29 +10,31 @@ public class tank : MonoBehaviour {
 	public WheelCollider[] LWheel;
 	public WheelCollider[] RWheel;
 
+	[Range(0.3f, 0.8f)] public float _tractionControl = 0.5f;
+	[Range(0, 100)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
 	public int _brakeTorque = 500;
 
-	private string _MovementAxisName;
-	private string _TurnAxisName; 
-	private Rigidbody _Rigidbody;
+	protected string _MovementAxisName;
+	protected string _TurnAxisName; 
+	protected Rigidbody _Rigidbody;
 	public Transform _centerOfMass;
-	private float _MovementInputValue;
-	private float _TurnInputValue;
+	protected float _MovementInputValue;
+	protected float _TurnInputValue;
 
 	public int _curGear = 2;
 	public float[] _gears = new float[]{-3.833f, 0f, 3.833f, 2.235f, 1.458f, 1.026f};
-	private float _nextGear;
+	protected float _nextGear;
 	public float _gearChangeTime = 0.5f;
-	private float _time = 0.0f;
+	protected float _time = 0.0f;
 
 	public float engineRPM = 600;
 	public float speed = 0;
 	public int _torqueMultiplier = 4;
 
-	private float _UITime = 0.0f;
+	protected float _UITime = 0.0f;
 	public Text _speedo;
 	public Text _gear;
 	public Text _rpmGage;
@@ -43,9 +45,9 @@ public class tank : MonoBehaviour {
 		_Rigidbody.centerOfMass = _centerOfMass.localPosition;
 	}
 
-	private void OnEnable ()
+	protected void OnEnable ()
 	{
-		// When the tank is turned on, make sure it's not kinematic.
+		// When the car is turned on, make sure it's not kinematic.
 		_Rigidbody.isKinematic = false;
 
 		// Also reset the input values.
@@ -53,11 +55,13 @@ public class tank : MonoBehaviour {
 		_TurnInputValue = 0f;
 	}
 
-	private void Start ()
+	protected void Start ()
 	{
 		// The axes names are based on player number.
 		_MovementAxisName = "Acceleration" + playerNumber;
 		_TurnAxisName = "Steering" + playerNumber;
+
+		engineRPM = _engineIdle;
 	}
 
 	void Update () {
@@ -75,7 +79,7 @@ public class tank : MonoBehaviour {
 		}
 	}
 
-	private void FixedUpdate ()
+	protected void FixedUpdate ()
 	{
 		// Adjust the rigidbodies position and orientation in FixedUpdate.
 		Move ();
@@ -83,7 +87,7 @@ public class tank : MonoBehaviour {
 		Gearbox ();
 	}
 
-	private void Gearbox ()
+	protected void Gearbox ()
 	{
 		_time = _time + Time.deltaTime;
 		if (Input.GetButton ("ShiftUp1") && _time > _nextGear) {
@@ -102,10 +106,13 @@ public class tank : MonoBehaviour {
 		}
 	}
 
-	private void Move ()
+	protected void Move ()
 	{
+		// Compute torque with engineRPM and torquecurve
 		float torque = _MovementInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
 
+
+		// Aply torque and brake
 		foreach (WheelCollider wheel in LWheel) {
 			if (wheel.isGrounded) {
 				wheel.motorTorque = torque / LWheel.Length;
@@ -119,61 +126,72 @@ public class tank : MonoBehaviour {
 			wheel.brakeTorque = _brakeTorque*Input.GetAxis ("Break1");
 		}
 
-		// Downforce
-		_Rigidbody.AddForce(-transform.up*100*_Rigidbody.velocity.magnitude);
+		// Compute RPM
+		int groudedCount = 0;
+		float avgRPM = 0;
+		foreach (WheelCollider w in RWheel) {
+			if (w.isGrounded) {
+				groudedCount++;
+				avgRPM += w.rpm;
+			}
+		}
+		foreach (WheelCollider w in LWheel) {
+			if (w.isGrounded) {
+				groudedCount++;
+				avgRPM += w.rpm;
+			}
+		}
+		if (groudedCount > 0) {
+			avgRPM = avgRPM / groudedCount;
+		} else {
+			avgRPM = _engineIdle;
+		}
+		engineRPM = _torqueMultiplier * avgRPM * _gears [_curGear];
 
-
+		// Adjust torque
 		WheelHit wheelHit;
 		foreach (WheelCollider wheel in RWheel) {
-			wheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
+			AdjustTorque(wheel);
 		}
 		foreach (WheelCollider wheel in LWheel) {
-			wheel.GetGroundHit(out wheelHit);
-			AdjustTorque(wheelHit.forwardSlip);
+			AdjustTorque(wheel);
 		}
 
+		// Lock idle < rpm < redline
+		if (engineRPM >= _engineRedline)
+		{
+			engineRPM = _engineRedline;
+			foreach (WheelCollider w in RWheel) {
+				w.motorTorque = 0;
+			}
+			foreach (WheelCollider w in LWheel) {
+				w.motorTorque = 0;
+			}
+		} else if (engineRPM < _engineIdle) {
+			engineRPM = _engineIdle;
+		} 
+
+		// Downforce
+		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
+		// Speed
 		speed = 2 * RWheel[3].radius * Mathf.PI * RWheel[3].rpm * 60f / 1000f;
 	}
 
-	private void AdjustTorque(float forwardSlip)
+	protected void AdjustTorque(WheelCollider wheel)
 	{
-		if (forwardSlip >= 0.3f && engineRPM >= _engineIdle)
-		{
-			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, 0.5f);
-		}
-		else
-		{
-			int groudedCount = 0;
-			float avgRPM = 0;
-			foreach (WheelCollider wheel in RWheel) {
-				if (wheel.isGrounded) {
-					groudedCount++;
-					avgRPM += wheel.rpm;
-				}
-			}
-			foreach (WheelCollider wheel in LWheel) {
-				if (wheel.isGrounded) {
-					groudedCount++;
-					avgRPM += wheel.rpm;
-				}
-			}
-			avgRPM = avgRPM / groudedCount;
+		WheelHit wheelHit;
+		wheel.GetGroundHit (out wheelHit);
+		float forwardSlip = wheelHit.forwardSlip;
 
-			engineRPM = _torqueMultiplier * avgRPM * _gears [_curGear];
-			if (engineRPM > _engineRedline) {
-				engineRPM = _engineRedline;
-			} else if (engineRPM > _engineIdle) {
-				//engineRPM = _engineIdle;
-			} else {
-				engineRPM = _engineIdle;
-			}
+		if (forwardSlip >= _tractionControl && engineRPM >= _engineIdle)
+		{
+			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _tractionControl);
 		}
 	}
 
-	private void Turn ()
+	protected void Turn ()
 	{
-		LWheel[1].steerAngle = _TurnInputValue*turnRadius;
-		RWheel[1].steerAngle = _TurnInputValue*turnRadius;
+		LWheel[1].steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
+		RWheel[1].steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
 	}
 }

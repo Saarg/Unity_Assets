@@ -274,7 +274,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013072038822}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 110.92, y: 1.15, z: -139.1}
+  m_LocalPosition: {x: 69.1, y: 1.15, z: -150.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000011718184450}
@@ -756,6 +756,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08d6246aa34a442a68d7cfb4770d29f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  height: 2
+  distance: 5
 --- !u!114 &114000011778777410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -799,29 +801,35 @@ MonoBehaviour:
   RLWheel: {fileID: 146000013797049416}
   RRWheel: {fileID: 146000013740085720}
   _madness: 0.5
+  _tractionControl: 0.5
   _downforce: 50
   _engineRedline: 4500
   _engineIdle: 600
   TorqueCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 537.2024
-      value: 50.241207
+    - time: 482.62717
+      value: 39.656166
       inSlope: -0.0025770625
       outSlope: -0.0025770625
       tangentMode: 0
     - time: 2781.6184
-      value: 72.69654
+      value: 73.18508
       inSlope: -0.00035945332
       outSlope: -0.00035945332
       tangentMode: 0
-    - time: 3960.3567
-      value: 66.11867
-      inSlope: -0.012634366
-      outSlope: -0.012634366
+    - time: 3996.4448
+      value: 54.864983
+      inSlope: -0.037681554
+      outSlope: -0.037681554
+      tangentMode: 0
+    - time: 4505.5576
+      value: -0.16827106
+      inSlope: -0.113769785
+      outSlope: -0.113769785
       tangentMode: 0
     - time: 5994.724
-      value: -0.5845022
+      value: -0.09596157
       inSlope: -0.0004967913
       outSlope: -0.0004967913
       tangentMode: 0
