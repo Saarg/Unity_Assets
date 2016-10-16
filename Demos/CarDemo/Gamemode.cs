@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Gamemode : MonoBehaviour {
 
+	private MultiOSControls _controls;
+
 	public GameObject[] _cars = {};
 	public float _carChangeTime = 0.5f;
 	private float _nextTime = 0.0f;
@@ -16,6 +18,8 @@ public class Gamemode : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		_controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+
 		foreach (GameObject c in _cars) {
 			disable(c);
 		}
@@ -25,17 +29,17 @@ public class Gamemode : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		_time = _time + Time.deltaTime;
-		if (Input.GetAxis ("SwitchCar") != 0 && _time > _nextTime) {
+		if (_controls.getValue ("SwitchCar1") != 0 && _time > _nextTime) {
 			_nextTime = _time + _carChangeTime;
 
 			disable(_cars [_curCar]);
 
-			if (Input.GetAxis ("SwitchCar") < 0) {
+			if (_controls.getValue ("SwitchCar1") < 0) {
 				_curCar--;
 				if (_curCar < 0) {
 					_curCar = _cars.Length - 1;
 				}
-			} else if (Input.GetAxis ("SwitchCar") > 0) {
+			} else if (_controls.getValue ("SwitchCar1") > 0) {
 				_curCar++;
 				if (_curCar > _cars.Length-1) {
 					_curCar = 0;

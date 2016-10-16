@@ -22,7 +22,7 @@ public class camera01 : MonoBehaviour {
 	void FixedUpdate()
 	{
 		Vector3 target = transform.parent.position + transform.parent.up * height - transform.parent.GetComponent<Rigidbody> ().velocity.normalized * distance;
-		if (_parentBody.velocity.magnitude < 0.01 && _parentBody.velocity.magnitude > -0.01) {
+		if (_parentBody.velocity.magnitude < 0.2 && _parentBody.velocity.magnitude > -0.2) {
 			target = transform.parent.position + transform.parent.up * height - transform.parent.forward * distance;
 		}
 		transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, 0.1f);
