@@ -3,14 +3,20 @@ using System.Collections;
 
 public class camera01 : MonoBehaviour {
 
+	private MultiOSControls _controls;
+
 	public float height = 2;
 	public float distance = 5;
 
 	private Vector3 _velocity = Vector3.zero;
 	private Rigidbody _parentBody;
 
+	private float _decalX = 0.0f;
+	private float _decalY = 0.0f;
+
 	// Use this for initialization
 	void Start () {
+		_controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
 		_parentBody = transform.parent.GetComponent<Rigidbody> ();
 	}
 	
@@ -21,10 +27,29 @@ public class camera01 : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		Vector3 target = transform.parent.position + transform.parent.up * height - transform.parent.GetComponent<Rigidbody> ().velocity.normalized * distance;
-		if (_parentBody.velocity.magnitude < 0.2 && _parentBody.velocity.magnitude > -0.2) {
-			target = transform.parent.position + transform.parent.up * height - transform.parent.forward * distance;
+		if (_controls.getValue ("Camera1X") != 0) {
+			_decalX += _controls.getValue ("Camera1X");
+		} else {
+			_decalX = 0;
 		}
+
+		if (_controls.getValue ("Camera1Y") != 0) {
+			_decalY -= _controls.getValue ("Camera1Y");
+		} else {
+			_decalY = 0;
+		}
+		_decalY = Mathf.Clamp (_decalY, -15.0f, 180.0f);
+
+		Vector3 target = transform.parent.position + transform.parent.up * height;
+		target -= Quaternion.AngleAxis(_decalX, transform.parent.up) * Quaternion.AngleAxis(_decalY, transform.parent.right) * transform.parent.GetComponent<Rigidbody> ().velocity.normalized * distance;
+
+		if (_parentBody.velocity.magnitude < 0.2 && _parentBody.velocity.magnitude > -0.2) {
+			target = transform.parent.position + transform.parent.up * height;
+			target -= Quaternion.AngleAxis(_decalX, transform.parent.up) * Quaternion.AngleAxis(_decalY, transform.parent.right) * transform.parent.forward * distance;
+		}
+
+		//target = Quaternion.AngleAxis(_decalX, transform.parent.up) * target;
+
 		transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, 0.1f);
 		transform.LookAt (transform.parent);
 	}

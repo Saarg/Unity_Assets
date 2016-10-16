@@ -83,7 +83,7 @@ public class car : MonoBehaviour {
 		_MovementInputValue = _controls.getValue (_MovementAxisName);
 		_TurnInputValue = _controls.getValue (_TurnAxisName);
 
-		var localVelocity = transform.InverseTransformDirection(_Rigidbody.velocity);
+		Vector3 localVelocity = transform.InverseTransformDirection(_Rigidbody.velocity);
 
 		_UITime += Time.deltaTime;
 		if (_UITime > 0.5f) {
@@ -221,7 +221,7 @@ public class car : MonoBehaviour {
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
 		// Speed
-		speed = 2 * RLWheel.radius * Mathf.PI * RLWheel.rpm * 60f / 1000f;
+		speed = transform.InverseTransformDirection(_Rigidbody.velocity).z;
 	}
 
 	protected void AdjustTorque(WheelCollider wheel)
@@ -238,7 +238,7 @@ public class car : MonoBehaviour {
 
 	protected void Turn ()
 	{
-		FLWheel.steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
-		FRWheel.steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
+		FLWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs(speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+		FRWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs(speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
 	}
 }
