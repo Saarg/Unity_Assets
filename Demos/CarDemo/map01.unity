@@ -7195,7 +7195,7 @@ MonoBehaviour:
     - left
     axis: 00000000
     buttons: 
-    deadzone: 0.2
+    deadzone: 0.3
     value: 0
   - name: ShiftUp1
     posKeys:
@@ -7238,6 +7238,24 @@ MonoBehaviour:
     axis: 06000000
     buttons: 0c000000
     deadzone: 0.1
+    value: 0
+  - name: Camera1X
+    posKeys:
+    - '[6]'
+    negKeys:
+    - '[4]'
+    axis: 02000000
+    buttons: 0c000000
+    deadzone: 0.2
+    value: 0
+  - name: Camera1Y
+    posKeys:
+    - '[8]'
+    negKeys:
+    - '[2]'
+    axis: 03000000
+    buttons: 0c000000
+    deadzone: 0.2
     value: 0
 --- !u!1001 &2125234098
 Prefab:

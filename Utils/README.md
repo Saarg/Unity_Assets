@@ -5,7 +5,12 @@ controller buttons and keyboard inputs without thinking about the OS.
 for now it only uses one controller but will do more than one in the futur.
 ## Setup
 To setup MultiOSControls just add the script to an empty GameOject which we will
-call Scripts from now.
+call Scripts.
+
+Go to Edit->Project Settings->Input  and add inputs for the joystick named
+`joystick1 axis x`, `joystick1 axis y`, `joystick1 axis 3`, `joystick1 axis ...`,
+`joystick1 axis 15` to the coresponding axis. this is necessary since you can't
+bypass the input manager for axis.
 
 Now you can add inputs in the editor, every inputs can have many positive keys,
 negative keys, buttons, and controller axis. You can also set a deadzone for the
