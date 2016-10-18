@@ -20,13 +20,10 @@ public class MultiOSControls : MonoBehaviour {
 	public bool _linuxEditor;
 	public InputDefinition[] _inputs = new InputDefinition[]{};
 
-	#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 	private string[] WindowsAxisNames = new string[]{ "joystick1 axis x", "joystick1 axis y", "joystick1 axis 4", "joystick1 axis 5", "joystick1 axis 9", "joystick1 axis 10", "joystick1 axis 6", "joystick1 axis 7"};
 	private KeyCode[] WindowsButtonsCode = new KeyCode[]{ KeyCode.Joystick1Button0, KeyCode.Joystick1Button1, KeyCode.Joystick1Button2, KeyCode.Joystick1Button3, KeyCode.Joystick1Button4, 
 														  KeyCode.Joystick1Button5, KeyCode.Joystick1Button6, KeyCode.Joystick1Button7, KeyCode.Joystick1Button8, KeyCode.Joystick1Button9, 
 														  KeyCode.Joystick1Button13, KeyCode.Joystick1Button14, KeyCode.Joystick1Button11, KeyCode.Joystick1Button12};// no D-Pad on windows
-	//#elif (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
-	#else
 	// No Dpad axis on mac
 	private string[] MacAxisNames = new string[]{ "joystick1 axis x", "joystick1 axis y", "joystick1 axis 3", "joystick1 axis 4", "joystick1 axis 5", "joystick1 axis 6", "joystick1 axis 5", "joystick1 axis 6"};
 	private KeyCode[] MacButtonsCode = new KeyCode[]{ KeyCode.Joystick1Button16, KeyCode.Joystick1Button17, KeyCode.Joystick1Button18, KeyCode.Joystick1Button19, KeyCode.Joystick1Button13, 
@@ -37,7 +34,6 @@ public class MultiOSControls : MonoBehaviour {
 	private KeyCode[] LinuxButtonsCode = new KeyCode[]{ KeyCode.Joystick1Button0, KeyCode.Joystick1Button1, KeyCode.Joystick1Button2, KeyCode.Joystick1Button3, KeyCode.Joystick1Button4, 
 														KeyCode.Joystick1Button5, KeyCode.Joystick1Button6, KeyCode.Joystick1Button7, KeyCode.Joystick1Button9, KeyCode.Joystick1Button10, 
 														KeyCode.Joystick1Button13, KeyCode.Joystick1Button14, KeyCode.Joystick1Button11, KeyCode.Joystick1Button12};
-	#endif
 
 	// Use this for initialization
 	void Start () {
@@ -61,8 +57,9 @@ public class MultiOSControls : MonoBehaviour {
 				}
 			}
 
-			// Manage controller depending on the os (you should use linux man!)
-			#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+			if (!_linuxEditor) {
+				// Manage controller depending on the os (you should use linux man!)
+				#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
 					if (Input.GetAxis (WindowsAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (WindowsAxisNames [(int)axis]) < -_inputs [i].deadzone) {
@@ -76,8 +73,7 @@ public class MultiOSControls : MonoBehaviour {
 						_inputs [i].value = 1;
 					}
 				}
-			#elif (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
-			if(!_linuxEditor){
+				#elif (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
 					if (Input.GetAxis (MacAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (MacAxisNames [(int)axis]) < -_inputs [i].deadzone) {
@@ -91,6 +87,21 @@ public class MultiOSControls : MonoBehaviour {
 						_inputs [i].value = 1;
 					}
 				}
+				#else
+				// get controller axis values
+				foreach (XboxControllerAxis axis in _inputs[i].axis) {
+					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+						_inputs [i].value = Input.GetAxis (LinuxAxisNames [(int)axis]);
+					}
+				}
+
+				// get controller buttons values
+				foreach (XboxControllerButtons button in _inputs[i].buttons) {
+					if (Input.GetKey (LinuxButtonsCode [(int)button])) {
+						_inputs [i].value = 1;
+					}
+				}
+				#endif
 			} else {
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
@@ -106,21 +117,6 @@ public class MultiOSControls : MonoBehaviour {
 					}
 				}
 			}
-			#else
-				// get controller axis values
-				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = Input.GetAxis (LinuxAxisNames [(int)axis]);
-					}
-				}
-
-				// get controller buttons values
-				foreach (XboxControllerButtons button in _inputs[i].buttons) {
-					if (Input.GetKey (LinuxButtonsCode [(int)button])) {
-						_inputs [i].value = 1;
-					}
-				}
-			#endif
 		}
 	}
 

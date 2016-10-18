@@ -7175,7 +7175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af6b94d0796a493890fca39a3b12d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linuxEditor: 1
+  _linuxEditor: 0
   _inputs:
   - name: Acceleration1
     posKeys:
