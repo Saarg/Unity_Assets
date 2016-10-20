@@ -62,8 +62,10 @@ public class MultiOSControls : MonoBehaviour {
 				#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (WindowsAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (WindowsAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = Input.GetAxis (WindowsAxisNames [(int)axis]);
+					if (Input.GetAxis (WindowsAxisNames [(int)axis]) > _inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (WindowsAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+					} else if (Input.GetAxis (WindowsAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (WindowsAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
 					}
 				}
 
@@ -76,8 +78,10 @@ public class MultiOSControls : MonoBehaviour {
 				#elif (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (MacAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (MacAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = Input.GetAxis (MacAxisNames [(int)axis]);
+					if (Input.GetAxis (MacAxisNames [(int)axis]) > _inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (MacAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+					} else if (Input.GetAxis (MacAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (MacAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
 					}
 				}
 
@@ -90,8 +94,10 @@ public class MultiOSControls : MonoBehaviour {
 				#else
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = Input.GetAxis (LinuxAxisNames [(int)axis]);
+					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+					} else if (Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
 					}
 				}
 
@@ -105,8 +111,10 @@ public class MultiOSControls : MonoBehaviour {
 			} else {
 				// get controller axis values
 				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone || Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = Input.GetAxis (LinuxAxisNames [(int)axis]);
+					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+					} else if (Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
 					}
 				}
 

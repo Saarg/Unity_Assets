@@ -8042,7 +8042,7 @@ Prefab:
     - target: {fileID: 114000013602881100, guid: 94b6d88a18ff04506ae0da9ea6c76902,
         type: 2}
       propertyPath: _maxHandlingSpeed
-      value: 300
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 146000012763929208, guid: 94b6d88a18ff04506ae0da9ea6c76902,
         type: 2}
