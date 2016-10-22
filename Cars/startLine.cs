@@ -26,7 +26,7 @@ public class startLine : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (_started) {
-			_current = Time.time - _startTime - _last;
+			_current = Time.time - _startTime;
 		}
 
 		_currentText.text = "Current time: " + _current + "s";
@@ -47,7 +47,8 @@ public class startLine : MonoBehaviour {
 			}
 
 			if (validLap) {
-				_last = Time.time - _startTime - _last;
+				_last = Time.time - _startTime;
+				_startTime = Time.time;
 
 				if (_lapDone < _lapNumer) {
 					_lapDone++;
