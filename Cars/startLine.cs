@@ -44,6 +44,7 @@ public class startLine : MonoBehaviour {
 				if (!point.isPassed ()) {
 					validLap = false;
 				}
+				point.reset ();
 			}
 
 			if (validLap) {

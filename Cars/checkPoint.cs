@@ -25,6 +25,11 @@ public class checkPoint : MonoBehaviour {
 		_startTime = startTime;
 	}
 
+	public void reset(){
+		_checkTime = 0.0f;
+		_passed = false;
+	}
+
 	void OnTriggerEnter	(Collider other) {
 		if (!_passed) {
 			_checkTime = Time.time;

@@ -50,7 +50,7 @@ public class camera01 : MonoBehaviour {
 
 		//target = Quaternion.AngleAxis(_decalX, transform.parent.up) * target;
 
-		transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, 0.1f);
+		transform.position = Vector3.SmoothDamp(transform.position, target, ref _velocity, 0.3f);
 		transform.LookAt (transform.parent);
 	}
 }
