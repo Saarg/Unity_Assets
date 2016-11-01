@@ -8,6 +8,13 @@ public class turret : MonoBehaviour {
 	private float _decalX = 0.0f;
 	private float _decalY = 0.0f;
 
+	public GameObject BarrelEnd;
+	public GameObject ammo;
+
+	protected float _nextShot;
+	public float _fireRate = 0.5f;
+	protected float _time = 0.0f;
+
 	// Use this for initialization
 	void Start () {
 		_controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
@@ -21,6 +28,13 @@ public class turret : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		_time = _time + Time.deltaTime;
+		if (_controls.getValue ("Fire1") != 0 && _time > _nextShot) {
+			GameObject bullet = (GameObject)Instantiate(ammo, BarrelEnd.transform.position, transform.rotation);
+			bullet.GetComponent<Rigidbody> ().AddForce(transform.forward * 4000);
+			_nextShot = _time + _fireRate;
+		}
+
 		if (_controls.getValue ("Camera1X") != 0) {
 			_decalX += _controls.getValue ("Camera1X");
 		}
