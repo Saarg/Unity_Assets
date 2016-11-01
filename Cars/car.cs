@@ -15,8 +15,8 @@ public class car : MonoBehaviour {
 	public WheelCollider RRWheel;
 
 	[Range(0.1f, 1.0f)] public float _madness = 0.5f;
-	[Range(0.3f, 0.8f)] public float _tractionControl = 0.5f;
-	[Range(0, 100)] public int _downforce = 50;
+	[Range(0.4f, 0.8f)] public float _tractionControl = 0.5f;
+	[Range(0, 500)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
@@ -179,6 +179,11 @@ public class car : MonoBehaviour {
 			tmp.extremumValue = 1-_madness;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
+
+			tmp = RLWheel.sidewaysFriction;
+			tmp.extremumValue = 1+_madness;
+			FLWheel.sidewaysFriction = tmp;
+			FRWheel.sidewaysFriction = tmp;
 		} else { // Easy mode...
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
 			tmp.extremumValue = 1-_madness / 10;

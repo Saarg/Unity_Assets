@@ -32,6 +32,7 @@ public class turret : MonoBehaviour {
 		if (_controls.getValue ("Fire1") != 0 && _time > _nextShot) {
 			GameObject bullet = (GameObject)Instantiate(ammo, BarrelEnd.transform.position, transform.rotation);
 			bullet.GetComponent<Rigidbody> ().AddForce(transform.forward * 4000);
+			bullet.GetComponent<Rigidbody> ().velocity = transform.parent.GetComponent<Rigidbody> ().velocity;
 			_nextShot = _time + _fireRate;
 		}
 
