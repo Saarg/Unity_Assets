@@ -70,7 +70,7 @@ public class Gamemode : MonoBehaviour {
 	}
 
 	void disable(GameObject o) {
-		o.GetComponent<Rigidbody> ().isKinematic = true;
+		//o.GetComponent<Rigidbody> ().isKinematic = true;
 		o.GetComponent<MonoBehaviour> ().enabled = false;
 		o.GetComponentInChildren<Camera> ().enabled = false;
 

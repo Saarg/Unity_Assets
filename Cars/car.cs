@@ -225,6 +225,8 @@ public class car : MonoBehaviour {
 
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
+		// Drag
+		_Rigidbody.AddForce(-transform.forward*50*_Rigidbody.velocity.magnitude);
 		// Speed
 		speed = transform.InverseTransformDirection(_Rigidbody.velocity).z;
 	}
@@ -243,7 +245,12 @@ public class car : MonoBehaviour {
 
 	protected void Turn ()
 	{
-		FLWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs(speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
-		FRWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs(speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
+			FLWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+			FRWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+		} else {
+			FLWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+			FRWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+		}
 	}
 }
