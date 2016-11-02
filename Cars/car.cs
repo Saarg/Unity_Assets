@@ -22,6 +22,8 @@ public class car : MonoBehaviour {
 	public AnimationCurve TorqueCurve;
 	public int _brakeTorque = 500;
 
+	[Range(0, 500)] public int _drag = 50;
+
 	protected string _MovementAxisName;
 	protected string _TurnAxisName; 
 	protected Rigidbody _Rigidbody;
@@ -226,7 +228,7 @@ public class car : MonoBehaviour {
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
 		// Drag
-		_Rigidbody.AddForce(-transform.forward*50*_Rigidbody.velocity.magnitude);
+		_Rigidbody.AddForce(-transform.forward*_drag*_Rigidbody.velocity.magnitude);
 		// Speed
 		speed = transform.InverseTransformDirection(_Rigidbody.velocity).z;
 	}
