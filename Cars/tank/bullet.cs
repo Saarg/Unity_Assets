@@ -3,6 +3,8 @@ using System.Collections;
 
 public class bullet : MonoBehaviour {
 
+	public GameObject _explosion;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,7 +16,7 @@ public class bullet : MonoBehaviour {
 	}
 
 	void OnCollisionEnter (Collision collision) {
-		print ("prout");
+		GameObject bullet = (GameObject)Instantiate(_explosion, transform.position, transform.rotation);
 		Destroy (gameObject);
 	}
 }
