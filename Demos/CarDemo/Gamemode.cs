@@ -15,6 +15,7 @@ public class Gamemode : MonoBehaviour {
 	public Text _speedo;
 	public Text _gear;
 	public Text _rpmGage;
+	public Text _name;
 
 	// Use this for initialization
 	void Start () {
@@ -67,6 +68,8 @@ public class Gamemode : MonoBehaviour {
 			t._gear = _gear;
 			t._rpmGage = _rpmGage;
 		}
+
+		_name.text = o.name;
 	}
 
 	void disable(GameObject o) {
