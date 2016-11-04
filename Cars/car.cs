@@ -62,11 +62,6 @@ public class car : MonoBehaviour {
 		// When the car is turned on, make sure it's not kinematic.
 		_Rigidbody.isKinematic = false;
 
-		/*WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-		tmp.extremumValue = 1-_madness / 10;
-		RLWheel.sidewaysFriction = tmp;
-		RRWheel.sidewaysFriction = tmp;*/
-
 		// Also reset the input values.
 		_MovementInputValue = 0f;
 		_TurnInputValue = 0f;

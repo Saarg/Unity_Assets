@@ -13,7 +13,7 @@ public class tank : MonoBehaviour {
 	public WheelCollider[] RWheel;
 
 	[Range(0.3f, 0.8f)] public float _tractionControl = 0.5f;
-	[Range(0, 100)] public int _downforce = 50;
+	[Range(0, 1000)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
@@ -112,6 +112,7 @@ public class tank : MonoBehaviour {
 
 	protected void Move ()
 	{
+		float oldEngineRPM = engineRPM;
 		// Compute torque with engineRPM and torquecurve
 		float torque = _MovementInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
 
@@ -151,6 +152,13 @@ public class tank : MonoBehaviour {
 			avgRPM = _engineIdle;
 		}
 		engineRPM = _torqueMultiplier * avgRPM * _gears [_curGear];
+		// Lock idle < rpm < redline
+		if (engineRPM >= _engineRedline)
+		{
+			engineRPM = _engineRedline;
+		} else if (engineRPM < _engineIdle) {
+			engineRPM = _engineIdle;
+		} 
 
 		// Adjust torque
 		WheelHit wheelHit;
@@ -161,19 +169,7 @@ public class tank : MonoBehaviour {
 			AdjustTorque(wheel);
 		}
 
-		// Lock idle < rpm < redline
-		if (engineRPM >= _engineRedline)
-		{
-			engineRPM = _engineRedline;
-			foreach (WheelCollider w in RWheel) {
-				w.motorTorque = 0;
-			}
-			foreach (WheelCollider w in LWheel) {
-				w.motorTorque = 0;
-			}
-		} else if (engineRPM < _engineIdle) {
-			engineRPM = _engineIdle;
-		} 
+		engineRPM = Mathf.Lerp (oldEngineRPM, engineRPM, 0.4f);
 
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
@@ -195,7 +191,10 @@ public class tank : MonoBehaviour {
 
 	protected void Turn ()
 	{
-		LWheel[1].steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
-		RWheel[1].steerAngle = _TurnInputValue*turnRadius*(1-speed/(2*_maxHandlingSpeed));
+		LWheel[1].steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+		RWheel[1].steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+	
+		LWheel[4].steerAngle = -_TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+		RWheel[4].steerAngle = -_TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
 	}
 }
