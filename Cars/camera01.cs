@@ -28,13 +28,13 @@ public class camera01 : MonoBehaviour {
 	void FixedUpdate()
 	{
 		if (_controls.getValue ("Camera1X") != 0) {
-			_decalX += _controls.getValue ("Camera1X");
+			_decalX -= Mathf.Clamp(_controls.getValue ("Camera1X"), -1.0f, 1.0f);
 		} else {
 			_decalX = 0;
 		}
 
 		if (_controls.getValue ("Camera1Y") != 0) {
-			_decalY -= _controls.getValue ("Camera1Y");
+			_decalY -= Mathf.Clamp(_controls.getValue ("Camera1Y"), -1.0f, 1.0f);
 		} else {
 			_decalY = 0;
 		}
