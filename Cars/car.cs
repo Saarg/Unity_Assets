@@ -15,8 +15,8 @@ public class car : MonoBehaviour {
 	public WheelCollider RRWheel;
 
 	[Range(0.1f, 1.0f)] public float _madness = 0.5f;
-	[Range(0.4f, 0.8f)] public float _tractionControl = 0.5f;
-	[Range(0, 500)] public int _downforce = 50;
+	[Range(0.1f, 0.8f)] public float _tractionControl = 0.5f;
+	[Range(0, 1000)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
 	public AnimationCurve TorqueCurve;
@@ -62,10 +62,10 @@ public class car : MonoBehaviour {
 		// When the car is turned on, make sure it's not kinematic.
 		_Rigidbody.isKinematic = false;
 
-		WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
+		/*WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
 		tmp.extremumValue = 1-_madness / 10;
 		RLWheel.sidewaysFriction = tmp;
-		RRWheel.sidewaysFriction = tmp;
+		RRWheel.sidewaysFriction = tmp;*/
 
 		// Also reset the input values.
 		_MovementInputValue = 0f;
@@ -125,6 +125,7 @@ public class car : MonoBehaviour {
 
 	protected void Move ()
 	{
+		float oldEngineRPM = engineRPM;
 		// Compute torque with engineRPM and torquecurve
 		float torque = _MovementInputValue * TorqueCurve.Evaluate(engineRPM) * _torqueMultiplier * _gears[_curGear];
 
@@ -173,7 +174,15 @@ public class car : MonoBehaviour {
 			break;
 		}
 
-		engineRPM = _torqueMultiplier * RLWheel.rpm * _gears [_curGear];
+		// Lock idle < rpm < redline
+		if (engineRPM >= _engineRedline)
+		{
+			engineRPM = _engineRedline;
+		} else if (engineRPM < _engineIdle) {
+			engineRPM = _engineIdle;
+		}
+
+		engineRPM = Mathf.Lerp (oldEngineRPM, engineRPM, 0.4f);
 
 		// Car behavior and skids
 		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
@@ -213,24 +222,12 @@ public class car : MonoBehaviour {
 			}
 		}
 
-		// Lock idle < rpm < redline
-		if (engineRPM >= _engineRedline)
-		{
-			engineRPM = _engineRedline;
-			FLWheel.motorTorque = 0;
-			FRWheel.motorTorque = 0;
-			RLWheel.motorTorque = 0;
-			RRWheel.motorTorque = 0;
-		} else if (engineRPM < _engineIdle) {
-			engineRPM = _engineIdle;
-		} 
-
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
 		// Drag
 		_Rigidbody.AddForce(-transform.forward*_drag*_Rigidbody.velocity.magnitude);
 		// Speed
-		speed = transform.InverseTransformDirection(_Rigidbody.velocity).z;
+		speed = transform.InverseTransformDirection(_Rigidbody.velocity).z * 3.6f;
 	}
 
 	protected void AdjustTorque(WheelCollider wheel)
@@ -239,9 +236,9 @@ public class car : MonoBehaviour {
 		wheel.GetGroundHit (out wheelHit);
 		float forwardSlip = wheelHit.forwardSlip;
 
-		if (forwardSlip >= _tractionControl && engineRPM >= _engineIdle)
+		if (forwardSlip >= _tractionControl)
 		{
-			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _tractionControl);
+			wheel.motorTorque = Mathf.Lerp(0, wheel.motorTorque, _tractionControl);
 		}
 	}
 
