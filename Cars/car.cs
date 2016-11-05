@@ -231,7 +231,7 @@ public class car : MonoBehaviour {
 		wheel.GetGroundHit (out wheelHit);
 		float forwardSlip = wheelHit.forwardSlip;
 
-		if (forwardSlip >= _tractionControl)
+		if (Mathf.Abs(forwardSlip) >= _tractionControl)
 		{
 			wheel.motorTorque = Mathf.Lerp(0, wheel.motorTorque, _tractionControl);
 		}

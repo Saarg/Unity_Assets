@@ -183,7 +183,7 @@ public class tank : MonoBehaviour {
 		wheel.GetGroundHit (out wheelHit);
 		float forwardSlip = wheelHit.forwardSlip;
 
-		if (forwardSlip >= _tractionControl && engineRPM >= _engineIdle)
+		if (Mathf.Abs(forwardSlip) >= _tractionControl && engineRPM >= _engineIdle)
 		{
 			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _tractionControl);
 		}

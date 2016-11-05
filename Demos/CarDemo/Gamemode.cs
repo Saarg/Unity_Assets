@@ -82,12 +82,24 @@ public class Gamemode : MonoBehaviour {
 			c._speedo = null;
 			c._gear = null;
 			c._rpmGage = null;
+
+			c.FLWheel.motorTorque = 0;
+			c.FRWheel.motorTorque = 0;
+			c.RLWheel.motorTorque = 0;
+			c.RRWheel.motorTorque = 0;
 		}
 		tank t = o.GetComponent<MonoBehaviour> () as tank;
 		if (t != null) {
 			t._speedo = null;
 			t._gear = null;
 			t._rpmGage = null;
+
+			foreach (WheelCollider wheel in t.LWheel) {
+				wheel.motorTorque = 0;
+			}
+			foreach (WheelCollider wheel in t.RWheel) {
+				wheel.motorTorque = 0;
+			}
 		}
 	}
 }

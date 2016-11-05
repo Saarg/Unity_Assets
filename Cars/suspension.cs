@@ -4,6 +4,7 @@ using System.Collections;
 public class suspension : MonoBehaviour {
 
 	public GameObject _wheelModel;
+	[Range(0.0f, 2.0f)] public float _moreSmoke = 1.0f;
 	public ParticleSystem _particules;
 	private WheelCollider _wheelCollider;
 
@@ -34,10 +35,10 @@ public class suspension : MonoBehaviour {
 			WheelHit wheelHit;
 			_wheelCollider.GetGroundHit (out wheelHit);
 			if (_particules) {
-				float slip = (wheelHit.forwardSlip + wheelHit.sidewaysSlip * 2);
-				if (slip > 0.5f) {
-					_particules.startLifetime = slip * 3;
-					_particules.emissionRate = slip * 100;
+				float slip = (Mathf.Abs(wheelHit.forwardSlip) + Mathf.Abs(wheelHit.sidewaysSlip) * 2);
+				if (slip > _moreSmoke) {
+					_particules.startLifetime = Mathf.Lerp(_particules.startLifetime, slip * 3.0f, _moreSmoke/4.0f);
+					_particules.emissionRate = Mathf.Lerp(_particules.startLifetime, slip * 100.0f, _moreSmoke/4.0f);
 				} else {
 					_particules.startLifetime = 0;
 					_particules.emissionRate = 0;
