@@ -4,6 +4,7 @@ using System.Collections;
 public class suspension : MonoBehaviour {
 
 	public GameObject _wheelModel;
+	public ParticleSystem _particules;
 	private WheelCollider _wheelCollider;
 
 	// Use this for initialization
@@ -29,6 +30,19 @@ public class suspension : MonoBehaviour {
 			_wheelModel.transform.rotation = quat;
 			_wheelModel.transform.Rotate (Vector3.forward * 90);
 			_wheelModel.transform.position = pos;
+
+			WheelHit wheelHit;
+			_wheelCollider.GetGroundHit (out wheelHit);
+			if (_particules) {
+				float slip = (wheelHit.forwardSlip + wheelHit.sidewaysSlip * 2);
+				if (slip > 0.5f) {
+					_particules.startLifetime = slip * 3;
+					_particules.emissionRate = slip * 100;
+				} else {
+					_particules.startLifetime = 0;
+					_particules.emissionRate = 0;
+				}
+			}
 		}
 	}
 }
