@@ -12,7 +12,6 @@ public class tank : MonoBehaviour {
 	public WheelCollider[] LWheel;
 	public WheelCollider[] RWheel;
 
-	[Range(0.3f, 0.8f)] public float _tractionControl = 0.5f;
 	[Range(0, 1000)] public int _downforce = 50;
 	public int _engineRedline = 7500;
 	public int _engineIdle = 600;
@@ -158,6 +157,9 @@ public class tank : MonoBehaviour {
 			avgRPM = _engineIdle;
 		}
 		engineRPM = _torqueMultiplier * avgRPM * _gears [_curGear];
+
+		engineRPM = Mathf.Lerp (oldEngineRPM, engineRPM, 0.1f);
+
 		// Lock idle < rpm < redline
 		if (engineRPM >= _engineRedline)
 		{
@@ -166,33 +168,10 @@ public class tank : MonoBehaviour {
 			engineRPM = _engineIdle;
 		} 
 
-		// Adjust torque
-		WheelHit wheelHit;
-		foreach (WheelCollider wheel in RWheel) {
-			AdjustTorque(wheel);
-		}
-		foreach (WheelCollider wheel in LWheel) {
-			AdjustTorque(wheel);
-		}
-
-		engineRPM = Mathf.Lerp (oldEngineRPM, engineRPM, 0.4f);
-
 		// Downforce
 		_Rigidbody.AddForce(-transform.up*_downforce*_Rigidbody.velocity.magnitude);
 		// Speed
-		speed = 2 * RWheel[3].radius * Mathf.PI * RWheel[3].rpm * 60f / 1000f;
-	}
-
-	protected void AdjustTorque(WheelCollider wheel)
-	{
-		WheelHit wheelHit;
-		wheel.GetGroundHit (out wheelHit);
-		float forwardSlip = wheelHit.forwardSlip;
-
-		if (Mathf.Abs(forwardSlip) >= _tractionControl && engineRPM >= _engineIdle)
-		{
-			engineRPM = Mathf.Lerp(_engineIdle, engineRPM, _tractionControl);
-		}
+		speed = transform.InverseTransformDirection(_Rigidbody.velocity).z * 3.6f;
 	}
 
 	protected void Turn ()

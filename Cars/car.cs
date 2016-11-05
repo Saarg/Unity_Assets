@@ -175,6 +175,8 @@ public class car : MonoBehaviour {
 			break;
 		}
 
+		engineRPM = Mathf.Lerp (oldEngineRPM, engineRPM, 0.4f);
+
 		// Lock idle < rpm < redline
 		if (engineRPM >= _engineRedline)
 		{
@@ -182,8 +184,6 @@ public class car : MonoBehaviour {
 		} else if (engineRPM < _engineIdle) {
 			engineRPM = _engineIdle;
 		}
-
-		engineRPM = Mathf.Lerp (oldEngineRPM, engineRPM, 0.4f);
 
 		// Car behavior and skids
 		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
