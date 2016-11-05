@@ -45,9 +45,12 @@ public class car : MonoBehaviour {
 	public int _torqueMultiplier = 4;
 
 	protected float _UITime = 0.0f;
-	public Text _speedo;
-	public Text _gear;
-	public Text _rpmGage;
+	[HideInInspector]public Text _speedo;
+	[HideInInspector]public Text _gear;
+	[HideInInspector]public Text _rpmGage;
+	public TextMesh _MeshSpeedo;
+	public TextMesh _MeshGear;
+	public TextMesh _MeshRpmGage;
 
 	// Use this for initialization
 	void Awake () {
@@ -88,6 +91,9 @@ public class car : MonoBehaviour {
 			_speedo.text = Mathf.Round (localVelocity.z * 3.6f) + "km/h";
 			_gear.text = "Gear: " + (_curGear - 1);
 			_rpmGage.text = "Rpm: " + Mathf.Round (engineRPM / 100) * 100;
+			_MeshSpeedo.text = Mathf.Round (localVelocity.z * 3.6f) + "km/h";
+			_MeshGear.text = "Gear: " + (_curGear - 1);
+			_MeshRpmGage.text = "Rpm: " + Mathf.Round (engineRPM / 100) * 100;
 		}
 	}
 
