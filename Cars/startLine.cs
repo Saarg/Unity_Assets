@@ -27,10 +27,14 @@ public class startLine : MonoBehaviour {
 	void Update () {
 		if (_started) {
 			_current = Time.time - _startTime;
-		}
 
-		_currentText.text = "Current time: " + _current + "s";
-		_lastText.text = "Last time: " + _last + "s";
+			if (_currentText) {
+				_currentText.text = "Current time: " + _current + "s";
+			}
+			if (_lastText) {
+				_lastText.text = "Last time: " + _last + "s";
+			}
+		}
 	}
 
 	void OnTriggerEnter	(Collider other) {
