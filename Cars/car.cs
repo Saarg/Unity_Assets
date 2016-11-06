@@ -7,6 +7,7 @@ public class car : MonoBehaviour {
 	private MultiOSControls _controls;
 
 	public int playerNumber = 1;
+	[Range(1.0f, 10.0f)] public float _powerStearing = 1.0f;
 	public float turnRadius = 30f;
 	public float _maxHandlingSpeed = 80f;
 	public WheelCollider FLWheel;
@@ -198,7 +199,7 @@ public class car : MonoBehaviour {
 			FRWheel.sidewaysFriction = tmp;
 		} else { // Easy mode...
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1-_madness / 10;
+			tmp.extremumValue = 1;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 
@@ -246,11 +247,23 @@ public class car : MonoBehaviour {
 	protected void Turn ()
 	{
 		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
-			FLWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
-			FRWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+			FLWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
+			FRWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
 		} else {
-			FLWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
-			FRWheel.steerAngle = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / (2.0f * _maxHandlingSpeed))), 0.1f, 1.0f);
+			float turn = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
+			float turnSpeed = 1.0f-Mathf.Clamp (Mathf.Abs (speed) / _maxHandlingSpeed, 0.0f, 0.9f);
+
+			float turnMultiplier = _powerStearing;
+			if ((turn < 0) != (FLWheel.steerAngle < 0)) {
+				turnMultiplier *= 4.0f;
+			}
+			if (turn == 0.0f) {
+				FLWheel.steerAngle = 0;
+				FRWheel.steerAngle = 0;
+			} else {
+				FLWheel.steerAngle = Mathf.Lerp (FLWheel.steerAngle, turn, (turnMultiplier * turnSpeed) * Time.deltaTime);
+				FRWheel.steerAngle = Mathf.Lerp (FRWheel.steerAngle, turn, (turnMultiplier * turnSpeed) * Time.deltaTime);
+			}
 		}
 	}
 }
