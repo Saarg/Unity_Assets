@@ -203,6 +203,11 @@ public class car : MonoBehaviour {
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 
+			tmp = RLWheel.sidewaysFriction;
+			tmp.extremumValue = 1;
+			FLWheel.sidewaysFriction = tmp;
+			FRWheel.sidewaysFriction = tmp;
+
 			// Adjust torque
 			switch (_driveWheel) {
 			case DriveWheel.All:

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 public class Panel : MonoBehaviour {
 
@@ -9,8 +12,6 @@ public class Panel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_times = new float[_timeDisplays.Length];
-
 		for (int i = 0 ; i < _times.Length ; i++) {
 			_timeDisplays [i].text = (i+1) + ": " + _times [i] + "s";
 		}
@@ -36,5 +37,28 @@ public class Panel : MonoBehaviour {
 
 			_timeDisplays [i].text = (i+1) + ": " + _times [i] + "s";
 		}
+	}
+
+	void Awake() {
+		if (File.Exists (Application.persistentDataPath + "/" + transform.parent.name + ".dat")) {
+			print ("loading /" + transform.parent.name + ".dat"); 
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/" + transform.parent.name + ".dat", FileMode.Open);
+
+			_times = (float[])(bf.Deserialize (file));
+
+		} else {
+			print ("No save found...");
+			_times = new float[_timeDisplays.Length];
+		}
+	}
+
+	void OnDestroy() {
+		print ("saving to /" + transform.parent.name + ".dat"); 
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath + "/" + transform.parent.name + ".dat");
+
+		bf.Serialize(file, _times);
+		file.Close();
 	}
 }
