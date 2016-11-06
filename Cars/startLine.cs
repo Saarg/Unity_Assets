@@ -18,6 +18,8 @@ public class startLine : MonoBehaviour {
 	public Text _currentText;
 	public Text _lastText;
 
+	public Panel _panel;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -53,6 +55,9 @@ public class startLine : MonoBehaviour {
 
 			if (validLap) {
 				_last = Time.time - _startTime;
+				if (_panel != null) {
+					_panel.addTime (_last);
+				}
 				_startTime = Time.time;
 
 				if (_lapDone < _lapNumer) {
