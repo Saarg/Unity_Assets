@@ -15,9 +15,6 @@ public class startLine : MonoBehaviour {
 
 	public bool _started = false;
 
-	public Text _currentText;
-	public Text _lastText;
-
 	public Panel _panel;
 
 	// Use this for initialization
@@ -29,13 +26,6 @@ public class startLine : MonoBehaviour {
 	void Update () {
 		if (_started) {
 			_current = Time.time - _startTime;
-
-			if (_currentText) {
-				_currentText.text = "Current time: " + _current + "s";
-			}
-			if (_lastText) {
-				_lastText.text = "Last time: " + _last + "s";
-			}
 		}
 	}
 

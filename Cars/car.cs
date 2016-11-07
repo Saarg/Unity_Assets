@@ -251,24 +251,26 @@ public class car : MonoBehaviour {
 
 	protected void Turn ()
 	{
+		float turn = _TurnInputValue * turnRadius;
+		float turnSpeed = 1.0f-Mathf.Clamp (Mathf.Abs (speed) / _maxHandlingSpeed, 0.0f, 0.9f);
 		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
-			FLWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
-			FRWheel.steerAngle = _TurnInputValue * (turnRadius+20) * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
+			turn += (turn/Mathf.Abs(turn)) * 10;
+			turnSpeed *= 2;
 		} else {
-			float turn = _TurnInputValue * turnRadius * Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
-			float turnSpeed = 1.0f-Mathf.Clamp (Mathf.Abs (speed) / _maxHandlingSpeed, 0.0f, 0.9f);
+			turn *= Mathf.Clamp ((1.0f - (Mathf.Abs (speed) / _maxHandlingSpeed)), 0.05f, 1.0f);
+		}
 
-			float turnMultiplier = _powerStearing;
-			if ((turn < 0) != (FLWheel.steerAngle < 0)) {
-				turnMultiplier *= 4.0f;
-			}
-			if (turn == 0.0f) {
-				FLWheel.steerAngle = 0;
-				FRWheel.steerAngle = 0;
-			} else {
-				FLWheel.steerAngle = Mathf.Lerp (FLWheel.steerAngle, turn, (turnMultiplier * turnSpeed) * Time.deltaTime);
-				FRWheel.steerAngle = Mathf.Lerp (FRWheel.steerAngle, turn, (turnMultiplier * turnSpeed) * Time.deltaTime);
-			}
+		float turnMultiplier = _powerStearing;
+		print (turn + " " + FLWheel.steerAngle);
+		if ((turn < 0 && FLWheel.steerAngle > 0) || (turn > 0 && FLWheel.steerAngle < 0)) {
+			turnMultiplier *= 4.0f;
+		}
+		if (turn == 0.0f) {
+			FLWheel.steerAngle = 0;
+			FRWheel.steerAngle = 0;
+		} else {
+			FLWheel.steerAngle = Mathf.Lerp (FLWheel.steerAngle, turn, (turnMultiplier * turnSpeed) * Time.deltaTime);
+			FRWheel.steerAngle = Mathf.Lerp (FRWheel.steerAngle, turn, (turnMultiplier * turnSpeed) * Time.deltaTime);
 		}
 	}
 }

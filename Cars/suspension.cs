@@ -38,10 +38,10 @@ public class suspension : MonoBehaviour {
 				float slip = (Mathf.Abs(wheelHit.forwardSlip) + Mathf.Abs(wheelHit.sidewaysSlip) * 2);
 				if (slip > _moreSmoke) {
 					_particules.startLifetime = Mathf.Lerp(_particules.startLifetime, slip * 3.0f, (2.0f-_moreSmoke)/4.0f);
-					_particules.emissionRate = Mathf.Lerp(_particules.startLifetime, slip * 100.0f, (2.0f-_moreSmoke)/4.0f);
+					_particules.emissionRate = Mathf.Lerp(_particules.startLifetime, slip * 150.0f, (2.0f-_moreSmoke)/4.0f);
 				} else {
-					_particules.startLifetime = 0;
-					_particules.emissionRate = 0;
+					_particules.startLifetime = Mathf.Lerp(_particules.startLifetime, 0, (2.0f-_moreSmoke)/4.0f);
+					_particules.emissionRate = Mathf.Lerp(_particules.startLifetime, 0, (2.0f-_moreSmoke)/4.0f);
 				}
 			}
 		}
