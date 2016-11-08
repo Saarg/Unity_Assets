@@ -17,7 +17,6 @@ public struct InputDefinition {
 
 public class MultiOSControls : MonoBehaviour {
 
-	public bool _linuxEditor;
 	public InputDefinition[] _inputs = new InputDefinition[]{};
 
 	private string[] WindowsAxisNames = new string[]{ "mouse x", "mouse y", "joystick1 axis x", "joystick1 axis y", "joystick1 axis 4", "joystick1 axis 5", "joystick1 axis 9", "joystick1 axis 10", "joystick1 axis 6", "joystick1 axis 7"};
@@ -56,75 +55,57 @@ public class MultiOSControls : MonoBehaviour {
 					_inputs [i].value = -1;
 				}
 			}
-
-			if (!_linuxEditor) {
-				// Manage controller depending on the os (you should use linux man!)
-				#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-				// get controller axis values
-				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (WindowsAxisNames [(int)axis]) > _inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (WindowsAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					} else if (Input.GetAxis (WindowsAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (WindowsAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					}
-				}
-
-				// get controller buttons values
-				foreach (XboxControllerButtons button in _inputs[i].buttons) {
-					if (Input.GetKey (WindowsButtonsCode [(int)button])) {
-						_inputs [i].value = 1;
-					}
-				}
-				#elif (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
-				// get controller axis values
-				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (MacAxisNames [(int)axis]) > _inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (MacAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					} else if (Input.GetAxis (MacAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (MacAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					}
-				}
-
-				// get controller buttons values
-				foreach (XboxControllerButtons button in _inputs[i].buttons) {
-					if (Input.GetKey (MacButtonsCode [(int)button])) {
-						_inputs [i].value = 1;
-					}
-				}
-				#else
-				// get controller axis values
-				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					} else if (Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					}
-				}
-
-				// get controller buttons values
-				foreach (XboxControllerButtons button in _inputs[i].buttons) {
-					if (Input.GetKey (LinuxButtonsCode [(int)button])) {
-						_inputs [i].value = 1;
-					}
-				}
-				#endif
-			} else {
-				// get controller axis values
-				foreach (XboxControllerAxis axis in _inputs[i].axis) {
-					if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					} else if (Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
-						_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
-					}
-				}
-
-				// get controller buttons values
-				foreach (XboxControllerButtons button in _inputs[i].buttons) {
-					if (Input.GetKey (LinuxButtonsCode [(int)button])) {
-						_inputs [i].value = 1;
-					}
+				
+			// Manage controller depending on the os (you should use linux man!)
+			#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+			// get controller axis values
+			foreach (XboxControllerAxis axis in _inputs[i].axis) {
+				if (Input.GetAxis (WindowsAxisNames [(int)axis]) > _inputs [i].deadzone) {
+					_inputs [i].value = (Input.GetAxis (WindowsAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+				} else if (Input.GetAxis (WindowsAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+					_inputs [i].value = (Input.GetAxis (WindowsAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
 				}
 			}
+
+			// get controller buttons values
+			foreach (XboxControllerButtons button in _inputs[i].buttons) {
+				if (Input.GetKey (WindowsButtonsCode [(int)button])) {
+					_inputs [i].value = 1;
+				}
+			}
+			#elif (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
+			// get controller axis values
+			foreach (XboxControllerAxis axis in _inputs[i].axis) {
+				if (Input.GetAxis (MacAxisNames [(int)axis]) > _inputs [i].deadzone) {
+					_inputs [i].value = (Input.GetAxis (MacAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+				} else if (Input.GetAxis (MacAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+					_inputs [i].value = (Input.GetAxis (MacAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+				}
+			}
+
+			// get controller buttons values
+			foreach (XboxControllerButtons button in _inputs[i].buttons) {
+				if (Input.GetKey (MacButtonsCode [(int)button])) {
+					_inputs [i].value = 1;
+				}
+			}
+			#else
+			// get controller axis values
+			foreach (XboxControllerAxis axis in _inputs[i].axis) {
+				if (Input.GetAxis (LinuxAxisNames [(int)axis]) > _inputs [i].deadzone) {
+					_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) - _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+				} else if (Input.GetAxis (LinuxAxisNames [(int)axis]) < -_inputs [i].deadzone) {
+					_inputs [i].value = (Input.GetAxis (LinuxAxisNames [(int)axis]) + _inputs [i].deadzone) * (1/(1-_inputs [i].deadzone));
+				}
+			}
+
+			// get controller buttons values
+			foreach (XboxControllerButtons button in _inputs[i].buttons) {
+				if (Input.GetKey (LinuxButtonsCode [(int)button])) {
+					_inputs [i].value = 1;
+				}
+			}
+			#endif
 		}
 	}
 
