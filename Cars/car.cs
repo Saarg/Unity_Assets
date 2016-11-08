@@ -6,7 +6,20 @@ public class car : MonoBehaviour {
 
 	private MultiOSControls _controls;
 
-	public int playerNumber = 1;
+  public int playerNumber = 1;
+
+  [Header("General settings")]
+  [Range(0.1f, 1.0f)] public float _madness = 0.5f;
+	[Range(0.1f, 0.8f)] public float _tractionControl = 0.5f;
+	[Range(0, 1000)] public int _downforce = 50;
+  [Range(0, 500)] public int _drag = 50;
+	public int _engineRedline = 7500;
+	public int _engineIdle = 600;
+	public AnimationCurve TorqueCurve;
+	public int _brakeTorque = 500;
+	public Transform _centerOfMass;
+
+  [Header("Wheels settings")]
 	[Range(1.0f, 10.0f)] public float _powerStearing = 1.0f;
 	public float turnRadius = 30f;
 	public float _maxHandlingSpeed = 80f;
@@ -14,37 +27,29 @@ public class car : MonoBehaviour {
 	public WheelCollider FRWheel;
 	public WheelCollider RLWheel;
 	public WheelCollider RRWheel;
+  public enum DriveWheel { Front, Back, All }
+	public DriveWheel _driveWheel;
 
-	[Range(0.1f, 1.0f)] public float _madness = 0.5f;
-	[Range(0.1f, 0.8f)] public float _tractionControl = 0.5f;
-	[Range(0, 1000)] public int _downforce = 50;
-	public int _engineRedline = 7500;
-	public int _engineIdle = 600;
-	public AnimationCurve TorqueCurve;
-	public int _brakeTorque = 500;
-
-	[Range(0, 500)] public int _drag = 50;
-
+  [Header("Controls")]
 	protected string _MovementAxisName;
-	protected string _TurnAxisName; 
+	protected string _TurnAxisName;
 	protected Rigidbody _Rigidbody;
-	public Transform _centerOfMass;
 	protected float _MovementInputValue;
 	protected float _TurnInputValue;
 
+  [Header("Gearbox")]
 	public int _curGear = 2;
 	public float[] _gears = new float[]{-3.833f, 0f, 3.833f, 2.235f, 1.458f, 1.026f};
 	protected float _nextGear;
 	public float _gearChangeTime = 0.5f;
 	protected float _time = 0.0f;
+  public int _torqueMultiplier = 4;
 
-	public enum DriveWheel { Front, Back, All }
-	public DriveWheel _driveWheel;
-
+  [Header("Infos")]
 	public float engineRPM = 600;
 	public float speed = 0;
-	public int _torqueMultiplier = 4;
 
+  [Header("UI")]
 	protected float _UITime = 0.0f;
 	[HideInInspector]public Text _speedo;
 	[HideInInspector]public Text _gear;
@@ -188,13 +193,15 @@ public class car : MonoBehaviour {
 
 		// Car behavior and skids
 		if (_controls.getValue ("Handbreak1") != 0) { // Mad mode!!!
+      float friction = _madness * Mathf.Clamp(1.0f-Mathf.Abs(speed)/_maxHandlingSpeed, 0.0f, 1.0f);
+
 			WheelFrictionCurve tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1-_madness;
+			tmp.extremumValue = 1-friction;
 			RLWheel.sidewaysFriction = tmp;
 			RRWheel.sidewaysFriction = tmp;
 
 			tmp = RLWheel.sidewaysFriction;
-			tmp.extremumValue = 1+_madness;
+			tmp.extremumValue = 1+friction;
 			FLWheel.sidewaysFriction = tmp;
 			FRWheel.sidewaysFriction = tmp;
 		} else { // Easy mode...
@@ -261,7 +268,6 @@ public class car : MonoBehaviour {
 		}
 
 		float turnMultiplier = _powerStearing;
-		print (turn + " " + FLWheel.steerAngle);
 		if ((turn < 0 && FLWheel.steerAngle > 0) || (turn > 0 && FLWheel.steerAngle < 0)) {
 			turnMultiplier *= 4.0f;
 		}
