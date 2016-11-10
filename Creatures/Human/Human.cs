@@ -3,7 +3,10 @@ using System.Collections;
 
 public class Human : MonoBehaviour {
 
-  private MultiOSControls _controls;
+  private MultiOSControls _Controls;
+  private Animator _Animator;
+
+  public Transform _ObjSpine;
 
   public Rigidbody _Head;
   public Rigidbody _Pelvis;
@@ -13,8 +16,12 @@ public class Human : MonoBehaviour {
   public Rigidbody _LeftArm, _LeftElbow;
   public Rigidbody _RightArm, _RightElbow;
 
+  protected float _time = 0.0f;
+  public float _WalkTime = 0.2f;
+
   void Awake () {
-		_controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+		_Controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+    _Animator = GetComponent<Animator> ();
 	}
 
 	// Use this for initialization
@@ -24,7 +31,9 @@ public class Human : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-    //_Body.AddForce(transform.forward * -30 * _controls.getValue("Forward"));
-    //_Body.AddForce(transform.up * 630);
+    _time += Time.deltaTime;
+
+    _LeftElbow.AddForce(transform.up * 100.0f);
+    _RightElbow.AddForce(transform.up * 100.0f);
 	}
 }
