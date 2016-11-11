@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 74a0498e5b07b47e29fb7d525939d4ed
-timeCreated: 1478815676
+timeCreated: 1478881951
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -134,6 +134,18 @@ ModelImporter:
     100252: RLegControl_end
     100254: RLegPole
     100256: RLegPole_end
+    100258: Bone.006_end
+    100260: Bone.009_end
+    100262: Hean
+    100264: Hean_end
+    100266: LElbow
+    100268: LElbow_end
+    100270: LKnee
+    100272: LKnee_end
+    100274: RElbow
+    100276: RElbow_end
+    100278: RKnee
+    100280: RKnee_end
     400000: Armature
     400002: Bob
     400004: Bone
@@ -263,6 +275,18 @@ ModelImporter:
     400252: RLegControl_end
     400254: RLegPole
     400256: RLegPole_end
+    400258: Bone.006_end
+    400260: Bone.009_end
+    400262: Hean
+    400264: Hean_end
+    400266: LElbow
+    400268: LElbow_end
+    400270: LKnee
+    400272: LKnee_end
+    400274: RElbow
+    400276: RElbow_end
+    400278: RKnee
+    400280: RKnee_end
     2300000: Bob
     3300000: Bob
     4300000: Bob
@@ -280,11 +304,13 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Armature|Walk' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'LHip' is inbetween humanoid transforms and
-      has rotation animation that will be discarded.\n\t'RHip' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n"
+    animationImportWarnings: "\nSource avatar hierarchy doesn't match one found in
+      this file:\n\tBone 'Hean' not found\n\tBone 'Spine' not found\n\tBone 'LShoulder'
+      not found\n\tBone 'LElbow' not found\n\tBone 'LElbow_end' not found\n\tBone
+      'RShoulder' not found\n\tBone 'RElbow' not found\n\tBone 'RElbow_end' not found\n\tBone
+      'LHip' not found\n\tBone 'LKnee' not found\n\tBone 'LKnee_end' not found\n\tBone
+      'RHip' not found\n\tBone 'RKnee' not found\n\tBone 'RKnee_end' not found\n\tBone
+      'LFoot_end' not found\n\tBone 'RFoot_end' not found\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 3
@@ -434,7 +460,7 @@ ModelImporter:
   copyAvatar: 0
   humanDescription:
     human:
-    - boneName: Head
+    - boneName: Hean
       humanName: Head
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -458,7 +484,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: LUpperArm
+    - boneName: LShoulder
       humanName: LeftUpperArm
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -466,7 +492,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: LLowerArm
+    - boneName: LElbow
       humanName: LeftLowerArm
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -474,7 +500,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: LHand
+    - boneName: LElbow_end
       humanName: LeftHand
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -482,7 +508,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: RUpperArm
+    - boneName: RShoulder
       humanName: RightUpperArm
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -490,7 +516,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: RLowerArm
+    - boneName: RElbow
       humanName: RightLowerArm
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -498,7 +524,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: RHand
+    - boneName: RElbow_end
       humanName: RightHand
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -506,7 +532,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: LUpperLeg
+    - boneName: LHip
       humanName: LeftUpperLeg
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -514,7 +540,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: LLowerLeg
+    - boneName: LKnee
       humanName: LeftLowerLeg
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -522,7 +548,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: LFoot
+    - boneName: LKnee_end
       humanName: LeftFoot
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -530,7 +556,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: RUpperLeg
+    - boneName: RHip
       humanName: RightUpperLeg
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -538,7 +564,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: RLowerLEg
+    - boneName: RKnee
       humanName: RightLowerLeg
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -546,24 +572,8 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: RFoot
+    - boneName: RKnee_end
       humanName: RightFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: LShoulder
-      humanName: LeftShoulder
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: RShoulder
-      humanName: RightShoulder
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -592,215 +602,95 @@ ModelImporter:
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
-    - name: Armature
-      position: {x: -0, y: 0.9342025, z: 0}
+    - name: Bob
+      position: {x: -0, y: -0.00000009536743, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 89.10525, y: 89.10525, z: 89.10525}
+      transformModified: 1
+    - name: Pelvis
+      position: {x: -0, y: 0.93400437, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 100, y: 100, z: 100}
       transformModified: 1
-    - name: LArmControl
-      position: {x: -0.0023136465, y: 0.00065341266, z: -0.001319923}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 0.99999994, z: 1}
-      transformModified: 1
-    - name: LArmControl_end
-      position: {x: -0, y: 0.0028839475, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
+    - name: Bone
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: LArmPole
-      position: {x: -0.0048239413, y: -0.0047889943, z: 0.005990375}
-      rotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: LArmPole_end
-      position: {x: -0, y: 0.002, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: LLegControl
-      position: {x: -0.0015365159, y: -0.0024304527, z: -0.008677744}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 0.99999994, z: 1}
-      transformModified: 1
-    - name: LLegControl_end
-      position: {x: -0, y: 0.0028839475, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: LLegPole
-      position: {x: -0.0010083697, y: -0.0039326325, z: -0.0012669831}
-      rotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: LLegPole_end
-      position: {x: -0, y: 0.002, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: Pelvis
-      position: {x: -0, y: 0.00053420174, z: -0.0010972836}
-      rotation: {x: 0.78034186, y: 0, z: 0, w: 0.62535316}
-      scale: {x: 1, y: 1, z: 0.99999994}
       transformModified: 1
     - name: LHip
-      position: {x: -0, y: -0.000008175448, z: -0.00003662366}
-      rotation: {x: 0.7016449, y: -0.5823408, z: -0.3133039, w: -0.26535696}
-      scale: {x: 0.9999999, y: 0.9999999, z: 1}
+      position: {x: -0.0009689944, y: 0, z: -0.00051627436}
+      rotation: {x: -0.66781294, y: 0.059024535, z: 0.74190366, w: -0.010997426}
+      scale: {x: 1.0000021, y: 1.0000001, z: 1.0000057}
       transformModified: 1
-    - name: LUpperLeg
-      position: {x: -4.4703484e-11, y: 0.0010288352, z: -8.940697e-11}
-      rotation: {x: -0.60166734, y: 0.05570455, z: 0.06632295, w: 0.794037}
-      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: LKnee
+      position: {x: -5.960465e-11, y: 0.004435591, z: -4.0046872e-11}
+      rotation: {x: -0.07020222, y: -0.61236143, z: -0.06623137, w: 0.78466463}
+      scale: {x: 1.0000001, y: 1, z: 1.0000001}
       transformModified: 1
-    - name: LLowerLeg
-      position: {x: -4.4703484e-11, y: 0.004039085, z: 5.960465e-11}
-      rotation: {x: -0.05779778, y: 0.0074993647, z: -0.25891465, w: 0.96414024}
-      scale: {x: 1, y: 1.0000001, z: 0.99999994}
-      transformModified: 1
-    - name: LFoot
-      position: {x: 3.4272674e-10, y: 0.0042803516, z: 1.4901162e-10}
-      rotation: {x: 0.47922266, y: -0.48680165, z: 0.5180632, w: 0.5147624}
-      scale: {x: 1, y: 0.9999999, z: 0.99999994}
-      transformModified: 1
-    - name: LFoot_end
-      position: {x: -0, y: 0.002413771, z: 0}
+    - name: LKnee_end
+      position: {x: -0, y: 0.0042353477, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: RHip
-      position: {x: -0, y: -0.000008175448, z: -0.00003662366}
-      rotation: {x: -0.56845653, y: -0.43122974, z: -0.45344648, w: 0.5341202}
-      scale: {x: 0.99999994, y: 1, z: 1}
+      position: {x: 0.0009621314, y: 0, z: -0.00051627436}
+      rotation: {x: 0.54681337, y: 0.060423803, z: 0.83507067, w: 0.0010554497}
+      scale: {x: 1.0000049, y: 1.0000002, z: 1.0000124}
       transformModified: 1
-    - name: RUpperLeg
-      position: {x: 1.0430813e-10, y: 0.0010736408, z: 4.8428775e-11}
-      rotation: {x: -0.63138044, y: -0.061728317, z: -0.06635128, w: 0.77015966}
-      scale: {x: 1.0000001, y: 0.9999999, z: 0.9999999}
+    - name: RKnee
+      position: {x: 2.6077033e-11, y: 0.0044360263, z: 1.15484004e-10}
+      rotation: {x: -0.09762891, y: 0.48559782, z: 0.06387421, w: 0.8663622}
+      scale: {x: 1.0000001, y: 1, z: 0.99999994}
       transformModified: 1
-    - name: RLowerLEg
-      position: {x: -8.940697e-11, y: 0.00423095, z: -4.4703484e-11}
-      rotation: {x: -0.04209625, y: -0.010185856, z: 0.2959541, w: 0.95421976}
-      scale: {x: 0.99999994, y: 0.9999999, z: 1}
-      transformModified: 1
-    - name: RFoot
-      position: {x: -0.000000001013279, y: 0.0040314994, z: 5.960465e-11}
-      rotation: {x: 0.47722706, y: 0.4812409, z: -0.52473634, w: 0.5150857}
-      scale: {x: 1.0000001, y: 1.0000001, z: 1}
-      transformModified: 1
-    - name: RFoot_end
-      position: {x: -0, y: 0.002413771, z: 0}
+    - name: RKnee_end
+      position: {x: -0, y: 0.004234084, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: Spine
-      position: {x: -0, y: 0.0024519619, z: 2.9802324e-11}
-      rotation: {x: -0.18040022, y: 0, z: -0, w: 0.9835933}
+      position: {x: -0, y: 0.002, z: 0}
+      rotation: {x: -0.08461228, y: 0, z: -0, w: 0.99641395}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
-    - name: Head
-      position: {x: -0, y: 0.0040073483, z: 5.960465e-11}
-      rotation: {x: 0.1353242, y: -0.00000011811268, z: -0.000000016131896, w: 0.9908014}
-      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: Hean
+      position: {x: -0, y: 0.004811407, z: -5.960465e-11}
+      rotation: {x: 0.1649675, y: 0, z: -0, w: 0.98629904}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
       transformModified: 1
-    - name: Head_end
-      position: {x: -0, y: 0.0044676154, z: 0}
+    - name: Hean_end
+      position: {x: -0, y: 0.00502922, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: LShoulder
-      position: {x: -0, y: 0.0040073483, z: 5.960465e-11}
-      rotation: {x: -0.5846851, y: 0.30640906, z: 0.6155417, w: 0.4305407}
-      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000001}
+      position: {x: -0, y: 0.004811407, z: -5.960465e-11}
+      rotation: {x: -0.47266123, y: 0.44267693, z: 0.56277066, w: 0.5137292}
+      scale: {x: 1.0000001, y: 1, z: 1}
       transformModified: 1
-    - name: LUpperArm
-      position: {x: 1.6391279e-10, y: 0.001649205, z: -4.0757006e-10}
-      rotation: {x: -0.34326556, y: 0.22600704, z: -0.12846115, w: 0.9025449}
-      scale: {x: 1, y: 1, z: 0.99999994}
-      transformModified: 1
-    - name: LLowerArm
-      position: {x: -2.9802324e-11, y: 0.0031530133, z: -1.192093e-10}
-      rotation: {x: -0.24453527, y: 0.000107698026, z: -0.0018920613, w: 0.9696385}
-      scale: {x: 0.99999994, y: 0.99999994, z: 1}
-      transformModified: 1
-    - name: LHand
-      position: {x: 3.7252906e-11, y: 0.0029244295, z: 1.192093e-10}
-      rotation: {x: -0.15747856, y: 0.0010130414, z: -0.001397426, w: 0.98752093}
+    - name: LElbow
+      position: {x: -0, y: 0.0047119493, z: 7.473864e-11}
+      rotation: {x: 0.012254797, y: 0.0011565366, z: -0.012711789, w: 0.9998435}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
-    - name: LHand_end
-      position: {x: -0, y: 0.0007580098, z: 0}
+    - name: LElbow_end
+      position: {x: -0, y: 0.0037238535, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: RShoulder
-      position: {x: -0, y: 0.0040073483, z: 5.960465e-11}
-      rotation: {x: 0.57730436, y: 0.31923762, z: 0.6069909, w: -0.44313556}
-      scale: {x: 0.9999999, y: 0.99999994, z: 1}
+      position: {x: -0, y: 0.004811407, z: -5.960465e-11}
+      rotation: {x: 0.518054, y: 0.46357635, z: 0.5174697, w: -0.49894097}
+      scale: {x: 0.99999994, y: 1, z: 1}
       transformModified: 1
-    - name: RUpperArm
-      position: {x: -7.450581e-12, y: 0.0016423443, z: -3.6538403e-10}
-      rotation: {x: -0.38041702, y: -0.21370164, z: 0.120074, w: 0.89173806}
-      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: RElbow
+      position: {x: 9.685755e-11, y: 0.004706922, z: -1.192093e-10}
+      rotation: {x: 0.0065350104, y: 0.15998302, z: 0.007140939, w: 0.98707235}
+      scale: {x: 1, y: 1.0000001, z: 1}
       transformModified: 1
-    - name: RLowerArm
-      position: {x: 1.0430813e-10, y: 0.0028908658, z: 4.1723253e-10}
-      rotation: {x: -0.1849103, y: -0.0000000143334375, z: 0.000000070082784, w: 0.9827554}
-      scale: {x: 0.99999994, y: 0.99999976, z: 0.99999976}
-      transformModified: 1
-    - name: RHand
-      position: {x: 1.937151e-10, y: 0.0028639021, z: 1.6763807e-10}
-      rotation: {x: -0.10747101, y: -0.000000016158907, z: 0.00000004025089, w: 0.9942082}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
-      transformModified: 1
-    - name: RHand_end
-      position: {x: -0, y: 0.0010141829, z: 0}
+    - name: RElbow_end
+      position: {x: -0, y: 0.0037258656, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RArmControl
-      position: {x: 0.0023800842, y: 0.0006789262, z: -0.0010075164}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 0.99999994, z: 1}
-      transformModified: 1
-    - name: RArmControl_end
-      position: {x: -0, y: 0.0028839475, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RArmPole
-      position: {x: 0.004646, y: -0.0047889943, z: 0.005990375}
-      rotation: {x: 0.7071068, y: -0.00000008430681, z: 0.0002521225, w: 0.70710677}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RArmPole_end
-      position: {x: -0, y: 0.0020000003, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RLegControl
-      position: {x: 0.0015782042, y: 0.003455481, z: -0.008516346}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 0.99999994, z: 1}
-      transformModified: 1
-    - name: RLegControl_end
-      position: {x: -0, y: 0.0028839475, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RLegPole
-      position: {x: 0.0008689225, y: -0.0039326325, z: -0.0012669831}
-      rotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RLegPole_end
-      position: {x: -0, y: 0.002, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: Bob
-      position: {x: -0, y: -0.0020001412, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-      scale: {x: 89.10525, y: 89.10525, z: 89.10525}
       transformModified: 1
     armTwist: 0.5
     foreArmTwist: 0.5
