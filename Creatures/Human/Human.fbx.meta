@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 74a0498e5b07b47e29fb7d525939d4ed
-timeCreated: 1478881951
+timeCreated: 1478984830
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -614,37 +614,7 @@ ModelImporter:
       transformModified: 1
     - name: Bone
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: LHip
-      position: {x: -0.0009689944, y: 0, z: -0.00051627436}
-      rotation: {x: -0.66781294, y: 0.059024535, z: 0.74190366, w: -0.010997426}
-      scale: {x: 1.0000021, y: 1.0000001, z: 1.0000057}
-      transformModified: 1
-    - name: LKnee
-      position: {x: -5.960465e-11, y: 0.004435591, z: -4.0046872e-11}
-      rotation: {x: -0.07020222, y: -0.61236143, z: -0.06623137, w: 0.78466463}
-      scale: {x: 1.0000001, y: 1, z: 1.0000001}
-      transformModified: 1
-    - name: LKnee_end
-      position: {x: -0, y: 0.0042353477, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-      transformModified: 1
-    - name: RHip
-      position: {x: 0.0009621314, y: 0, z: -0.00051627436}
-      rotation: {x: 0.54681337, y: 0.060423803, z: 0.83507067, w: 0.0010554497}
-      scale: {x: 1.0000049, y: 1.0000002, z: 1.0000124}
-      transformModified: 1
-    - name: RKnee
-      position: {x: 2.6077033e-11, y: 0.0044360263, z: 1.15484004e-10}
-      rotation: {x: -0.09762891, y: 0.48559782, z: 0.06387421, w: 0.8663622}
-      scale: {x: 1.0000001, y: 1, z: 0.99999994}
-      transformModified: 1
-    - name: RKnee_end
-      position: {x: -0, y: 0.004234084, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
+      rotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: Spine
@@ -654,7 +624,7 @@ ModelImporter:
       transformModified: 1
     - name: Hean
       position: {x: -0, y: 0.004811407, z: -5.960465e-11}
-      rotation: {x: 0.1649675, y: 0, z: -0, w: 0.98629904}
+      rotation: {x: 0.1649675, y: -0, z: -0, w: 0.98629904}
       scale: {x: 1, y: 0.99999994, z: 0.99999994}
       transformModified: 1
     - name: Hean_end
@@ -664,13 +634,13 @@ ModelImporter:
       transformModified: 1
     - name: LShoulder
       position: {x: -0, y: 0.004811407, z: -5.960465e-11}
-      rotation: {x: -0.47266123, y: 0.44267693, z: 0.56277066, w: 0.5137292}
-      scale: {x: 1.0000001, y: 1, z: 1}
+      rotation: {x: -0.6775169, y: 0.099662095, z: 0.70359963, w: 0.1896996}
+      scale: {x: 1, y: 1.0000001, z: 1}
       transformModified: 1
     - name: LElbow
-      position: {x: -0, y: 0.0047119493, z: 7.473864e-11}
-      rotation: {x: 0.012254797, y: 0.0011565366, z: -0.012711789, w: 0.9998435}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -6.705523e-11, y: 0.0047119493, z: -2.4866315e-10}
+      rotation: {x: 0.011044001, y: -0.0944458, z: -0.22292961, w: 0.97018576}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
       transformModified: 1
     - name: LElbow_end
       position: {x: -0, y: 0.0037238535, z: 0}
@@ -679,16 +649,46 @@ ModelImporter:
       transformModified: 1
     - name: RShoulder
       position: {x: -0, y: 0.004811407, z: -5.960465e-11}
-      rotation: {x: 0.518054, y: 0.46357635, z: 0.5174697, w: -0.49894097}
-      scale: {x: 0.99999994, y: 1, z: 1}
+      rotation: {x: 0.7256049, y: 0.085416615, z: 0.6505739, w: -0.20725627}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
       transformModified: 1
     - name: RElbow
-      position: {x: 9.685755e-11, y: 0.004706922, z: -1.192093e-10}
-      rotation: {x: 0.0065350104, y: 0.15998302, z: 0.007140939, w: 0.98707235}
-      scale: {x: 1, y: 1.0000001, z: 1}
+      position: {x: 7.450581e-12, y: 0.004706922, z: -4.4703484e-11}
+      rotation: {x: 0.008373104, y: -0.055203665, z: -0.44644797, w: 0.89306587}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
       transformModified: 1
     - name: RElbow_end
       position: {x: -0, y: 0.0037258656, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: LHip
+      position: {x: -0.0009689944, y: 0, z: -0.00051627436}
+      rotation: {x: -0.6622178, y: 0.14347549, z: 0.7302658, w: -0.08714568}
+      scale: {x: 1.0000023, y: 1.0000001, z: 1.0000056}
+      transformModified: 1
+    - name: LKnee
+      position: {x: -2.9802324e-11, y: 0.004435591, z: 7.450581e-11}
+      rotation: {x: -0.070202924, y: -0.6123614, z: -0.06623192, w: 0.78466445}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+      transformModified: 1
+    - name: LKnee_end
+      position: {x: -0, y: 0.0042353477, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: RHip
+      position: {x: 0.0009621314, y: 0, z: -0.00051627436}
+      rotation: {x: 0.53655034, y: -0.10348406, z: 0.83081806, w: -0.105575934}
+      scale: {x: 1.0000032, y: 1.0000024, z: 1.0000118}
+      transformModified: 1
+    - name: RKnee
+      position: {x: 5.960465e-11, y: 0.0044360263, z: -7.450581e-11}
+      rotation: {x: -0.09762892, y: 0.4855977, z: 0.063874215, w: 0.8663623}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: RKnee_end
+      position: {x: -0, y: 0.004234084, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
