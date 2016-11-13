@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Human : MonoBehaviour {
 
@@ -11,10 +12,13 @@ public class Human : MonoBehaviour {
   public Animator _Animator;
 
   public HingeJoint _Spine;
+  public Rigidbody _SpineRigidbody;
   public HingeJoint _LShoulder;
   public Rigidbody _LShoulderRigidbody;
   public HingeJoint _RShoulder;
   public Rigidbody _RShoulderRigidbody;
+
+  public bool _Assist;
 
   public float _multipl;
   public float _angle;
@@ -30,21 +34,38 @@ public class Human : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+    GetComponent<CapsuleCollider> ().enabled = _Assist;
 
+    if(_controls.getValue("Toggle Assist") != 0) {
+      _Assist = !_Assist;
+    }
+
+    if(_controls.getValue("Restore") != 0) {
+      int scene = SceneManager.GetActiveScene().buildIndex;
+      SceneManager.LoadScene(scene, LoadSceneMode.Single);
+    }
 	}
 
   void FixedUpdate ()
 	{
     Move ();
-    Stabilisation ();
 	}
 
   void Move () {
     if(_controls.getValue("Forward") > 0.0f) {
       _Animator.SetBool("Forward", true);
-      _PelvisRigidbody.AddForce(_PelvisTransform.up * -50 * _controls.getValue("Forward"));
+      if (_Assist) {
+        _PelvisRigidbody.AddForce(_PelvisTransform.up * -50 * _controls.getValue("Forward"));
+      }
     } else {
       _Animator.SetBool("Forward", false);
+    }
+
+    if(_controls.getValue("Jump") > 0.0f) {
+      _Animator.SetBool("Jump", true);
+      _PelvisRigidbody.AddForce(Vector3.up * 200);
+    } else {
+      _Animator.SetBool("Jump", false);
     }
 
     if(_controls.getValue("Turn") != 0.0f) {
@@ -52,7 +73,12 @@ public class Human : MonoBehaviour {
     }
   }
 
-  void Stabilisation () {
-
+  void Restore (Transform t) {
+    foreach (Transform child in t)
+    {
+      HingeJointTarget hj = child.GetComponent<HingeJointTarget> ();
+      if (hj != null) { hj.Restore(); }
+      Restore(child);
+    }
   }
 }
