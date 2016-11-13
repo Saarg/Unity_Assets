@@ -9,9 +9,12 @@ public class Human : MonoBehaviour {
   private Transform _PelvisTransform;
   private Rigidbody _PelvisRigidbody;
 
+  public Vector3 _Forward;
+
   public Animator _Animator;
 
   public HingeJoint _Spine;
+  public Transform _SpineTransform;
   public Rigidbody _SpineRigidbody;
   public HingeJoint _LShoulder;
   public Rigidbody _LShoulderRigidbody;
@@ -28,6 +31,8 @@ public class Human : MonoBehaviour {
 	void Start () {
     _controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
 
+    _Forward = new Vector3(0, 0, 1);
+
     _PelvisTransform = transform.parent;
     _PelvisRigidbody = _PelvisTransform.GetComponent<Rigidbody> ();
 	}
@@ -41,21 +46,23 @@ public class Human : MonoBehaviour {
     }
 
     if(_controls.getValue("Restore") != 0) {
-      int scene = SceneManager.GetActiveScene().buildIndex;
-      SceneManager.LoadScene(scene, LoadSceneMode.Single);
+      Restore(transform.parent);
+      //int scene = SceneManager.GetActiveScene().buildIndex;
+      //SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 	}
 
   void FixedUpdate ()
 	{
     Move ();
+    Stabilize ();
 	}
 
   void Move () {
     if(_controls.getValue("Forward") > 0.0f) {
       _Animator.SetBool("Forward", true);
+      _PelvisRigidbody.AddForce(_Forward * 500 * _controls.getValue("Forward"));
       if (_Assist) {
-        _PelvisRigidbody.AddForce(_PelvisTransform.up * -50 * _controls.getValue("Forward"));
       }
     } else {
       _Animator.SetBool("Forward", false);
@@ -63,13 +70,23 @@ public class Human : MonoBehaviour {
 
     if(_controls.getValue("Jump") > 0.0f) {
       _Animator.SetBool("Jump", true);
-      _PelvisRigidbody.AddForce(Vector3.up * 200);
+      _PelvisRigidbody.AddForce(Vector3.up * 5000);
     } else {
       _Animator.SetBool("Jump", false);
     }
 
     if(_controls.getValue("Turn") != 0.0f) {
-      _PelvisRigidbody.transform.Rotate(new Vector3(0, 0, _controls.getValue("Turn") * 50 * Time.deltaTime));
+      _Forward = Quaternion.Euler(0, _controls.getValue("Turn") * 50 * Time.deltaTime, 0) * _Forward;
+    }
+  }
+
+  void Stabilize () {
+    Debug.DrawLine(_PelvisRigidbody.position, _PelvisRigidbody.position + _Forward, Color.red);
+    Debug.DrawLine(_PelvisRigidbody.position, _PelvisRigidbody.position + _PelvisTransform.forward, Color.red);
+
+    if (_SpineRigidbody.GetComponent<HingeJoint> ().useSpring) {
+      _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + Vector3.up, -_Forward);
+      //_PelvisRigidbody.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_PelvisRigidbody.position + Vector3.up, _Forward), 1.0f);
     }
   }
 
@@ -80,5 +97,12 @@ public class Human : MonoBehaviour {
       if (hj != null) { hj.Restore(); }
       Restore(child);
     }
+  }
+
+  private float AngleBetweenVector2(Vector2 vec1, Vector2 vec2)
+  {
+    Vector2 diference = vec2 - vec1;
+    float sign = (vec2.y < vec1.y)? -1.0f : 1.0f;
+    return Vector2.Angle(Vector2.right, diference) * sign;
   }
 }
