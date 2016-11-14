@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class Human : MonoBehaviour {
 
@@ -23,9 +22,9 @@ public class Human : MonoBehaviour {
 
   public bool _Assist;
 
-  public float _multipl;
-  public float _angle;
-  public float _force;
+  [Range(0, 500)]public float _multipl;
+  [Range(-180, 180)]public float _angle;
+  [Range(0, 500)]public float _force;
 
 	// Use this for initialization
 	void Start () {
@@ -88,7 +87,15 @@ public class Human : MonoBehaviour {
 
     if (_SpineRigidbody.GetComponent<HingeJoint> ().useSpring) {
       _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + Vector3.up, -_Forward);
-      //_PelvisRigidbody.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_PelvisRigidbody.position + Vector3.up, _Forward), 1.0f);
+
+      float dragXZ = 0.5f; // drag value (1 is stop and 0 is no drag)
+      Vector3 vel;
+      Vector3 locVel;
+
+      locVel = _SpineTransform.InverseTransformDirection(_SpineRigidbody.velocity);
+      locVel.x *= 1.0f - dragXZ;
+      locVel.z *= 1.0f - dragXZ;
+      _SpineRigidbody.velocity = _SpineTransform.TransformDirection(locVel);
     }
   }
 
