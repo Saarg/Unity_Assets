@@ -75,11 +75,15 @@ public class HingeJointTarget : MonoBehaviour {
     }
   }
 
+  public void Ragdoll () {
+    GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+    hj.useSpring = false;
+  }
+
   void OnCollisionEnter(Collision collision) {
     if (collision.relativeVelocity.magnitude > 10 && hj.useSpring) {
       Debug.Log(name + " received collision velocity: " + collision.relativeVelocity.magnitude);
-      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-      hj.useSpring = false;
+      Ragdoll();
     }
   }
 }

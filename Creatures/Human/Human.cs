@@ -47,8 +47,10 @@ public class Human : MonoBehaviour {
 
     if(_controls.getValue("Restore") != 0) {
       Restore(transform.parent);
-      //int scene = SceneManager.GetActiveScene().buildIndex;
-      //SceneManager.LoadScene(scene, LoadSceneMode.Single);
+    }
+
+    if(_controls.getValue("Ragdoll") != 0) {
+      Ragdoll(transform.parent);
     }
 	}
 
@@ -96,6 +98,15 @@ public class Human : MonoBehaviour {
       HingeJointTarget hj = child.GetComponent<HingeJointTarget> ();
       if (hj != null) { hj.Restore(); }
       Restore(child);
+    }
+  }
+
+  void Ragdoll (Transform t) {
+    foreach (Transform child in t)
+    {
+      HingeJointTarget hj = child.GetComponent<HingeJointTarget> ();
+      if (hj != null) { hj.Ragdoll(); }
+      Ragdoll(child);
     }
   }
 
