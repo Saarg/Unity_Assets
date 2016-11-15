@@ -3,6 +3,8 @@ using System.Collections;
 
 public class HingeJointTarget : MonoBehaviour {
 
+  private Color _Color = Color.green;
+
   public HingeJoint hj;
   public Transform target;
   [Tooltip("Only use one of these values at a time. Toggle invert if the rotation is backwards.")]
@@ -18,6 +20,11 @@ public class HingeJointTarget : MonoBehaviour {
 
   void Update ()
   {
+    foreach (Transform child in target)
+    {
+      Debug.DrawLine(child.parent.position, child.position, _Color);
+    }
+
     if (hj != null)
     {
       if (x)
@@ -68,20 +75,21 @@ public class HingeJointTarget : MonoBehaviour {
   }
 
   public void Restore () {
-    if (!hj.useSpring) {
-      Debug.Log("Restoring " + name);
-      GetComponent<Rigidbody>().constraints = _Constraints;
-      hj.useSpring = true;
-    }
+    _Color = Color.green;
+
+    GetComponent<Rigidbody>().constraints = _Constraints;
+    hj.useSpring = true;
   }
 
   public void Ragdoll () {
+    _Color = Color.red;
+
     GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
     hj.useSpring = false;
   }
 
   void OnCollisionEnter(Collision collision) {
-    if (collision.relativeVelocity.magnitude > 10 && hj.useSpring) {
+    if (collision.relativeVelocity.magnitude > 15 && hj.useSpring) {
       Debug.Log(name + " received collision velocity: " + collision.relativeVelocity.magnitude);
       Ragdoll();
     }

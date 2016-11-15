@@ -4,6 +4,8 @@ public class DrawBones : MonoBehaviour
 {
   private SkinnedMeshRenderer m_Renderer;
 
+  public Color _Color = Color.green;
+
   void Start()
   {
 
@@ -17,7 +19,7 @@ public class DrawBones : MonoBehaviour
   void draw (Transform t) {
     foreach (Transform child in t)
     {
-      Debug.DrawLine(child.parent.position, child.position, Color.red);
+      Debug.DrawLine(child.parent.position, child.position, _Color);
       draw(child);
     }
   }

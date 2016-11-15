@@ -26,6 +26,9 @@ public class Human : MonoBehaviour {
   [Range(-180, 180)]public float _angle;
   [Range(0, 500)]public float _force;
 
+  private float _JumpTimer = 0.0f;
+  public float _JumpDelay = 0.5f;
+
 	// Use this for initialization
 	void Start () {
     _controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
@@ -60,18 +63,18 @@ public class Human : MonoBehaviour {
 	}
 
   void Move () {
+    _JumpTimer += Time.deltaTime;
     if(_controls.getValue("Forward") > 0.0f) {
       _Animator.SetBool("Forward", true);
-      _PelvisRigidbody.AddForce(_Forward * 500 * _controls.getValue("Forward"));
-      if (_Assist) {
-      }
+      _PelvisRigidbody.AddForce(_Forward * 400 * _controls.getValue("Forward"));
     } else {
       _Animator.SetBool("Forward", false);
     }
 
-    if(_controls.getValue("Jump") > 0.0f) {
+    if(_controls.getValue("Jump") > 0.0f && _JumpTimer >= _JumpDelay) {
+      _JumpTimer = 0.0f;
       _Animator.SetBool("Jump", true);
-      _PelvisRigidbody.AddForce(Vector3.up * 5000);
+      _PelvisRigidbody.AddForce(Vector3.up * 30000);
     } else {
       _Animator.SetBool("Jump", false);
     }
@@ -82,9 +85,6 @@ public class Human : MonoBehaviour {
   }
 
   void Stabilize () {
-    Debug.DrawLine(_PelvisRigidbody.position, _PelvisRigidbody.position + _Forward, Color.red);
-    Debug.DrawLine(_PelvisRigidbody.position, _PelvisRigidbody.position + _PelvisTransform.forward, Color.red);
-
     if (_SpineRigidbody.GetComponent<HingeJoint> ().useSpring) {
       _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + Vector3.up, -_Forward);
 
