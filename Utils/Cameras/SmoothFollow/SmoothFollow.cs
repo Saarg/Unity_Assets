@@ -7,8 +7,10 @@ public class SmoothFollow : MonoBehaviour {
 
   public Transform _Target;
 
-  [Range(0.0f, 1.0f)] public float _AngularSpeed = 0.5f;
-  [Range(0.0f, 1.0f)] public float _LinearSpeed = 0.5f;
+  [Range(0.0f, 0.5f)] public float _AngularSpeed = 0.1f;
+  [Range(0.0f, 0.5f)] public float _LinearSpeed = 0.1f;
+
+  [Range(0.0f, 5.0f)] public float _YStabilisation = 3.0f;
 
   public Vector3 _Offset;
 
@@ -36,7 +38,11 @@ public class SmoothFollow : MonoBehaviour {
 	{
     Vector3 decal = _Offset.x * _Target.forward + _Offset.z * _Target.right + _Offset.y * Vector3.up;
 
-    decal.y = Mathf.Abs(decal.y);
+    if(Mathf.Abs(_Camera.transform.position.y - (_Target.position.y + decal.y)) > 1*_YStabilisation-_LinearSpeed*_YStabilisation)
+      decal.y = Mathf.Abs(decal.y);
+    else {
+      decal.y = _Camera.transform.position.y - _Target.position.y;
+    }
 
     _Camera.transform.position = Vector3.Lerp(_Camera.transform.position, _Target.position + decal, _LinearSpeed);
 
