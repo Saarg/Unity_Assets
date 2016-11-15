@@ -20,6 +20,11 @@ public class Human : MonoBehaviour {
   public HingeJoint _RShoulder;
   public Rigidbody _RShoulderRigidbody;
 
+  public HingeJoint _LKnee;
+  public Rigidbody _LKneeRigidbody;
+  public HingeJoint _RKnee;
+  public Rigidbody _RKneeRigidbody;
+
   public bool _Assist;
 
   [Range(0, 500)]public float _multipl;
@@ -37,6 +42,8 @@ public class Human : MonoBehaviour {
 
     _PelvisTransform = transform.parent;
     _PelvisRigidbody = _PelvisTransform.GetComponent<Rigidbody> ();
+
+    SetUpCollision(_PelvisTransform);
 	}
 
 	// Update is called once per frame
@@ -66,7 +73,7 @@ public class Human : MonoBehaviour {
     _JumpTimer += Time.deltaTime;
     if(_controls.getValue("Forward") > 0.0f) {
       _Animator.SetBool("Forward", true);
-      _PelvisRigidbody.AddForce(_Forward * 400 * _controls.getValue("Forward"));
+      _PelvisRigidbody.AddForce(_Forward * 1000 * _controls.getValue("Forward"));
     } else {
       _Animator.SetBool("Forward", false);
     }
@@ -86,6 +93,12 @@ public class Human : MonoBehaviour {
 
   void Stabilize () {
     if (_SpineRigidbody.GetComponent<HingeJoint> ().useSpring) {
+      if(_LKnee.useSpring || _RKnee.useSpring) {
+        _SpineRigidbody.GetComponent<WheelCollider> ().enabled = true;
+      } else {
+        _SpineRigidbody.GetComponent<WheelCollider> ().enabled = false;
+      }
+
       _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + Vector3.up, -_Forward);
 
       float dragXZ = 0.5f; // drag value (1 is stop and 0 is no drag)
@@ -96,6 +109,8 @@ public class Human : MonoBehaviour {
       locVel.x *= 1.0f - dragXZ;
       locVel.z *= 1.0f - dragXZ;
       _SpineRigidbody.velocity = _SpineTransform.TransformDirection(locVel);
+    } else {
+      _SpineRigidbody.GetComponent<WheelCollider> ().enabled = false;
     }
   }
 
@@ -114,6 +129,17 @@ public class Human : MonoBehaviour {
       HingeJointTarget hj = child.GetComponent<HingeJointTarget> ();
       if (hj != null) { hj.Ragdoll(); }
       Ragdoll(child);
+    }
+  }
+
+  void SetUpCollision (Transform t) {
+    foreach (Transform child in t)
+    {
+      Debug.Log(child.name);
+      if(child.GetComponent<Collider>()) {
+        Physics.IgnoreCollision(child.GetComponent<Collider>(), _SpineTransform.GetComponent<WheelCollider>());
+      }
+      SetUpCollision(child);
     }
   }
 
