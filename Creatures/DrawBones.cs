@@ -6,11 +6,6 @@ public class DrawBones : MonoBehaviour
 
   public Color _Color = Color.green;
 
-  void Start()
-  {
-
-  }
-
   void LateUpdate()
   {
     draw(transform);
