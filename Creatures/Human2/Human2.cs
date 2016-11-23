@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class Human2 : MonoBehaviour {
 
+  private Rigidbody _PelvisRigidbody;
+  private Rigidbody _SpineRigidbody;
+
   public List<ConfigurableJoint> _Joints = new List<ConfigurableJoint>();
   public JointDrive _JointDrive;
   public int positionSpring = 1000;
@@ -17,10 +20,31 @@ public class Human2 : MonoBehaviour {
     _JointDrive.maximumForce = maximumForce;
 
     LoadJoints(transform);
+
+    _PelvisRigidbody = GetComponent<Rigidbody> ();
+    foreach (Transform child in transform)
+    {
+      if(child.name == "Spine") {
+        _SpineRigidbody = child.GetComponent<Rigidbody> ();
+      }
+    }
 	}
 
 	// Update is called once per frame
 	void Update () {
+    _SpineRigidbody.transform.LookAt(_SpineRigidbody.position + Vector3.forward, Vector3.up);
+
+    float dragXZ = 0.5f; // drag value (1 is stop and 0 is no drag)
+    Vector3 vel;
+    Vector3 locVel;
+
+    locVel = _SpineRigidbody.transform.InverseTransformDirection(_SpineRigidbody.velocity);
+    locVel.x *= 1.0f - dragXZ;
+    locVel.z *= 1.0f - dragXZ;
+    _SpineRigidbody.velocity = _SpineRigidbody.transform.TransformDirection(locVel);
+	}
+
+  void FixedUpdate ()	{
 
 	}
 

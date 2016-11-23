@@ -26,13 +26,7 @@ public class ConfigJointTarget : MonoBehaviour {
 		// Transform into world space
 		Quaternion resultRotation = Quaternion.Inverse (worldToJointSpace);
 
-		// Counter-rotate and apply the new local rotation.
-		// Joint space is the inverse of world space, so we need to invert our value
-		// if (space == Space.World) {
-    //  sultRotation *= _InitRotation * Quaternion.Inverse (_Target.rotation);
-		// } else {
-			resultRotation *= Quaternion.Inverse (_Target.transform.localRotation) * _InitRotation;
-		//}
+		resultRotation *= Quaternion.Inverse (_Target.transform.localRotation) * _InitRotation;
 
 		// Transform back into joint space
 		resultRotation *= worldToJointSpace;
