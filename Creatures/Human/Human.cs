@@ -28,6 +28,7 @@ public class Human : MonoBehaviour {
 
   [Header("Controls settings")]
   public float _TurnSpeed = 50.0f;
+  public float _ForwardSpeed = 2000.0f;
   private Vector3 _Forward;
 
   [Header("Jump settings")]
@@ -52,6 +53,8 @@ public class Human : MonoBehaviour {
     _RKnee = _RKneeRigidbody.GetComponent<HingeJoint> ();
 
     SetUpCollision(_PelvisTransform);
+
+    _JumpTimer = _JumpDelay;
 	}
 
 	// Update is called once per frame
@@ -76,7 +79,7 @@ public class Human : MonoBehaviour {
     if(_controls.getValue("Forward") > 0.0f) {
       _Animator.SetBool("Forward", true);
       if (_Spine.useSpring) {
-        _PelvisRigidbody.AddForce(_Forward * 1000 * _controls.getValue("Forward"));
+        _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed * _controls.getValue("Forward"));
       }
     } else {
       _Animator.SetBool("Forward", false);
@@ -91,19 +94,19 @@ public class Human : MonoBehaviour {
     }
 
     if(_controls.getValue("Turn") != 0.0f) {
-      _Forward = Quaternion.Euler(0, _controls.getValue("Turn") * 50 * Time.deltaTime, 0) * _Forward;
+      _Forward = Quaternion.Euler(0, _controls.getValue("Turn") * _TurnSpeed * Time.deltaTime, 0) * _Forward;
     }
   }
 
   void Stabilize () {
     if (_Spine.useSpring) {
       if(_LHip.useSpring && _LHip.useSpring && (_LKnee.useSpring || _RKnee.useSpring)) {
-        _SpineRigidbody.GetComponent<WheelCollider> ().enabled = true;
+        _SpineRigidbody.GetComponent<BoxCollider> ().enabled = true;
       } else {
-        _SpineRigidbody.GetComponent<WheelCollider> ().enabled = false;
+        _SpineRigidbody.GetComponent<BoxCollider> ().enabled = false;
       }
 
-      _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + Vector3.up, -_Forward);
+      _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + _Forward);
 
       float dragXZ = _Drag; // drag value (1 is stop and 0 is no drag)
       Vector3 vel;
@@ -114,7 +117,7 @@ public class Human : MonoBehaviour {
       locVel.z *= 1.0f - dragXZ;
       _SpineRigidbody.velocity = _SpineTransform.TransformDirection(locVel);
     } else {
-      _SpineRigidbody.GetComponent<WheelCollider> ().enabled = false;
+      _SpineRigidbody.GetComponent<BoxCollider> ().enabled = false;
     }
   }
 
@@ -142,7 +145,7 @@ public class Human : MonoBehaviour {
     {
       Debug.Log(child.name);
       if(child.GetComponent<Collider>()) {
-        Physics.IgnoreCollision(child.GetComponent<Collider>(), _SpineTransform.GetComponent<WheelCollider>());
+        Physics.IgnoreCollision(child.GetComponent<Collider>(), _SpineTransform.GetComponent<BoxCollider>());
       }
       SetUpCollision(child);
     }
