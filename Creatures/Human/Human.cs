@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Human : MonoBehaviour {
 
-  private MultiOSControls _controls;
+  private MultiOSControls _Controls;
 
   public Animator _Animator;
 
@@ -24,12 +24,16 @@ public class Human : MonoBehaviour {
   private HingeJoint _RKnee;
   public Rigidbody _RKneeRigidbody;
 
+  private HingeJoint _Head;
+  public Rigidbody _HeadRigidbody;
+
   [Range(0.0f, 1.0f)]public float _Drag = 0.5f;
 
   [Header("Controls settings")]
   public float _TurnSpeed = 50.0f;
   public float _ForwardSpeed = 2000.0f;
   private Vector3 _Forward;
+  private Vector3 _BallCenter;
 
   [Header("Jump settings")]
   public float _JumpDelay = 0.5f;
@@ -38,32 +42,40 @@ public class Human : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-    _controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
-
+    // Init Control script
+    _Controls = GameObject.Find ("Scripts") ? GameObject.Find ("Scripts").GetComponent<MultiOSControls> () : null;
+    // Init control assistance
     _Forward = new Vector3(0, 0, 1);
+    _BallCenter = GetComponent<SphereCollider> () ? GetComponent<SphereCollider> ().center : new Vector3(0, 0, 0);
 
+    // Load main rigidbodys/joints
     _PelvisTransform = transform.parent;
-    _PelvisRigidbody = _PelvisTransform.GetComponent<Rigidbody> ();
-    _SpineTransform = _SpineRigidbody.transform;
+    _PelvisRigidbody = _PelvisTransform ? _PelvisTransform.GetComponent<Rigidbody> () : null;
+    _SpineTransform = _SpineRigidbody ? _SpineRigidbody.transform : null;
+    _Spine = _SpineTransform ? _SpineTransform.GetComponent<HingeJoint> () : null;
 
-    _Spine = _SpineTransform.GetComponent<HingeJoint> ();
-    _LHip = _LHipRigidbody.GetComponent<HingeJoint> ();
-    _RHip = _RHipRigidbody.GetComponent<HingeJoint> ();
-    _LKnee = _LKneeRigidbody.GetComponent<HingeJoint> ();
-    _RKnee = _RKneeRigidbody.GetComponent<HingeJoint> ();
+    _LHip = _LHipRigidbody ? _LHipRigidbody.GetComponent<HingeJoint> () : null;
+    _RHip = _RHipRigidbody ? _RHipRigidbody.GetComponent<HingeJoint> () : null;
+    _LKnee = _LKneeRigidbody ? _LKneeRigidbody.GetComponent<HingeJoint> () : null;
+    _RKnee = _RKneeRigidbody ? _RKneeRigidbody.GetComponent<HingeJoint> () : null;
 
+    _Head = _HeadRigidbody ? _HeadRigidbody.GetComponent<HingeJoint> () : null;
+
+    // Init collision to avoid breaking your own leg
     SetUpCollision(_PelvisTransform);
 
+    // Init timers
     _JumpTimer = _JumpDelay;
 	}
 
 	// Update is called once per frame
 	void Update () {
-    if(_controls.getValue("Restore") != 0) {
+    // Restore or go full ragdoll
+    if(_Controls.getValue("Restore") != 0 || (_Head && !_Head.useSpring)) {
       Restore(transform.parent);
     }
 
-    if(_controls.getValue("Ragdoll") != 0) {
+    if(_Controls.getValue("Ragdoll") != 0) {
       Ragdoll(transform.parent);
     }
 	}
@@ -75,39 +87,60 @@ public class Human : MonoBehaviour {
 	}
 
   void Move () {
+    // Update timer
     _JumpTimer += Time.deltaTime;
-    if(_controls.getValue("Forward") > 0.0f) {
+
+    // Handle forward
+    if(_Controls.getValue("Forward") > 0.0f) {
       _Animator.SetBool("Forward", true);
+
+      // Assistance depending on damages
       if (_Spine.useSpring) {
-        _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed * _controls.getValue("Forward"));
+        if(!_LKnee.useSpring && !_RKnee.useSpring) {
+          _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed/2 * _Controls.getValue("Forward"));
+        } else {
+          _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed * _Controls.getValue("Forward"));
+        }
       }
     } else {
       _Animator.SetBool("Forward", false);
     }
 
-    if(_controls.getValue("Jump") > 0.0f && _JumpTimer >= _JumpDelay) {
+    // Turn
+    if(_Controls.getValue("Turn") != 0.0f) {
+      _Forward = Quaternion.Euler(0, _Controls.getValue("Turn") * _TurnSpeed * Time.deltaTime, 0) * _Forward;
+    }
+
+    // Jump
+    if(_Controls.getValue("Jump") > 0.0f && _JumpTimer >= _JumpDelay) {
       _JumpTimer = 0.0f;
       _Animator.SetBool("Jump", true);
       _PelvisRigidbody.AddForce(Vector3.up * _JumpForce);
     } else {
       _Animator.SetBool("Jump", false);
     }
-
-    if(_controls.getValue("Turn") != 0.0f) {
-      _Forward = Quaternion.Euler(0, _controls.getValue("Turn") * _TurnSpeed * Time.deltaTime, 0) * _Forward;
-    }
   }
 
   void Stabilize () {
+    // Stabilize if the spine isn't broken
     if (_Spine.useSpring) {
+      // Position ball depending on damages
+      Vector3 center = _BallCenter;
+      if(!_LKnee.useSpring && !_RKnee.useSpring) {
+        center.y /= 2;
+      }
+      GetComponent<SphereCollider> ().center = center;
+      // Enable ball depending on damages
       if(_LHip.useSpring && _LHip.useSpring && (_LKnee.useSpring || _RKnee.useSpring)) {
-        _SpineRigidbody.GetComponent<BoxCollider> ().enabled = true;
+        GetComponent<SphereCollider> ().enabled = true;
       } else {
-        _SpineRigidbody.GetComponent<BoxCollider> ().enabled = false;
+        GetComponent<SphereCollider> ().enabled = false;
       }
 
+      // Pelvis orientatiion
       _PelvisRigidbody.transform.LookAt(_PelvisRigidbody.position + _Forward);
 
+      // Add linear drag to control drift
       float dragXZ = _Drag; // drag value (1 is stop and 0 is no drag)
       Vector3 vel;
       Vector3 locVel;
@@ -117,7 +150,7 @@ public class Human : MonoBehaviour {
       locVel.z *= 1.0f - dragXZ;
       _SpineRigidbody.velocity = _SpineTransform.TransformDirection(locVel);
     } else {
-      _SpineRigidbody.GetComponent<BoxCollider> ().enabled = false;
+      GetComponent<SphereCollider> ().enabled = false;
     }
   }
 
@@ -143,7 +176,6 @@ public class Human : MonoBehaviour {
     Physics.IgnoreCollision(_LKneeRigidbody.GetComponent<Collider>(), _RKneeRigidbody.GetComponent<Collider>());
     foreach (Transform child in t)
     {
-      Debug.Log(child.name);
       if(child.GetComponent<Collider>()) {
         Physics.IgnoreCollision(child.GetComponent<Collider>(), _SpineTransform.GetComponent<BoxCollider>());
       }

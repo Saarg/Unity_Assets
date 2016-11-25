@@ -9,6 +9,7 @@ public class HingeJointTarget : MonoBehaviour {
   public Transform target;
   [Tooltip("Only use one of these values at a time. Toggle invert if the rotation is backwards.")]
   public bool x, y, z, invert;
+  public float _BreakingVel = 15.0f;
 
   public RigidbodyConstraints _Constraints;
 
@@ -89,10 +90,9 @@ public class HingeJointTarget : MonoBehaviour {
   }
 
   void OnCollisionEnter(Collision collision) {
-    float breakingVel = 15;
-    if(collision.gameObject.name == "Terrain" || collision.gameObject == transform.parent.gameObject) { breakingVel += 10; }
+    if(collision.gameObject.name == "Terrain" || collision.gameObject == transform.parent.gameObject) { _BreakingVel += 10; }
 
-    if (collision.relativeVelocity.magnitude > breakingVel && hj.useSpring) {
+    if (collision.relativeVelocity.magnitude > _BreakingVel && hj.useSpring) {
       Debug.Log(name + " received collision velocity: " + collision.relativeVelocity.magnitude + " from " + collision.gameObject.name);
       Ragdoll();
     }
