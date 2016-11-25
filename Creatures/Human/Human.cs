@@ -87,11 +87,11 @@ public class Human : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
     // Restore or go full ragdoll
-    if(_Controls.getValue(_RestoreInput) != 0 || (_Head && !_Head.useSpring)) {
+    if(_Controls.getValue(_RestoreInput) != 0) {
       Restore(transform.parent);
     }
 
-    if(_Controls.getValue(_RagdollInput) != 0) {
+    if(_Controls.getValue(_RagdollInput) != 0 || (_Head && !_Head.useSpring)) {
       Ragdoll(transform.parent);
     }
 	}
