@@ -40,10 +40,26 @@ public class Human : MonoBehaviour {
   private float _JumpTimer = 0.0f;
   public float _JumpForce = 30000;
 
+  [Header("Inputs")]
+  public int _PlayerNumber = 1;
+  public string _ForwardInput = "Forward";
+  public string _TurnInput = "Turn";
+  public string _JumpInput = "Jump";
+  public string _RestoreInput = "Restore";
+  public string _RagdollInput = "Ragdoll";
+
 	// Use this for initialization
 	void Start () {
     // Init Control script
     _Controls = GameObject.Find ("Scripts") ? GameObject.Find ("Scripts").GetComponent<MultiOSControls> () : null;
+
+    // Init inputs
+    _ForwardInput = "Forward" + _PlayerNumber;
+    _TurnInput = "Turn" + _PlayerNumber;
+    _JumpInput = "Jump" + _PlayerNumber;
+    _RestoreInput = "Restore" + _PlayerNumber;
+    _RagdollInput = "Ragdoll" + _PlayerNumber;
+
     // Init control assistance
     _Forward = new Vector3(0, 0, 1);
     _BallCenter = GetComponent<SphereCollider> () ? GetComponent<SphereCollider> ().center : new Vector3(0, 0, 0);
@@ -71,11 +87,11 @@ public class Human : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
     // Restore or go full ragdoll
-    if(_Controls.getValue("Restore") != 0 || (_Head && !_Head.useSpring)) {
+    if(_Controls.getValue(_RestoreInput) != 0 || (_Head && !_Head.useSpring)) {
       Restore(transform.parent);
     }
 
-    if(_Controls.getValue("Ragdoll") != 0) {
+    if(_Controls.getValue(_RagdollInput) != 0) {
       Ragdoll(transform.parent);
     }
 	}
@@ -91,15 +107,15 @@ public class Human : MonoBehaviour {
     _JumpTimer += Time.deltaTime;
 
     // Handle forward
-    if(_Controls.getValue("Forward") > 0.0f) {
+    if(_Controls.getValue(_ForwardInput) > 0.0f) {
       _Animator.SetBool("Forward", true);
 
       // Assistance depending on damages
       if (_Spine.useSpring) {
         if(!_LKnee.useSpring && !_RKnee.useSpring) {
-          _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed/2 * _Controls.getValue("Forward"));
+          _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed/2 * _Controls.getValue(_ForwardInput));
         } else {
-          _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed * _Controls.getValue("Forward"));
+          _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed * _Controls.getValue(_ForwardInput));
         }
       }
     } else {
@@ -107,12 +123,12 @@ public class Human : MonoBehaviour {
     }
 
     // Turn
-    if(_Controls.getValue("Turn") != 0.0f) {
-      _Forward = Quaternion.Euler(0, _Controls.getValue("Turn") * _TurnSpeed * Time.deltaTime, 0) * _Forward;
+    if(_Controls.getValue(_TurnInput) != 0.0f) {
+      _Forward = Quaternion.Euler(0, _Controls.getValue(_TurnInput) * _TurnSpeed * Time.deltaTime, 0) * _Forward;
     }
 
     // Jump
-    if(_Controls.getValue("Jump") > 0.0f && _JumpTimer >= _JumpDelay) {
+    if(_Controls.getValue(_JumpInput) > 0.0f && _JumpTimer >= _JumpDelay) {
       _JumpTimer = 0.0f;
       _Animator.SetBool("Jump", true);
       _PelvisRigidbody.AddForce(Vector3.up * _JumpForce);
