@@ -106,9 +106,9 @@ public class Human : MonoBehaviour {
     // Update timer
     _JumpTimer += Time.deltaTime;
 
-    // Handle forward
-    if(_Controls.getValue(_ForwardInput) > 0.0f) {
-      _Animator.SetBool("Forward", true);
+    // Forward
+    {
+      _Animator.SetFloat("Forward", _Controls.getValue(_ForwardInput));
 
       // Assistance depending on damages
       if (_Spine.useSpring) {
@@ -118,8 +118,6 @@ public class Human : MonoBehaviour {
           _PelvisRigidbody.AddForce(_Forward * _ForwardSpeed * _Controls.getValue(_ForwardInput));
         }
       }
-    } else {
-      _Animator.SetBool("Forward", false);
     }
 
     // Turn
