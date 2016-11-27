@@ -1,0 +1,39 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class StartMenu : MonoBehaviour {
+
+  private MultiOSControls _Controls;
+  public string _MenuKey = "StartMenu";
+
+	// Use this for initialization
+	void Start () {
+    // Init Control script
+    _Controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+	}
+
+	// Update is called once per frame
+	void Update () {
+    if(_Controls.getValue(_MenuKey) == 1) {
+      GetComponent<CanvasGroup> ().alpha = 1;
+      GetComponent<CanvasGroup> ().interactable = true;
+    }
+	}
+
+  public void Resume () {
+    GetComponent<CanvasGroup> ().alpha = 0;
+    GetComponent<CanvasGroup> ().interactable = false;
+  }
+
+  public void StartOptions () {
+
+  }
+
+  public void StartMainMenu () {
+    Application.LoadLevel("Demos/AllDemos/MainMenu");
+  }
+
+  public void Quit () {
+    Application.Quit();
+  }
+}
