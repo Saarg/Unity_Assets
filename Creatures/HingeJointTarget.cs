@@ -90,8 +90,6 @@ public class HingeJointTarget : MonoBehaviour {
   }
 
   void OnCollisionEnter(Collision collision) {
-    if(collision.gameObject.name == "Terrain" || collision.gameObject == transform.parent.gameObject) { _BreakingVel += 10; }
-
     if (collision.relativeVelocity.magnitude > _BreakingVel && hj.useSpring) {
       Debug.Log(name + " received collision velocity: " + collision.relativeVelocity.magnitude + " from " + collision.gameObject.name);
       Ragdoll();
