@@ -5,6 +5,7 @@ public class StartMenu : MonoBehaviour {
 
   private MultiOSControls _Controls;
   public string _MenuKey = "StartMenu";
+  public string _MenuScene = "Demos/AllDemos/MainMenu";
 
 	// Use this for initialization
 	void Start () {
@@ -30,7 +31,7 @@ public class StartMenu : MonoBehaviour {
   }
 
   public void StartMainMenu () {
-    Application.LoadLevel("Demos/AllDemos/MainMenu");
+    Application.LoadLevel(_MenuScene);
   }
 
   public void Quit () {
