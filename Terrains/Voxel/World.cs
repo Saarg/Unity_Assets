@@ -7,13 +7,22 @@ public class World : MonoBehaviour {
   public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
   public GameObject chunkPrefab;
 
-  // Use this for initialization
-  void Start () {
-    for (int x = -2; x < 2; x++)
+  public string worldName = "world";
+
+  public int newChunkX;
+  public int newChunkY;
+  public int newChunkZ;
+
+  public bool genChunk;
+
+  void Start()
+  {
+
+    for (int x = -4; x < 4; x++)
     {
       for (int y = 0; y < 1; y++)
       {
-        for (int z = -2; z < 2; z++)
+        for (int z = -4; z < 4; z++)
         {
           CreateChunk(x * 16, y * 16, z * 16);
         }
@@ -22,13 +31,29 @@ public class World : MonoBehaviour {
   }
 
   // Update is called once per frame
-  void Update () {
+  void Update()
+  {
+    if (genChunk)
+    {
+      genChunk = false;
+      WorldPos chunkPos = new WorldPos(newChunkX, newChunkY, newChunkZ);
+      Chunk chunk = null;
 
+      if (chunks.TryGetValue(chunkPos, out chunk))
+      {
+        Debug.Log("Destroying " + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
+        DestroyChunk(chunkPos.x, chunkPos.y, chunkPos.z);
+      }
+      else
+      {
+        Debug.Log("Creating " + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
+        CreateChunk(chunkPos.x, chunkPos.y, chunkPos.z);
+      }
+    }
   }
 
   public void CreateChunk(int x, int y, int z)
   {
-    //the coordinates of this chunk in the world
     WorldPos worldPos = new WorldPos(x, y, z);
 
     //Instantiate the chunk at the coordinates using the chunk prefab
@@ -37,30 +62,23 @@ public class World : MonoBehaviour {
                                   Quaternion.Euler(Vector3.zero)
                                 ) as GameObject;
 
-    //Get the object's chunk component
     Chunk newChunk = newChunkObject.GetComponent<Chunk>();
 
-    //Assign its values
     newChunk.pos = worldPos;
     newChunk.world = this;
 
     //Add it to the chunks dictionary with the position as the key
     chunks.Add(worldPos, newChunk);
 
-    //Add the following:
     for (int xi = 0; xi < 16; xi++)
     {
       for (int yi = 0; yi < 16; yi++)
       {
         for (int zi = 0; zi < 16; zi++)
         {
-          if (yi < 7)
+          if (yi <= 7)
           {
-            SetBlock(x+xi, y+yi, z+zi, new Block());
-          }
-          else if (yi == 7)
-          {
-            SetBlock(x+xi, y+yi, z+zi, new BlockGrass());
+            SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
           }
           else
           {
@@ -69,6 +87,10 @@ public class World : MonoBehaviour {
         }
       }
     }
+
+    newChunk.SetBlocksUnmodified();
+
+    Serialization.Load(newChunk);
   }
 
   public void DestroyChunk(int x, int y, int z)
@@ -76,6 +98,7 @@ public class World : MonoBehaviour {
     Chunk chunk = null;
     if (chunks.TryGetValue(new WorldPos(x, y, z), out chunk))
     {
+      Serialization.SaveChunk(chunk);
       Object.Destroy(chunk.gameObject);
       chunks.Remove(new WorldPos(x, y, z));
     }
@@ -85,10 +108,12 @@ public class World : MonoBehaviour {
   {
     WorldPos pos = new WorldPos();
     float multiple = Chunk.chunkSize;
-    pos.x = Mathf.FloorToInt(x / multiple ) * Chunk.chunkSize;
-    pos.y = Mathf.FloorToInt(y / multiple ) * Chunk.chunkSize;
-    pos.z = Mathf.FloorToInt(z / multiple ) * Chunk.chunkSize;
+    pos.x = Mathf.FloorToInt(x / multiple) * Chunk.chunkSize;
+    pos.y = Mathf.FloorToInt(y / multiple) * Chunk.chunkSize;
+    pos.z = Mathf.FloorToInt(z / multiple) * Chunk.chunkSize;
+
     Chunk containerChunk = null;
+
     chunks.TryGetValue(pos, out containerChunk);
 
     return containerChunk;
@@ -97,11 +122,12 @@ public class World : MonoBehaviour {
   public Block GetBlock(int x, int y, int z)
   {
     Chunk containerChunk = GetChunk(x, y, z);
+
     if (containerChunk != null)
     {
       Block block = containerChunk.GetBlock(
       x - containerChunk.pos.x,
-      y -containerChunk.pos.y,
+      y - containerChunk.pos.y,
       z - containerChunk.pos.z);
 
       return block;
@@ -110,6 +136,7 @@ public class World : MonoBehaviour {
     {
       return new BlockAir();
     }
+
   }
 
   public void SetBlock(int x, int y, int z, Block block)
@@ -121,13 +148,13 @@ public class World : MonoBehaviour {
       chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, block);
       chunk.update = true;
 
-      // needed to update adjacent chunks
       UpdateIfEqual(x - chunk.pos.x, 0, new WorldPos(x - 1, y, z));
       UpdateIfEqual(x - chunk.pos.x, Chunk.chunkSize - 1, new WorldPos(x + 1, y, z));
       UpdateIfEqual(y - chunk.pos.y, 0, new WorldPos(x, y - 1, z));
       UpdateIfEqual(y - chunk.pos.y, Chunk.chunkSize - 1, new WorldPos(x, y + 1, z));
       UpdateIfEqual(z - chunk.pos.z, 0, new WorldPos(x, y, z - 1));
       UpdateIfEqual(z - chunk.pos.z, Chunk.chunkSize - 1, new WorldPos(x, y, z + 1));
+
     }
   }
 

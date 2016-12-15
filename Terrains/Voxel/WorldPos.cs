@@ -1,5 +1,8 @@
 using UnityEngine;
+using System;
 using System.Collections;
+
+[Serializable]
 public struct WorldPos
 {
   public int x, y, z;

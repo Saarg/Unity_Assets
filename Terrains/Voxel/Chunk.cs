@@ -5,25 +5,29 @@ using System.Collections;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
 
-public class Chunk : MonoBehaviour {
-  private Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
+public class Chunk : MonoBehaviour
+{
 
-  public World world;
-  public WorldPos pos;
+  public Block[, ,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
   public static int chunkSize = 16;
   public bool update = true;
 
-  private MeshFilter filter;
-  private MeshCollider coll;
-  //Use this for initialization
-  void Start () {
+  MeshFilter filter;
+  MeshCollider coll;
+
+  public World world;
+  public WorldPos pos;
+
+  void Start()
+  {
     filter = gameObject.GetComponent<MeshFilter>();
     coll = gameObject.GetComponent<MeshCollider>();
   }
 
   //Update is called once per frame
-  void Update () {
+  void Update()
+  {
     if (update)
     {
       update = false;
@@ -33,9 +37,17 @@ public class Chunk : MonoBehaviour {
 
   public Block GetBlock(int x, int y, int z)
   {
-    if(InRange(x) && InRange(y) && InRange(z))
+    if (InRange(x) && InRange(y) && InRange(z))
     return blocks[x, y, z];
     return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
+  }
+
+  public static bool InRange(int index)
+  {
+    if (index < 0 || index >= chunkSize)
+    return false;
+
+    return true;
   }
 
   public void SetBlock(int x, int y, int z, Block block)
@@ -50,18 +62,19 @@ public class Chunk : MonoBehaviour {
     }
   }
 
-  public static bool InRange(int index)
+  public void SetBlocksUnmodified()
   {
-    if (index < 0 || index >= chunkSize)
-    return false;
-
-    return true;
+    foreach (Block block in blocks)
+    {
+      block.changed = false;
+    }
   }
 
-  //Updates the chunk based on its contents
+  // Updates the chunk based on its contents
   void UpdateChunk()
   {
     MeshData meshData = new MeshData();
+
     for (int x = 0; x < chunkSize; x++)
     {
       for (int y = 0; y < chunkSize; y++)
@@ -72,11 +85,12 @@ public class Chunk : MonoBehaviour {
         }
       }
     }
+
     RenderMesh(meshData);
   }
 
-  //Sends the calculated mesh information
-  //to the mesh and collision components
+  // Sends the calculated mesh information
+  // to the mesh and collision components
   void RenderMesh(MeshData meshData)
   {
     filter.mesh.Clear();
@@ -94,4 +108,5 @@ public class Chunk : MonoBehaviour {
 
     coll.sharedMesh = mesh;
   }
+
 }

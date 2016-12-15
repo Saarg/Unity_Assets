@@ -18,8 +18,8 @@ public class Modify : MonoBehaviour
     }
 
     rot= new Vector2(
-    rot.x + Input.GetAxis("mouse x")/3,
-    rot.y + Input.GetAxis("mouse y")/3);
+      rot.x + Input.GetAxis("mouse x")/3,
+      rot.y + Input.GetAxis("mouse y")/3);
 
     transform.localRotation = Quaternion.AngleAxis(rot.x, Vector3.up);
     transform.localRotation *= Quaternion.AngleAxis(rot.y, Vector3.left);
