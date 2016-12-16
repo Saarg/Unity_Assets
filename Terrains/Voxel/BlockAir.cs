@@ -15,4 +15,8 @@ public class BlockAir : Block
   public override bool IsSolid(Block.Direction direction) {
     return false;
   }
+
+  public override bool IsSticky(Block.Direction direction) {
+    return false;
+  }
 }

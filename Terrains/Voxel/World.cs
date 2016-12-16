@@ -62,7 +62,7 @@ public class World : MonoBehaviour {
                                   Quaternion.Euler(Vector3.zero)
                                 ) as GameObject;
 
-    newChunkObject.transform.SetParent(transform); 
+    newChunkObject.transform.SetParent(transform);
 
     Chunk newChunk = newChunkObject.GetComponent<Chunk>();
 
@@ -78,11 +78,11 @@ public class World : MonoBehaviour {
       {
         for (int zi = 0; zi < 16; zi++)
         {
-          if (yi <= Mathf.Sqrt((x + xi)*(x + xi) + (z + zi)*(z + zi))/10 - 1)
+          if (yi <= 2+Mathf.Sqrt((x + xi)*(x + xi) + (z + zi)*(z + zi))/10 - 1)
           {
             SetBlock(x + xi, y + yi, z + zi, new Block());
           }
-          else if (yi <= Mathf.Sqrt((x + xi)*(x + xi) + (z + zi)*(z + zi))/10)
+          else if (yi <= 2+Mathf.Sqrt((x + xi)*(x + xi) + (z + zi)*(z + zi))/10)
           {
             SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
           }

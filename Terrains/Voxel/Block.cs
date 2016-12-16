@@ -10,6 +10,20 @@ public class Block {
   public bool changed = true;
   private const float tileSize = 0.25f;
 
+  private Vector3[] topVertices = new Vector3[4] {
+    new Vector3(-0.5f, +0.5f, +0.5f),
+    new Vector3(+0.5f, +0.5f, +0.5f),
+    new Vector3(+0.5f, +0.5f, -0.5f),
+    new Vector3(-0.5f, +0.5f, -0.5f)
+  };
+
+  private Vector3[] bottomVertices = new Vector3[4] {
+    new Vector3(-0.5f, +0.5f, +0.5f),
+    new Vector3(+0.5f, +0.5f, +0.5f),
+    new Vector3(+0.5f, +0.5f, -0.5f),
+    new Vector3(-0.5f, +0.5f, -0.5f)
+  };
+
   //Base block constructor
   public Block(){
   }
@@ -17,7 +31,22 @@ public class Block {
   public virtual MeshData Blockdata
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
+    topVertices = new Vector3[4] {
+      new Vector3(- 0.5f, + 0.5f, + 0.5f),
+      new Vector3(+ 0.5f, + 0.5f, + 0.5f),
+      new Vector3(+ 0.5f, + 0.5f, - 0.5f),
+      new Vector3(- 0.5f, + 0.5f, - 0.5f)
+    };
+
+    bottomVertices = new Vector3[4] {
+      new Vector3(- 0.5f, - 0.5f, - 0.5f),
+      new Vector3(+ 0.5f, - 0.5f, - 0.5f),
+      new Vector3(+ 0.5f, - 0.5f, + 0.5f),
+      new Vector3(- 0.5f, - 0.5f, + 0.5f)
+    };
+
     meshData.useRenderDataForCol = true;
+
     if (!chunk.GetBlock(x, y + 1, z).IsSolid(Direction.down))
     {
       meshData = FaceDataUp(chunk, x, y, z, meshData);
@@ -55,10 +84,68 @@ public class Block {
   protected virtual MeshData FaceDataUp
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+    Vector3 pos = new Vector3(x, y, z);
+
+    if(!chunk.GetBlock(x, y, z + 1).IsSticky(Direction.south)) {
+      topVertices[0].y -= 0.25f;
+      topVertices[1].y -= 0.25f;
+    } else if(chunk.GetBlock(x, y + 1, z + 1).IsSticky(Direction.south)) {
+      topVertices[0].y += 0.25f;
+      topVertices[1].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x, y, z - 1).IsSticky(Direction.north)) {
+      topVertices[2].y -= 0.25f;
+      topVertices[3].y -= 0.25f;
+    } else if(chunk.GetBlock(x, y + 1, z - 1).IsSticky(Direction.north)) {
+      topVertices[2].y += 0.25f;
+      topVertices[3].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x + 1, y, z).IsSticky(Direction.east)) {
+      topVertices[1].y -= 0.25f;
+      topVertices[2].y -= 0.25f;
+    } else if(chunk.GetBlock(x + 1, y + 1, z).IsSticky(Direction.east)) {
+      topVertices[1].y += 0.25f;
+      topVertices[2].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x - 1, y, z).IsSticky(Direction.west)) {
+      topVertices[0].y -= 0.25f;
+      topVertices[3].y -= 0.25f;
+    } else if(chunk.GetBlock(x - 1, y + 1, z).IsSticky(Direction.west)) {
+      topVertices[0].y += 0.25f;
+      topVertices[3].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x - 1, y, z + 1).IsSticky(Direction.west)) {
+      topVertices[0].y -= 0.25f;
+    } else if(chunk.GetBlock(x - 1, y + 1, z + 1).IsSticky(Direction.west)) {
+      topVertices[0].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x + 1, y, z + 1).IsSticky(Direction.west)) {
+      topVertices[1].y -= 0.25f;
+    } else if(chunk.GetBlock(x + 1, y + 1, z + 1).IsSticky(Direction.west)) {
+      topVertices[1].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x + 1, y, z - 1).IsSticky(Direction.west)) {
+      topVertices[2].y -= 0.25f;
+    } else if(chunk.GetBlock(x + 1, y + 1, z - 1).IsSticky(Direction.west)) {
+      topVertices[2].y += 0.25f;
+    }
+
+    if(!chunk.GetBlock(x - 1, y, z - 1).IsSticky(Direction.west)) {
+      topVertices[3].y -= 0.25f;
+    } else if(chunk.GetBlock(x - 1, y + 1, z - 1).IsSticky(Direction.west)) {
+      topVertices[3].y += 0.25f;
+    }
+
+    meshData.AddVertex(pos + topVertices[0]);
+    meshData.AddVertex(pos + topVertices[1]);
+    meshData.AddVertex(pos + topVertices[2]);
+    meshData.AddVertex(pos + topVertices[3]);
 
     meshData.AddQuadTriangles();
 
@@ -69,10 +156,68 @@ public class Block {
   protected virtual MeshData FaceDataDown
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+    Vector3 pos = new Vector3(x, y, z);
+
+    if(!chunk.GetBlock(x, y, z + 1).IsSticky(Direction.south)) {
+      bottomVertices[2].y += 0.25f;
+      bottomVertices[3].y += 0.25f;
+    } else if(chunk.GetBlock(x, y, z + 1).IsSticky(Direction.south)) {
+      bottomVertices[2].y -= 0.25f;
+      bottomVertices[3].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x, y, z - 1).IsSticky(Direction.north)) {
+      bottomVertices[0].y += 0.25f;
+      bottomVertices[1].y += 0.25f;
+    } else if(chunk.GetBlock(x, y, z - 1).IsSticky(Direction.north)) {
+      bottomVertices[0].y -= 0.25f;
+      bottomVertices[1].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x + 1, y, z).IsSticky(Direction.east)) {
+      bottomVertices[1].y += 0.25f;
+      bottomVertices[2].y += 0.25f;
+    } else if(chunk.GetBlock(x + 1, y, z).IsSticky(Direction.east)) {
+      bottomVertices[1].y -= 0.25f;
+      bottomVertices[2].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x - 1, y, z).IsSticky(Direction.west)) {
+      bottomVertices[0].y += 0.25f;
+      bottomVertices[3].y += 0.25f;
+    } else if(chunk.GetBlock(x - 1, y, z).IsSticky(Direction.west)) {
+      bottomVertices[0].y -= 0.25f;
+      bottomVertices[3].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x - 1, y, z - 1).IsSticky(Direction.west)) {
+      bottomVertices[0].y += 0.25f;
+    } else if(chunk.GetBlock(x - 1, y, z - 1).IsSticky(Direction.west)) {
+      bottomVertices[0].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x + 1, y, z - 1).IsSticky(Direction.west)) {
+      bottomVertices[1].y += 0.25f;
+    } else if(chunk.GetBlock(x + 1, y, z - 1).IsSticky(Direction.west)) {
+      bottomVertices[1].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x + 1, y, z + 1).IsSticky(Direction.west)) {
+      bottomVertices[2].y += 0.25f;
+    } else if(chunk.GetBlock(x + 1, y, z + 1).IsSticky(Direction.west)) {
+      bottomVertices[2].y -= 0.25f;
+    }
+
+    if(!chunk.GetBlock(x - 1, y, z + 1).IsSticky(Direction.west)) {
+      bottomVertices[3].y += 0.25f;
+    } else if(chunk.GetBlock(x - 1, y, z + 1).IsSticky(Direction.west)) {
+      bottomVertices[3].y -= 0.25f;
+    }
+
+    meshData.AddVertex(pos + bottomVertices[0]);
+    meshData.AddVertex(pos + bottomVertices[1]);
+    meshData.AddVertex(pos + bottomVertices[2]);
+    meshData.AddVertex(pos + bottomVertices[3]);
 
     meshData.AddQuadTriangles();
 
@@ -83,10 +228,12 @@ public class Block {
   protected virtual MeshData FaceDataNorth
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+    Vector3 pos = new Vector3(x, y, z);
+
+    meshData.AddVertex(pos + bottomVertices[2]);
+    meshData.AddVertex(pos + topVertices[1]);
+    meshData.AddVertex(pos + topVertices[0]);
+    meshData.AddVertex(pos + bottomVertices[3]);
 
     meshData.AddQuadTriangles();
 
@@ -97,10 +244,12 @@ public class Block {
   protected virtual MeshData FaceDataEast
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+    Vector3 pos = new Vector3(x, y, z);
+
+    meshData.AddVertex(pos + bottomVertices[1]);
+    meshData.AddVertex(pos + topVertices[2]);
+    meshData.AddVertex(pos + topVertices[1]);
+    meshData.AddVertex(pos + bottomVertices[2]);
 
     meshData.AddQuadTriangles();
 
@@ -111,10 +260,12 @@ public class Block {
   protected virtual MeshData FaceDataSouth
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+    Vector3 pos = new Vector3(x, y, z);
+
+    meshData.AddVertex(pos + bottomVertices[0]);
+    meshData.AddVertex(pos + topVertices[3]);
+    meshData.AddVertex(pos + topVertices[2]);
+    meshData.AddVertex(pos + bottomVertices[1]);
 
     meshData.AddQuadTriangles();
 
@@ -125,10 +276,12 @@ public class Block {
   protected virtual MeshData FaceDataWest
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
-    meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+    Vector3 pos = new Vector3(x, y, z);
+
+    meshData.AddVertex(pos + bottomVertices[3]);
+    meshData.AddVertex(pos + topVertices[0]);
+    meshData.AddVertex(pos + topVertices[3]);
+    meshData.AddVertex(pos + bottomVertices[0]);
 
     meshData.AddQuadTriangles();
 
@@ -137,6 +290,25 @@ public class Block {
   }
 
   public virtual bool IsSolid(Direction direction)
+  {
+    switch(direction){
+      case Direction.north:
+      return (topVertices[2].y>=0.5f && topVertices[3].y>=0.5f);
+      case Direction.east:
+      return (topVertices[0].y>=0.5f && topVertices[3].y>=0.5f);
+      case Direction.south:
+      return (topVertices[0].y>=0.5f && topVertices[1].y>=0.5f);
+      case Direction.west:
+      return (topVertices[1].y>=0.5f && topVertices[2].y>=0.5f);
+      case Direction.up:
+      return true;
+      case Direction.down:
+      return true;
+    }
+    return false;
+  }
+
+  public virtual bool IsSticky(Direction direction)
   {
     switch(direction){
       case Direction.north:
