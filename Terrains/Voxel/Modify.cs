@@ -23,7 +23,7 @@ public class Modify : MonoBehaviour
 
     rot= new Vector2(
       rot.x + _controls.getValue("Horizontal1")*3,
-      rot.y + _controls.getValue("Vertical1")*2
+      rot.y + -_controls.getValue("Vertical1")*2
     );
 
     transform.parent.localRotation = Quaternion.AngleAxis(rot.x, Vector3.up);

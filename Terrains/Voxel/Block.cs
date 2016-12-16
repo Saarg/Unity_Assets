@@ -18,10 +18,10 @@ public class Block {
   };
 
   private Vector3[] bottomVertices = new Vector3[4] {
-    new Vector3(-0.5f, +0.5f, +0.5f),
-    new Vector3(+0.5f, +0.5f, +0.5f),
-    new Vector3(+0.5f, +0.5f, -0.5f),
-    new Vector3(-0.5f, +0.5f, -0.5f)
+    new Vector3(- 0.5f, - 0.5f, - 0.5f),
+    new Vector3(+ 0.5f, - 0.5f, - 0.5f),
+    new Vector3(+ 0.5f, - 0.5f, + 0.5f),
+    new Vector3(- 0.5f, - 0.5f, + 0.5f)
   };
 
   //Base block constructor
@@ -142,6 +142,11 @@ public class Block {
       topVertices[3].y += 0.25f;
     }
 
+    topVertices[0].y = Mathf.Clamp(topVertices[0].y, bottomVertices[3].y, 1.25f);
+    topVertices[1].y = Mathf.Clamp(topVertices[1].y, bottomVertices[2].y, 1.25f);
+    topVertices[2].y = Mathf.Clamp(topVertices[2].y, bottomVertices[1].y, 1.25f);
+    topVertices[3].y = Mathf.Clamp(topVertices[3].y, bottomVertices[0].y, 1.25f);
+
     meshData.AddVertex(pos + topVertices[0]);
     meshData.AddVertex(pos + topVertices[1]);
     meshData.AddVertex(pos + topVertices[2]);
@@ -213,6 +218,11 @@ public class Block {
     } else if(chunk.GetBlock(x - 1, y, z + 1).IsSticky(Direction.west)) {
       bottomVertices[3].y -= 0.25f;
     }
+
+    bottomVertices[0].y = Mathf.Clamp(bottomVertices[0].y, -1.25f, topVertices[3].y);
+    bottomVertices[1].y = Mathf.Clamp(bottomVertices[1].y, -1.25f, topVertices[2].y);
+    bottomVertices[2].y = Mathf.Clamp(bottomVertices[2].y, -1.25f, topVertices[1].y);
+    bottomVertices[3].y = Mathf.Clamp(bottomVertices[3].y, -1.25f, topVertices[0].y);
 
     meshData.AddVertex(pos + bottomVertices[0]);
     meshData.AddVertex(pos + bottomVertices[1]);
