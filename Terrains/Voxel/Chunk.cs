@@ -12,6 +12,7 @@ public class Chunk : MonoBehaviour
 
   public static int chunkSize = 16;
   public bool update = true;
+  public bool DisplayLimits = true;
 
   MeshFilter filter;
   MeshCollider coll;
@@ -32,6 +33,23 @@ public class Chunk : MonoBehaviour
     {
       update = false;
       UpdateChunk();
+    }
+
+    if (DisplayLimits) {
+      Debug.DrawLine(new Vector3(pos.x, pos.y, pos.z), new Vector3(pos.x, pos.y+chunkSize, pos.z), Color.red);
+      Debug.DrawLine(new Vector3(pos.x+chunkSize, pos.y, pos.z), new Vector3(pos.x+chunkSize, pos.y+chunkSize, pos.z), Color.red);
+      Debug.DrawLine(new Vector3(pos.x+chunkSize, pos.y, pos.z+chunkSize), new Vector3(pos.x+chunkSize, pos.y+chunkSize, pos.z+chunkSize), Color.red);
+      Debug.DrawLine(new Vector3(pos.x, pos.y, pos.z+chunkSize), new Vector3(pos.x, pos.y+chunkSize, pos.z+chunkSize), Color.red);
+
+      Debug.DrawLine(new Vector3(pos.x, pos.y, pos.z), new Vector3(pos.x+chunkSize, pos.y, pos.z), Color.red);
+      Debug.DrawLine(new Vector3(pos.x+chunkSize, pos.y, pos.z), new Vector3(pos.x+chunkSize, pos.y, pos.z+chunkSize), Color.red);
+      Debug.DrawLine(new Vector3(pos.x+chunkSize, pos.y, pos.z+chunkSize), new Vector3(pos.x, pos.y, pos.z+chunkSize), Color.red);
+      Debug.DrawLine(new Vector3(pos.x, pos.y, pos.z), new Vector3(pos.x, pos.y, pos.z+chunkSize), Color.red);
+
+      Debug.DrawLine(new Vector3(pos.x, pos.y+chunkSize, pos.z), new Vector3(pos.x+chunkSize, pos.y+chunkSize, pos.z), Color.red);
+      Debug.DrawLine(new Vector3(pos.x+chunkSize, pos.y+chunkSize, pos.z), new Vector3(pos.x+chunkSize, pos.y+chunkSize, pos.z+chunkSize), Color.red);
+      Debug.DrawLine(new Vector3(pos.x+chunkSize, pos.y+chunkSize, pos.z+chunkSize), new Vector3(pos.x, pos.y+chunkSize, pos.z+chunkSize), Color.red);
+      Debug.DrawLine(new Vector3(pos.x, pos.y+chunkSize, pos.z), new Vector3(pos.x, pos.y+chunkSize, pos.z+chunkSize), Color.red);
     }
   }
 
