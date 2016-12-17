@@ -9,47 +9,15 @@ public class World : MonoBehaviour {
 
   public string worldName = "world";
 
-  public int newChunkX;
-  public int newChunkY;
-  public int newChunkZ;
-
-  public bool genChunk;
-
   void Start()
   {
-
-    for (int x = -4; x < 4; x++)
-    {
-      for (int y = -2; y < 1; y++)
-      {
-        for (int z = -4; z < 4; z++)
-        {
-          CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize);
-        }
-      }
-    }
+    
   }
 
   // Update is called once per frame
   void Update()
   {
-    if (genChunk)
-    {
-      genChunk = false;
-      WorldPos chunkPos = new WorldPos(newChunkX*Chunk.chunkSize, newChunkY*Chunk.chunkSize, newChunkZ*Chunk.chunkSize);
-      Chunk chunk = null;
 
-      if (chunks.TryGetValue(chunkPos, out chunk))
-      {
-        Debug.Log("Destroying " + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
-        DestroyChunk(chunkPos.x, chunkPos.y, chunkPos.z);
-      }
-      else
-      {
-        Debug.Log("Creating " + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
-        CreateChunk(chunkPos.x, chunkPos.y, chunkPos.z);
-      }
-    }
   }
 
   public void CreateChunk(int x, int y, int z)
