@@ -43,7 +43,7 @@ public class LoadChunks : MonoBehaviour {
         if (newChunk != null && (newChunk.rendered || updateList.Contains(newChunkPos)))
           continue;
         //load a column of chunks in this position
-        for (int y = -2; y <= 2; y++)
+        for (int y = -1; y <= 1; y++)
         {
           for (int x = newChunkPos.x - Chunk.chunkSize; x <= newChunkPos.x + Chunk.chunkSize; x += Chunk.chunkSize)
           {

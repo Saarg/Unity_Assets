@@ -11,7 +11,7 @@ public class World : MonoBehaviour {
 
   void Start()
   {
-    
+
   }
 
   // Update is called once per frame
@@ -129,6 +129,10 @@ public class World : MonoBehaviour {
       UpdateIfEqual(z - chunk.pos.z, 0, new WorldPos(x, y, z - 1));
       UpdateIfEqual(z - chunk.pos.z, Chunk.chunkSize - 1, new WorldPos(x, y, z + 1));
 
+      UpdateIfBothEqual(x - chunk.pos.x, 0, new WorldPos(x - 1, y, z - 1), y - chunk.pos.y, 0);
+      UpdateIfBothEqual(x - chunk.pos.x, Chunk.chunkSize - 1, new WorldPos(x + 1, y, z - 1), y - chunk.pos.y, 0);
+      UpdateIfBothEqual(x - chunk.pos.x, 0, new WorldPos(x - 1, y, z + 1), y - chunk.pos.y, Chunk.chunkSize - 1);
+      UpdateIfBothEqual(x - chunk.pos.x, Chunk.chunkSize - 1, new WorldPos(x + 1, y, z + 1), y - chunk.pos.y, Chunk.chunkSize - 1);
     }
   }
 
@@ -138,7 +142,17 @@ public class World : MonoBehaviour {
     {
       Chunk chunk = GetChunk(pos.x, pos.y, pos.z);
       if (chunk != null)
-      chunk.update = true;
+        chunk.update = true;
+    }
+  }
+
+  void UpdateIfBothEqual(int value1, int value2, WorldPos pos, int value3, int value4)
+  {
+    if (value1 == value2 && value3 == value4)
+    {
+      Chunk chunk = GetChunk(pos.x, pos.y, pos.z);
+      if (chunk != null)
+        chunk.update = true;
     }
   }
 
