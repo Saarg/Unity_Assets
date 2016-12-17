@@ -305,13 +305,25 @@ public class Block {
   {
     switch(direction){
       case Direction.north:
-      return (topVertices[2].y>=0.5f && topVertices[3].y>=0.5f);
+      return (topVertices[2].y-pos.y>=0.5f &&
+              topVertices[3].y-pos.y>=0.5f &&
+              bottomVertices[0].y-pos.y<=-0.5f &&
+              bottomVertices[1].y-pos.y<=-0.5f);
       case Direction.east:
-      return (topVertices[0].y>=0.5f && topVertices[3].y>=0.5f);
+      return (topVertices[0].y>=0.5f &&
+              topVertices[3].y>=0.5f &&
+              bottomVertices[0].y-pos.y<=-0.5f &&
+              bottomVertices[3].y-pos.y<=-0.5f);
       case Direction.south:
-      return (topVertices[0].y>=0.5f && topVertices[1].y>=0.5f);
+      return (topVertices[0].y>=0.5f &&
+              topVertices[1].y>=0.5f &&
+              bottomVertices[2].y-pos.y<=-0.5f &&
+              bottomVertices[3].y-pos.y<=-0.5f);
       case Direction.west:
-      return (topVertices[1].y>=0.5f && topVertices[2].y>=0.5f);
+      return (topVertices[1].y>=0.5f &&
+              topVertices[2].y>=0.5f &&
+              bottomVertices[1].y-pos.y<=-0.5f &&
+              bottomVertices[2].y-pos.y<=-0.5f);
       case Direction.up:
       return true;
       case Direction.down:
