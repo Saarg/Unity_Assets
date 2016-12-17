@@ -9,14 +9,9 @@ public class Modify : MonoBehaviour
 
   void Start() {
     _controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
-
-    Screen.lockCursor = true;
   }
 
   void Update() {
-    if (Input.GetKeyDown("escape"))
-      Screen.lockCursor = false;
-
     if (_controls.getValue("Destroy1") != 0.0f)
     {
       RaycastHit hit;

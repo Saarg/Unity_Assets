@@ -11,6 +11,8 @@ public class StartMenu : MonoBehaviour {
 	void Start () {
     // Init Control script
     _Controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
+
+    Screen.lockCursor = true;
 	}
 
 	// Update is called once per frame
@@ -18,12 +20,14 @@ public class StartMenu : MonoBehaviour {
     if(_Controls.getValue(_MenuKey) == 1) {
       GetComponent<CanvasGroup> ().alpha = 1;
       GetComponent<CanvasGroup> ().interactable = true;
+      Screen.lockCursor = false;
     }
 	}
 
   public void Resume () {
     GetComponent<CanvasGroup> ().alpha = 0;
     GetComponent<CanvasGroup> ().interactable = false;
+    Screen.lockCursor = true;
   }
 
   public void StartOptions () {
