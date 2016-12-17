@@ -10,13 +10,14 @@ public class Block {
   public bool changed = true;
   private const float tileSize = 0.25f;
 
+  [NonSerialized]
   private Vector3[] topVertices = new Vector3[4] {
     new Vector3(-0.5f, +0.5f, +0.5f),
     new Vector3(+0.5f, +0.5f, +0.5f),
     new Vector3(+0.5f, +0.5f, -0.5f),
     new Vector3(-0.5f, +0.5f, -0.5f)
   };
-
+  [NonSerialized]
   private Vector3[] bottomVertices = new Vector3[4] {
     new Vector3(- 0.5f, - 0.5f, - 0.5f),
     new Vector3(+ 0.5f, - 0.5f, - 0.5f),

@@ -173,4 +173,10 @@ public class World : MonoBehaviour {
       chunk.update = true;
     }
   }
+
+  void OnDestroy() {
+    foreach (Chunk chunk in chunks.Values) {
+      Serialization.SaveChunk(chunk);
+    }
+  }
 }
