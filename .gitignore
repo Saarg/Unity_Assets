@@ -31,3 +31,6 @@ sysinfo.txt
 
 # Blender saves
 *.blend1*
+
+*.exe
+*.exe.meta
