@@ -10,7 +10,7 @@ public class Chunk : MonoBehaviour
 
   public Block[, ,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
-  public static int chunkSize = 8;
+  public static int chunkSize = 10;
   public bool update = false;
   public bool DisplayLimits = true;
   public bool rendered;

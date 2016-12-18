@@ -46,11 +46,12 @@ public class World : MonoBehaviour {
       {
         for (int zi = 0; zi < Chunk.chunkSize; zi++)
         {
-          if (y + yi <= 2+Mathf.Sqrt((x + xi)*(x + xi) + (z + zi)*(z + zi))/10 - 1)
+          float height = Mathf.PerlinNoise((x + xi)/60.0f, (z + zi)/60.0f)*20.0f;
+          if (y + yi <= height - 1)
           {
             SetBlock(x + xi, y + yi, z + zi, new Block());
           }
-          else if (y + yi <= 2+Mathf.Sqrt((x + xi)*(x + xi) + (z + zi)*(z + zi))/10)
+          else if (y + yi <= height)
           {
             SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
           }

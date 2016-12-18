@@ -45,14 +45,8 @@ public class LoadChunks : MonoBehaviour {
         //load a column of chunks in this position
         for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + Chunk.chunkSize; y += Chunk.chunkSize)
         {
-          for (int x = newChunkPos.x - Chunk.chunkSize; x <= newChunkPos.x + Chunk.chunkSize; x += Chunk.chunkSize)
-          {
-            for (int z = newChunkPos.z - Chunk.chunkSize; z <= newChunkPos.z + Chunk.chunkSize; z += Chunk.chunkSize)
-            {
-              buildList.Add(new WorldPos(x, y, z));
-            }
-          }
-          updateList.Add(new WorldPos(newChunkPos.x, newChunkPos.y, newChunkPos.z));
+          buildList.Add(new WorldPos(newChunkPos.x, y, newChunkPos.z));
+          updateList.Add(new WorldPos(newChunkPos.x, y, newChunkPos.z));
         }
         return;
       }
