@@ -33,7 +33,7 @@ public class LoadChunks : MonoBehaviour {
         //translate the player position and array position into chunk position
         WorldPos newChunkPos = new WorldPos(
           chunkPositions[i].x * Chunk.chunkSize + playerPos.x,
-          0,
+          chunkPositions[i].y * Chunk.chunkSize + playerPos.y,
           chunkPositions[i].z * Chunk.chunkSize + playerPos.z
         );
         //Get the chunk in the defined position
@@ -43,16 +43,16 @@ public class LoadChunks : MonoBehaviour {
         if (newChunk != null && (newChunk.rendered || updateList.Contains(newChunkPos)))
           continue;
         //load a column of chunks in this position
-        for (int y = -1; y <= 1; y++)
+        for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + Chunk.chunkSize; y += Chunk.chunkSize)
         {
           for (int x = newChunkPos.x - Chunk.chunkSize; x <= newChunkPos.x + Chunk.chunkSize; x += Chunk.chunkSize)
           {
             for (int z = newChunkPos.z - Chunk.chunkSize; z <= newChunkPos.z + Chunk.chunkSize; z += Chunk.chunkSize)
             {
-              buildList.Add(new WorldPos(x, y * Chunk.chunkSize, z));
+              buildList.Add(new WorldPos(x, y, z));
             }
           }
-          updateList.Add(new WorldPos(newChunkPos.x, y * Chunk.chunkSize, newChunkPos.z));
+          updateList.Add(new WorldPos(newChunkPos.x, newChunkPos.y, newChunkPos.z));
         }
         return;
       }
