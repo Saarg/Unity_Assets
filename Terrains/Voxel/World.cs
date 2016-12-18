@@ -47,7 +47,7 @@ public class World : MonoBehaviour {
         for (int zi = 0; zi < Chunk.chunkSize; zi++)
         {
           float height = Mathf.PerlinNoise((x + xi)/60.0f, (z + zi)/60.0f)*20.0f;
-          if (y + yi <= height - 1)
+          if (y + yi <= height - 2)
           {
             SetBlock(x + xi, y + yi, z + zi, new Block());
           }

@@ -8,7 +8,7 @@ public class Block {
   public struct Tile { public int x; public int y;}
 
   public bool changed = true;
-  private const float tileSize = 0.25f;
+  private const float tileSize = 1f;
 
   [NonSerialized]
   private Vector3[] topVertices = new Vector3[4] {
@@ -160,7 +160,7 @@ public class Block {
     meshData.AddVertex(topVertices[2]);
     meshData.AddVertex(topVertices[3]);
 
-    meshData.AddQuadTriangles();
+    meshData.AddQuadTriangles(GetSubMesh(Direction.up));
 
     meshData.uv.AddRange(FaceUVs(Direction.up));
     return meshData;
@@ -237,7 +237,7 @@ public class Block {
     meshData.AddVertex(bottomVertices[2]);
     meshData.AddVertex(bottomVertices[3]);
 
-    meshData.AddQuadTriangles();
+    meshData.AddQuadTriangles(GetSubMesh(Direction.down));
 
     meshData.uv.AddRange(FaceUVs(Direction.down));
     return meshData;
@@ -251,7 +251,7 @@ public class Block {
     meshData.AddVertex(topVertices[0]);
     meshData.AddVertex(bottomVertices[3]);
 
-    meshData.AddQuadTriangles();
+    meshData.AddQuadTriangles(GetSubMesh(Direction.north));
 
     meshData.uv.AddRange(FaceUVs(Direction.north));
     return meshData;
@@ -265,7 +265,7 @@ public class Block {
     meshData.AddVertex(topVertices[1]);
     meshData.AddVertex(bottomVertices[2]);
 
-    meshData.AddQuadTriangles();
+    meshData.AddQuadTriangles(GetSubMesh(Direction.east));
 
     meshData.uv.AddRange(FaceUVs(Direction.east));
     return meshData;
@@ -281,7 +281,7 @@ public class Block {
     meshData.AddVertex(topVertices[2]);
     meshData.AddVertex(bottomVertices[1]);
 
-    meshData.AddQuadTriangles();
+    meshData.AddQuadTriangles(GetSubMesh(Direction.south));
 
     meshData.uv.AddRange(FaceUVs(Direction.south));
     return meshData;
@@ -295,7 +295,7 @@ public class Block {
     meshData.AddVertex(topVertices[3]);
     meshData.AddVertex(bottomVertices[0]);
 
-    meshData.AddQuadTriangles();
+    meshData.AddQuadTriangles(GetSubMesh(Direction.west));
 
     meshData.uv.AddRange(FaceUVs(Direction.west));
     return meshData;
@@ -363,14 +363,14 @@ public class Block {
   {
     Vector2[] UVs = new Vector2[4];
     Tile tilePos = TexturePosition(direction);
-    UVs[0] = new Vector2(tileSize * tilePos.x + tileSize,
-    tileSize * tilePos.y);
-    UVs[1] = new Vector2(tileSize * tilePos.x + tileSize,
-    tileSize * tilePos.y + tileSize);
-    UVs[2] = new Vector2(tileSize * tilePos.x,
-    tileSize * tilePos.y + tileSize);
-    UVs[3] = new Vector2(tileSize * tilePos.x,
-    tileSize * tilePos.y);
+    UVs[0] = new Vector2(tileSize * tilePos.x + tileSize,tileSize * tilePos.y);
+    UVs[1] = new Vector2(tileSize * tilePos.x + tileSize, tileSize * tilePos.y + tileSize);
+    UVs[2] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y + tileSize);
+    UVs[3] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y);
     return UVs;
+  }
+
+  public virtual int GetSubMesh(Direction direction) {
+    return 0;
   }
 }

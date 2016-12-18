@@ -40,8 +40,9 @@ public class LoadChunks : MonoBehaviour {
         Chunk newChunk = world.GetChunk(newChunkPos.x, newChunkPos.y, newChunkPos.z);
         //If the chunk already exists and it's already
         //rendered or in queue to be rendered continue
-        if (newChunk != null && (newChunk.rendered || updateList.Contains(newChunkPos)))
+        if (newChunk != null && (newChunk.rendered || updateList.Contains(newChunkPos))) {
           continue;
+        }
         //load a column of chunks in this position
         for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + Chunk.chunkSize; y += Chunk.chunkSize)
         {

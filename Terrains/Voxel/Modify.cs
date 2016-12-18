@@ -29,7 +29,7 @@ public class Modify : MonoBehaviour
     transform.parent.localRotation = Quaternion.AngleAxis(rot.x, Vector3.up);
     transform.localRotation = Quaternion.AngleAxis(rot.y, Vector3.left);
 
-    transform.parent.position += transform.parent.forward * -_controls.getValue("Forward1")/3;
-    transform.parent.position += transform.parent.right * _controls.getValue("Sideway1")/3;
+    transform.parent.position += transform.parent.forward * -_controls.getValue("Forward1")/5;
+    transform.parent.position += transform.parent.right * _controls.getValue("Sideway1")/5;
   }
 }
