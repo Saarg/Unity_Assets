@@ -41,11 +41,11 @@ public struct SVector3{
     return new SVector3(a.x/b, a.y/b, a.z/b);
   }
 
-  public static SVector3 operator ==(SVector3 a, SVector3 b) {
+  public static bool operator ==(SVector3 a, SVector3 b) {
     return (a.x == b.x && a.y == b.y && a.z == b.z);
   }
 
-  public static SVector3 operator !=(SVector3 a, SVector3 b) {
+  public static bool operator !=(SVector3 a, SVector3 b) {
     return (a.x != b.x || a.y != b.y || a.z != b.z);
   }
 }
