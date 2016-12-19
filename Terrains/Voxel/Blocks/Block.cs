@@ -8,26 +8,24 @@ public class Block {
   public struct Tile { public int x; public int y;}
 
   public bool changed = true;
-  private const float tileSize = 1f;
+  protected const float tileSize = 1f;
 
-  [NonSerialized]
-  private Vector3[] topVertices = new Vector3[4] {
-    new Vector3(- 0.5f, + 0.5f, + 0.5f),
-    new Vector3(+ 0.5f, + 0.5f, + 0.5f),
-    new Vector3(+ 0.5f, + 0.5f, - 0.5f),
-    new Vector3(- 0.5f, + 0.5f, - 0.5f)
+  protected SVector3[] topVertices = new SVector3[4] {
+    new SVector3(- 0.5f, + 0.5f, + 0.5f),
+    new SVector3(+ 0.5f, + 0.5f, + 0.5f),
+    new SVector3(+ 0.5f, + 0.5f, - 0.5f),
+    new SVector3(- 0.5f, + 0.5f, - 0.5f)
   };
-  [NonSerialized]
-  private Vector3[] bottomVertices = new Vector3[4] {
-    new Vector3(- 0.5f, - 0.5f, - 0.5f),
-    new Vector3(+ 0.5f, - 0.5f, - 0.5f),
-    new Vector3(+ 0.5f, - 0.5f, + 0.5f),
-    new Vector3(- 0.5f, - 0.5f, + 0.5f)
-  };
-  [NonSerialized]
-  private Vector3 pos;
 
-  [NonSerialized]
+  protected SVector3[] bottomVertices = new SVector3[4] {
+    new SVector3(- 0.5f, - 0.5f, - 0.5f),
+    new SVector3(+ 0.5f, - 0.5f, - 0.5f),
+    new SVector3(+ 0.5f, - 0.5f, + 0.5f),
+    new SVector3(- 0.5f, - 0.5f, + 0.5f)
+  };
+
+  protected SVector3 pos;
+
   private bool smoothEdges = true;
 
   //Base block constructor
@@ -37,20 +35,20 @@ public class Block {
   public virtual MeshData Blockdata
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    pos = new Vector3(x, y, z);
+    pos = new SVector3(x, y, z);
 
-    topVertices = new Vector3[4] {
-      pos + new Vector3(- 0.5f, + 0.5f, + 0.5f),
-      pos + new Vector3(+ 0.5f, + 0.5f, + 0.5f),
-      pos + new Vector3(+ 0.5f, + 0.5f, - 0.5f),
-      pos + new Vector3(- 0.5f, + 0.5f, - 0.5f)
+    topVertices = new SVector3[4] {
+      pos + new SVector3(- 0.5f, + 0.5f, + 0.5f),
+      pos + new SVector3(+ 0.5f, + 0.5f, + 0.5f),
+      pos + new SVector3(+ 0.5f, + 0.5f, - 0.5f),
+      pos + new SVector3(- 0.5f, + 0.5f, - 0.5f)
     };
 
-    bottomVertices = new Vector3[4] {
-      pos + new Vector3(- 0.5f, - 0.5f, - 0.5f),
-      pos + new Vector3(+ 0.5f, - 0.5f, - 0.5f),
-      pos + new Vector3(+ 0.5f, - 0.5f, + 0.5f),
-      pos + new Vector3(- 0.5f, - 0.5f, + 0.5f)
+    bottomVertices = new SVector3[4] {
+      pos + new SVector3(- 0.5f, - 0.5f, - 0.5f),
+      pos + new SVector3(+ 0.5f, - 0.5f, - 0.5f),
+      pos + new SVector3(+ 0.5f, - 0.5f, + 0.5f),
+      pos + new SVector3(- 0.5f, - 0.5f, + 0.5f)
     };
 
     meshData.useRenderDataForCol = true;
@@ -155,10 +153,10 @@ public class Block {
       topVertices[3].y = Mathf.Clamp(topVertices[3].y, bottomVertices[0].y, pos.y + 1.25f);
     }
 
-    meshData.AddVertex(topVertices[0]);
-    meshData.AddVertex(topVertices[1]);
-    meshData.AddVertex(topVertices[2]);
-    meshData.AddVertex(topVertices[3]);
+    meshData.AddVertex(topVertices[0].toVector());
+    meshData.AddVertex(topVertices[1].toVector());
+    meshData.AddVertex(topVertices[2].toVector());
+    meshData.AddVertex(topVertices[3].toVector());
 
     meshData.AddQuadTriangles(GetSubMesh(Direction.up));
 
@@ -232,10 +230,10 @@ public class Block {
       bottomVertices[3].y = Mathf.Clamp(bottomVertices[3].y, pos.y - 1.25f, topVertices[0].y);
     }
 
-    meshData.AddVertex(bottomVertices[0]);
-    meshData.AddVertex(bottomVertices[1]);
-    meshData.AddVertex(bottomVertices[2]);
-    meshData.AddVertex(bottomVertices[3]);
+    meshData.AddVertex(bottomVertices[0].toVector());
+    meshData.AddVertex(bottomVertices[1].toVector());
+    meshData.AddVertex(bottomVertices[2].toVector());
+    meshData.AddVertex(bottomVertices[3].toVector());
 
     meshData.AddQuadTriangles(GetSubMesh(Direction.down));
 
@@ -246,10 +244,10 @@ public class Block {
   protected virtual MeshData FaceDataNorth
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(bottomVertices[2]);
-    meshData.AddVertex(topVertices[1]);
-    meshData.AddVertex(topVertices[0]);
-    meshData.AddVertex(bottomVertices[3]);
+    meshData.AddVertex(bottomVertices[2].toVector());
+    meshData.AddVertex(topVertices[1].toVector());
+    meshData.AddVertex(topVertices[0].toVector());
+    meshData.AddVertex(bottomVertices[3].toVector());
 
     meshData.AddQuadTriangles(GetSubMesh(Direction.north));
 
@@ -260,10 +258,10 @@ public class Block {
   protected virtual MeshData FaceDataEast
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(bottomVertices[1]);
-    meshData.AddVertex(topVertices[2]);
-    meshData.AddVertex(topVertices[1]);
-    meshData.AddVertex(bottomVertices[2]);
+    meshData.AddVertex(bottomVertices[1].toVector());
+    meshData.AddVertex(topVertices[2].toVector());
+    meshData.AddVertex(topVertices[1].toVector());
+    meshData.AddVertex(bottomVertices[2].toVector());
 
     meshData.AddQuadTriangles(GetSubMesh(Direction.east));
 
@@ -274,12 +272,12 @@ public class Block {
   protected virtual MeshData FaceDataSouth
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    Vector3 pos = new Vector3(x, y, z);
+    SVector3 pos = new SVector3(x, y, z);
 
-    meshData.AddVertex(bottomVertices[0]);
-    meshData.AddVertex(topVertices[3]);
-    meshData.AddVertex(topVertices[2]);
-    meshData.AddVertex(bottomVertices[1]);
+    meshData.AddVertex(bottomVertices[0].toVector());
+    meshData.AddVertex(topVertices[3].toVector());
+    meshData.AddVertex(topVertices[2].toVector());
+    meshData.AddVertex(bottomVertices[1].toVector());
 
     meshData.AddQuadTriangles(GetSubMesh(Direction.south));
 
@@ -290,10 +288,10 @@ public class Block {
   protected virtual MeshData FaceDataWest
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    meshData.AddVertex(bottomVertices[3]);
-    meshData.AddVertex(topVertices[0]);
-    meshData.AddVertex(topVertices[3]);
-    meshData.AddVertex(bottomVertices[0]);
+    meshData.AddVertex(bottomVertices[3].toVector());
+    meshData.AddVertex(topVertices[0].toVector());
+    meshData.AddVertex(topVertices[3].toVector());
+    meshData.AddVertex(bottomVertices[0].toVector());
 
     meshData.AddQuadTriangles(GetSubMesh(Direction.west));
 

@@ -66,6 +66,7 @@ public class World : MonoBehaviour {
     newChunk.SetBlocksUnmodified();
 
     Serialization.Load(newChunk);
+    newChunk.update = true;
   }
 
   public void DestroyChunk(int x, int y, int z)

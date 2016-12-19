@@ -21,6 +21,15 @@ public class Modify : MonoBehaviour
       }
     }
 
+    if (_controls.getValue("Add1") != 0.0f)
+    {
+      RaycastHit hit;
+      if (Physics.Raycast(transform.position, transform.forward,out hit, 100 ))
+      {
+        Terrain.SetBlock(hit, new Block(), true);
+      }
+    }
+
     rot= new Vector2(
       rot.x + _controls.getValue("Horizontal1")*3,
       rot.y + _controls.getValue("Vertical1")*2
