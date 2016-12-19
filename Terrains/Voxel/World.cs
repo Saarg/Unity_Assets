@@ -8,6 +8,7 @@ public class World : MonoBehaviour {
   public GameObject chunkPrefab;
 
   public string worldName = "world";
+  public Generator terrain = new Generator();
 
   void Start()
   {
@@ -42,11 +43,11 @@ public class World : MonoBehaviour {
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
     {
-      for (int yi = 0; yi < Chunk.chunkSize; yi++)
+      for (int zi = 0; zi < Chunk.chunkSize; zi++)
       {
-        for (int zi = 0; zi < Chunk.chunkSize; zi++)
+        float height = Mathf.PerlinNoise((worldPos.x + xi)/60.0f, (worldPos.z + zi)/60.0f)*20.0f;
+        for (int yi = 0; yi < Chunk.chunkSize; yi++)
         {
-          float height = Mathf.PerlinNoise((x + xi)/60.0f, (z + zi)/60.0f)*20.0f;
           if (y + yi <= height - 2)
           {
             SetBlock(x + xi, y + yi, z + zi, new Block());
