@@ -12,18 +12,17 @@ public class Generator {
   }
 
   public float GetHeight(int x, int y, int z) {
-    WorldPos pos = new WorldPos();
-    pos.x = Mathf.FloorToInt(x / Chunk.chunkSize) * Chunk.chunkSize;
-    pos.y = Mathf.FloorToInt(y / Chunk.chunkSize) * Chunk.chunkSize;
-    pos.z = Mathf.FloorToInt(z / Chunk.chunkSize) * Chunk.chunkSize;
+    WorldPos worldPos = new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize);
 
-    ChunkData chunkData;
-    if (!chunkDatas.TryGetValue(pos, out chunkData))
-    {
-      chunkData = Generate(pos);
+    ChunkData chunkdata;
+    if(!chunkDatas.ContainsKey(worldPos)) {
+      chunkdata = Generate(worldPos);
+      chunkDatas.Add(worldPos, chunkdata);
+    } else {
+      chunkDatas.TryGetValue(worldPos, out chunkdata);
     }
 
-    return chunkData._heightMap[x%_chunkSize, z%_chunkSize];
+    return chunkdata._heightMap[x%_chunkSize, z%_chunkSize];
   }
 
   public virtual ChunkData Generate(WorldPos pos) {
@@ -32,11 +31,11 @@ public class Generator {
     {
       chunkData = new ChunkData(_chunkSize);
 
-      for (int xi = 0; xi < Chunk.chunkSize; xi++)
+      for (int xi = 0; xi < _chunkSize; xi++)
       {
-        for (int zi = 0; zi < Chunk.chunkSize; zi++)
+        for (int zi = 0; zi < _chunkSize; zi++)
         {
-          chunkData._heightMap[xi, zi] = Mathf.PerlinNoise((pos.x + xi)/60.0f, (pos.z + zi)/60.0f)*20.0f;
+          chunkData._heightMap[xi, zi] = Mathf.PerlinNoise((pos.x*_chunkSize + xi)/60.0f, (pos.z*_chunkSize + zi)/60.0f)*20.0f;
         }
       }
     }

@@ -45,7 +45,8 @@ public class World : MonoBehaviour {
     {
       for (int zi = 0; zi < Chunk.chunkSize; zi++)
       {
-        float height = Mathf.PerlinNoise((worldPos.x + xi)/60.0f, (worldPos.z + zi)/60.0f)*20.0f;
+        float height = terrain.GetHeight(worldPos.x + xi, 0, worldPos.z + zi);
+
         for (int yi = 0; yi < Chunk.chunkSize; yi++)
         {
           if (y + yi <= height - 2)
