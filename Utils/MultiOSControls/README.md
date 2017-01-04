@@ -25,3 +25,9 @@ _controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
 
 Then just use `_controls.getValue ("youControl")` wich will return between -1 to
 1 with a default value of 0.
+
+# Issues
+There seems to be an issue when more than one controllers are connected.
+This was seen on windows with 2 xbox controllers connected, a few on the inputs
+on the second controller were registered on the second one and not the first one
+Will do more testing when possible (only have one controller with me)
