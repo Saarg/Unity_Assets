@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,8 +8,18 @@ public class Generator {
   private int _chunkSize;
   public Dictionary<WorldPos, ChunkData> chunkDatas = new Dictionary<WorldPos, ChunkData>();
 
+  private Thread _generatorThread;
+  private Queue<WorldPos> _chunkQueue = new Queue<WorldPos>();
+
   public Generator() {
+
+  }
+
+  public void Init() {
     _chunkSize = Chunk.chunkSize;
+
+    _generatorThread = new Thread(new ThreadStart(GeneratorTh));
+    _generatorThread.Start();
   }
 
   public float GetHeight(int x, int y, int z) {
@@ -18,6 +29,16 @@ public class Generator {
     if(!chunkDatas.ContainsKey(worldPos)) {
       chunkdata = Generate(worldPos);
       chunkDatas.Add(worldPos, chunkdata);
+
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize - 1));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize + 1));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize - 1));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize + 1));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize - 1));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize));
+      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize + 1));
+
     } else {
       chunkDatas.TryGetValue(worldPos, out chunkdata);
     }
@@ -41,5 +62,16 @@ public class Generator {
     }
 
     return chunkData;
+  }
+
+  private void GeneratorTh() {
+    Debug.Log("Starting terrain generator thread");
+    while(true) {
+      if(_chunkQueue.Count > 0) {
+        WorldPos worldPos = _chunkQueue.Dequeue();
+
+        Generate(worldPos);
+      }
+    }
   }
 }

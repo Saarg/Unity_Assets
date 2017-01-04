@@ -12,7 +12,7 @@ public class World : MonoBehaviour {
 
   void Start()
   {
-
+    terrain.Init();
   }
 
   // Update is called once per frame
