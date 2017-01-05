@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Generator {
-  private int _chunkSize;
+  protected int _chunkSize;
   public Dictionary<WorldPos, ChunkData> chunkDatas = new Dictionary<WorldPos, ChunkData>();
 
   private Thread _generatorThread;
