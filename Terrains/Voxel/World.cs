@@ -41,31 +41,7 @@ public class World : MonoBehaviour {
     //Add it to the chunks dictionary with the position as the key
     chunks.Add(worldPos, newChunk);
 
-    for (int xi = 0; xi < Chunk.chunkSize; xi++)
-    {
-      for (int zi = 0; zi < Chunk.chunkSize; zi++)
-      {
-        float height = terrain.GetHeight(worldPos.x + xi, 0, worldPos.z + zi);
-
-        for (int yi = 0; yi < Chunk.chunkSize; yi++)
-        {
-          if (y + yi <= height - 2)
-          {
-            SetBlock(x + xi, y + yi, z + zi, new Block());
-          }
-          else if (y + yi <= height)
-          {
-            SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
-          }
-          else
-          {
-            SetBlock(x + xi, y + yi, z + zi, new BlockAir());
-          }
-        }
-      }
-    }
-
-    newChunk.SetBlocksUnmodified();
+    newChunk.Generate(terrain);
 
     Serialization.Load(newChunk);
     newChunk.update = true;

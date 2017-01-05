@@ -55,6 +55,34 @@ public class Chunk : MonoBehaviour
     }
   }
 
+  public void Generate(Generator generator){
+    for (int xi = 0; xi < Chunk.chunkSize; xi++)
+    {
+      for (int zi = 0; zi < Chunk.chunkSize; zi++)
+      {
+        float height = generator.GetHeight(pos.x + xi, 0, pos.z + zi);
+
+        for (int yi = 0; yi < Chunk.chunkSize; yi++)
+        {
+          if (pos.y + yi <= height - 2)
+          {
+            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new Block());
+          }
+          else if (pos.y + yi <= height)
+          {
+            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockGrass());
+          }
+          else
+          {
+            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockAir());
+          }
+        }
+      }
+    }
+
+    SetBlocksUnmodified();
+  }
+
   public Block GetBlock(int x, int y, int z)
   {
     if (InRange(x) && InRange(y) && InRange(z))
