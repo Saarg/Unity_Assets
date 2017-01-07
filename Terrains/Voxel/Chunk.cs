@@ -98,6 +98,14 @@ public class Chunk : MonoBehaviour
     return true;
   }
 
+  public static bool InRange(float index)
+  {
+    if (index < 0.0f || index >= chunkSize)
+    return false;
+
+    return true;
+  }
+
   public virtual void SetBlock(int x, int y, int z, Block block)
   {
     if (InRange(x) && InRange(y) && InRange(z))

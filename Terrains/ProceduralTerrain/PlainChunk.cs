@@ -14,23 +14,23 @@ public class PlainChunk : Chunk
       for (int zi = 0; zi < Chunk.chunkSize; zi++)
       {
         float[] height = new float[4] {
-          generator.GetHeight(pos.x + xi, 0, pos.z + zi),
-          generator.GetHeight(pos.x + xi, 0, pos.z + zi + 1),
-          generator.GetHeight(pos.x + xi + 1, 0, pos.z + zi + 1),
-          generator.GetHeight(pos.x + xi + 1, 0, pos.z + zi)
+          generator.GetHeight(pos.x + xi, 0, pos.z + zi)-pos.y,
+          generator.GetHeight(pos.x + xi, 0, pos.z + zi + 1)-pos.y,
+          generator.GetHeight(pos.x + xi + 1, 0, pos.z + zi + 1)-pos.y,
+          generator.GetHeight(pos.x + xi + 1, 0, pos.z + zi)-pos.y
         };
 
-        if (!InRange((int)(height[0]-pos.y))) {
+        if (!InRange(height[0]) && !InRange(height[1]) && !InRange(height[2]) && !InRange(height[3])) {
           continue;
         }
 
-        meshData.AddVertex(new Vector3(xi, height[0]-pos.y, zi));
+        meshData.AddVertex(new Vector3(xi, height[0], zi));
 
-        meshData.AddVertex(new Vector3(xi, height[1]-pos.y, zi + 1));
+        meshData.AddVertex(new Vector3(xi, height[1], zi + 1));
 
-        meshData.AddVertex(new Vector3(xi + 1, height[2]-pos.y, zi + 1));
+        meshData.AddVertex(new Vector3(xi + 1, height[2], zi + 1));
 
-        meshData.AddVertex(new Vector3(xi + 1, height[3]-pos.y, zi));
+        meshData.AddVertex(new Vector3(xi + 1, height[3], zi));
 
         meshData.AddQuadTriangles(0);
       }
