@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class LoadChunks : MonoBehaviour {
   public World world;
+  public int _renderDistance = 256;
 
   int timer = 0;
 
@@ -91,7 +92,7 @@ public class LoadChunks : MonoBehaviour {
         float distance = Vector3.Distance(
         new Vector3(chunk.Value.pos.x, 0, chunk.Value.pos.z),
         new Vector3(transform.position.x, 0, transform.position.z));
-        if (distance > 256)
+        if (distance > _renderDistance)
           chunksToDelete.Add(chunk.Key);
       }
       foreach (var chunk in chunksToDelete)

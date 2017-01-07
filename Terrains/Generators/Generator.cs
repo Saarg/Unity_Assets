@@ -10,9 +10,15 @@ public class Generator {
 
   private Thread _generatorThread;
   private Queue<WorldPos> _chunkQueue = new Queue<WorldPos>();
+  private bool _continueTh = true;
 
   public Generator() {
 
+  }
+
+  ~Generator() {
+    _continueTh = false;
+    _generatorThread.Join();
   }
 
   public void Init() {
@@ -20,6 +26,10 @@ public class Generator {
 
     _generatorThread = new Thread(new ThreadStart(GeneratorTh));
     _generatorThread.Start();
+  }
+
+  public void Stop() {
+    _continueTh = false;
   }
 
   public float GetHeight(int x, int y, int z) {
@@ -43,7 +53,7 @@ public class Generator {
       chunkDatas.TryGetValue(worldPos, out chunkdata);
     }
 
-    return chunkdata._heightMap[x%_chunkSize, z%_chunkSize];
+    return chunkdata._heightMap[Mathf.Abs(x)%_chunkSize, Mathf.Abs(z)%_chunkSize];
   }
 
   public virtual ChunkData Generate(WorldPos pos) {
@@ -66,12 +76,13 @@ public class Generator {
 
   private void GeneratorTh() {
     Debug.Log("Starting terrain generator thread");
-    while(true) {
+    while(_continueTh) {
       if(_chunkQueue.Count > 0) {
         WorldPos worldPos = _chunkQueue.Dequeue();
 
         Generate(worldPos);
       }
     }
+    Debug.Log("Ending terrain generator thread");
   }
 }

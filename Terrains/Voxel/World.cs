@@ -137,6 +137,7 @@ public class World : MonoBehaviour {
   }
 
   void OnDestroy() {
+    terrain.Stop();
     foreach (Chunk chunk in chunks.Values) {
       // Serialization.SaveChunk(chunk);
     }
