@@ -55,7 +55,7 @@ public class Chunk : MonoBehaviour
     }
   }
 
-  public void Generate(Generator generator){
+  public virtual void Generate(Generator generator){
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
     {
       for (int zi = 0; zi < Chunk.chunkSize; zi++)
@@ -83,7 +83,7 @@ public class Chunk : MonoBehaviour
     SetBlocksUnmodified();
   }
 
-  public Block GetBlock(int x, int y, int z)
+  public virtual Block GetBlock(int x, int y, int z)
   {
     if (InRange(x) && InRange(y) && InRange(z))
     return blocks[x, y, z];
@@ -98,7 +98,7 @@ public class Chunk : MonoBehaviour
     return true;
   }
 
-  public void SetBlock(int x, int y, int z, Block block)
+  public virtual void SetBlock(int x, int y, int z, Block block)
   {
     if (InRange(x) && InRange(y) && InRange(z))
     {
@@ -110,7 +110,7 @@ public class Chunk : MonoBehaviour
     }
   }
 
-  public void SetBlocksUnmodified()
+  public virtual void SetBlocksUnmodified()
   {
     foreach (Block block in blocks)
     {
@@ -119,7 +119,7 @@ public class Chunk : MonoBehaviour
   }
 
   // Updates the chunk based on its contents
-  void UpdateChunk()
+  protected virtual void UpdateChunk()
   {
     rendered = true;
     MeshData meshData = new MeshData();
@@ -140,7 +140,7 @@ public class Chunk : MonoBehaviour
 
   // Sends the calculated mesh information
   // to the mesh and collision components
-  void RenderMesh(MeshData meshData)
+  protected virtual void RenderMesh(MeshData meshData)
   {
     filter.mesh.Clear();
     filter.mesh.vertices = meshData.vertices.ToArray();
