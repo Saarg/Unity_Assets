@@ -16,11 +16,11 @@ public class Save
       {
         for (int z = 0; z < Chunk.chunkSize; z++)
         {
-          if (!chunk.blocks[x, y, z].changed)
+          if (!chunk.GetBlock(x, y, z).changed)
             continue;
 
           WorldPos pos = new WorldPos(x, y, z);
-          blocks.Add(pos, chunk.blocks[x, y, z]);
+          blocks.Add(pos, chunk.GetBlock(x, y, z));
         }
       }
     }

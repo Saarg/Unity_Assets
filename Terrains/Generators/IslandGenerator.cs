@@ -10,7 +10,7 @@ public class IslandGenerator : Generator {
 		Debug.Log ("Init island generator");
 	}
 
-	public virtual ChunkData Generate(WorldPos pos) {
+	public override ChunkData Generate(WorldPos pos) {
 		ChunkData chunkData;
 		if (!chunkDatas.TryGetValue(pos, out chunkData))
 		{
