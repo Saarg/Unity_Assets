@@ -1,9 +1,9 @@
 # Terrains
-This folder contains will contain my terrains generated from scripts
+This folder contains terrains generated from scripts
 
-## Voxel
+## Boxel
 Voxel world generate a world of blocks and chunks, for now their is only a basic
-perlin noise generation. The chunk size can set in chunck.cs or chunk prefab,
+perlin noise generation. The chunk size can set in chunck.cs,
 please note that the bigger the chunks to less fps ;)
 
 ### Blocks
@@ -13,11 +13,19 @@ depending on the face orientation.
 To get a voxel world like minecraft without slopes juste set smoothEdge to false
 in Block.cs
 
-## Generation
-SOON different generation algorithm working with every Terrains.
-That's for later since it's time for some vacation \o/
+## ProceduralTerrain
+This is a non editable chunk for faster rendering. The chunks only render the
+world in grass for now.
+
+`to be used for static worlds. NON EDITABLE`
+
+## Generators
+The generators are still a work in progress. The idea is to use this class and
+one (or maybe more) threads to generate the chunks datas. For now it only
+generates the heightmap.
 
 ##Saves
 The world save only saves edited blocks to avoid huge save files in the folder:
 voxelGameSaves/worldname/x,y,z.bin
 1 file for each chunk
+I've disabled the saves for now it's only 3 line commented in world.cs
