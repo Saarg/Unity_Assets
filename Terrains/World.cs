@@ -8,11 +8,13 @@ public class World : MonoBehaviour {
   public GameObject chunkPrefab;
 
   public string worldName = "world";
-  public Generator terrain = new Generator();
+  public GameObject terrainObject;
+  [HideInInspector]
+  public Generator terrain;
 
   void Start()
   {
-    terrain.Init();
+    terrain = terrainObject.GetComponent<Generator>();
   }
 
   // Update is called once per frame
@@ -137,7 +139,6 @@ public class World : MonoBehaviour {
   }
 
   void OnDestroy() {
-    terrain.Stop();
     foreach (Chunk chunk in chunks.Values) {
       // Serialization.SaveChunk(chunk);
     }

@@ -4,31 +4,24 @@ using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Generator {
+public class Generator : MonoBehaviour {
   protected int _chunkSize;
   public Dictionary<WorldPos, ChunkData> chunkDatas = new Dictionary<WorldPos, ChunkData>();
+  public Material[] _materials;
 
+  // Generator thread variables
   private Thread _generatorThread;
   private Queue<WorldPos> _chunkQueue = new Queue<WorldPos>();
   private bool _continueTh = true;
 
-  public Generator() {
-
-  }
-
-  ~Generator() {
-    _continueTh = false;
-    _generatorThread.Join();
-  }
-
-  public void Init() {
+  void Start() {
     _chunkSize = Chunk.chunkSize;
 
     _generatorThread = new Thread(new ThreadStart(GeneratorTh));
     _generatorThread.Start();
   }
 
-  public void Stop() {
+  void OnDestroy() {
     _continueTh = false;
   }
 
