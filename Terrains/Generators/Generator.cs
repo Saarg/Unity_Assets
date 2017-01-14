@@ -12,7 +12,7 @@ public class Generator : MonoBehaviour {
   // Generator thread variables
   private Thread _generatorThread;
   private Queue<WorldPos> _chunkQueue = new Queue<WorldPos>();
-  private bool _continueTh = true;
+  protected bool _continueTh = true;
 
   void Start() {
     _chunkSize = Chunk.chunkSize;
@@ -33,15 +33,16 @@ public class Generator : MonoBehaviour {
       chunkdata = Generate(worldPos);
       chunkDatas.Add(worldPos, chunkdata);
 
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize - 1));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize + 1));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize - 1));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize + 1));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize - 1));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize));
-      _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize + 1));
-
+      if(_continueTh) {
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize - 1));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize + 1));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize - 1));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize + 1));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize - 1));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize));
+        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize + 1));
+      }
     } else {
       chunkDatas.TryGetValue(worldPos, out chunkdata);
     }
