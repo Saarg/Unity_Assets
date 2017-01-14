@@ -71,8 +71,27 @@ public class Chunk : MonoBehaviour
 
   // Sends the calculated mesh information
   // to the mesh and collision components
-  protected virtual void RenderMesh(MeshData meshData) {
+  protected void RenderMesh(MeshData meshData) {
+    filter.mesh.Clear();
+    filter.mesh.vertices = meshData.vertices.ToArray();
+    filter.mesh.uv = meshData.uv.ToArray();
 
+    //filter.mesh.subMeshCount = 2;
+    foreach (int key in meshData.trianglesDict.Keys) {
+      filter.mesh.subMeshCount = filter.mesh.subMeshCount <= key ? key+1 : filter.mesh.subMeshCount;
+
+      filter.mesh.SetTriangles(meshData.trianglesDict[key].ToArray(), key);
+    }
+
+    filter.mesh.RecalculateNormals();
+
+    coll.sharedMesh = null;
+    Mesh mesh = new Mesh();
+    mesh.vertices = meshData.colVertices.ToArray();
+    mesh.triangles = meshData.colTriangles.ToArray();
+    mesh.RecalculateNormals();
+
+    coll.sharedMesh = mesh;
   }
 
   public static bool InRange(int index)
