@@ -45,7 +45,9 @@ public class World : MonoBehaviour {
 
     newChunk.Generate(terrain);
 
-    // Serialization.Load(newChunk);
+    if(newChunk.save) {
+      Serialization.Load(newChunk);
+    }
     newChunk.update = true;
   }
 
@@ -54,7 +56,9 @@ public class World : MonoBehaviour {
     Chunk chunk = null;
     if (chunks.TryGetValue(new WorldPos(x, y, z), out chunk))
     {
-      //Serialization.SaveChunk(chunk);
+      if(chunk.save) {
+        Serialization.SaveChunk(chunk);
+      }
       Object.Destroy(chunk.gameObject);
       chunks.Remove(new WorldPos(x, y, z));
     }
@@ -140,7 +144,9 @@ public class World : MonoBehaviour {
 
   void OnDestroy() {
     foreach (Chunk chunk in chunks.Values) {
-      // Serialization.SaveChunk(chunk);
+      if(chunk.save) {
+        Serialization.SaveChunk(chunk);
+      }
     }
   }
 }

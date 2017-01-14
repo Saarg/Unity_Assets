@@ -9,6 +9,8 @@ using System.Collections.Generic;
 public class Chunk : MonoBehaviour
 {
   public static int chunkSize = 10;
+  public bool save = false;
+
   public bool update = false;
   public bool DisplayLimits = true;
   public bool rendered;

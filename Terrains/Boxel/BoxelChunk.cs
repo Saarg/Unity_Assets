@@ -7,6 +7,8 @@ public class BoxelChunk : Chunk
   public Block[, ,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
   public override void Generate(Generator generator){
+    save = true;
+
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
     {
       for (int zi = 0; zi < Chunk.chunkSize; zi++)
