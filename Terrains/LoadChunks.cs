@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class LoadChunks : MonoBehaviour {
   public World world;
   public int _renderDistance = 256;
+  public int _loadingDistance = 6;
+  public int _buildSpeed = 64;
 
   int timer = 0;
 
@@ -30,12 +32,12 @@ public class LoadChunks : MonoBehaviour {
     {
       int added = 0;
       //Cycle through the array of positions
-      for (int i = 0; i < chunkPositions.Length; i++)
+      for (int i = 0; i < chunkPositions.Length && i < _loadingDistance*_loadingDistance; i++)
       {
         //translate the player position and array position into chunk position
         WorldPos newChunkPos = new WorldPos(
           chunkPositions[i].x * Chunk.chunkSize + playerPos.x,
-          chunkPositions[i].y * Chunk.chunkSize + playerPos.y,
+          chunkPositions[i].y * Chunk.chunkSize + playerPos.y - Chunk.chunkSize,
           chunkPositions[i].z * Chunk.chunkSize + playerPos.z
         );
 
@@ -56,7 +58,7 @@ public class LoadChunks : MonoBehaviour {
           added++;
         }
 
-        if(added > 8) {
+        if(added > _buildSpeed) {
           return;
         }
       }
@@ -73,7 +75,7 @@ public class LoadChunks : MonoBehaviour {
   {
     if (buildList.Count != 0)
     {
-      for (int i = 0; i < buildList.Count && i < 16; i++)
+      for (int i = 0; i < buildList.Count && i < _buildSpeed; i++)
       {
         BuildChunk(buildList[0]);
         buildList.RemoveAt(0);
@@ -90,7 +92,7 @@ public class LoadChunks : MonoBehaviour {
     }
   }
 
-  bool DeleteChunks()    //Change the void on this line to bool
+  bool DeleteChunks()
   {
     if (timer == 10)
     {
