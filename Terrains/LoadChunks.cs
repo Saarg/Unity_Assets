@@ -28,6 +28,7 @@ public class LoadChunks : MonoBehaviour {
     //If there aren't already chunks to generate
     if (updateList.Count == 0)
     {
+      int added = 0;
       //Cycle through the array of positions
       for (int i = 0; i < chunkPositions.Length; i++)
       {
@@ -37,20 +38,27 @@ public class LoadChunks : MonoBehaviour {
           chunkPositions[i].y * Chunk.chunkSize + playerPos.y,
           chunkPositions[i].z * Chunk.chunkSize + playerPos.z
         );
-        //Get the chunk in the defined position
-        Chunk newChunk = world.GetChunk(newChunkPos.x, newChunkPos.y, newChunkPos.z);
-        //If the chunk already exists and it's already
-        //rendered or in queue to be rendered continue
-        if (newChunk != null && (newChunk.rendered || updateList.Contains(newChunkPos))) {
-          continue;
-        }
+
         //load a column of chunks in this position
-        for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + Chunk.chunkSize; y += Chunk.chunkSize)
+        for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + 2*Chunk.chunkSize; y += Chunk.chunkSize)
         {
-          buildList.Add(new WorldPos(newChunkPos.x, y, newChunkPos.z));
-          updateList.Add(new WorldPos(newChunkPos.x, y, newChunkPos.z));
+          WorldPos tmpPos = new WorldPos(newChunkPos.x, y, newChunkPos.z);
+
+          Chunk newChunk = world.GetChunk(tmpPos.x, tmpPos.y, tmpPos.z);
+          //If the chunk already exists and it's already
+          //rendered or in queue to be rendered continue
+          if (newChunk != null && (newChunk.rendered || updateList.Contains(newChunkPos))) {
+            continue;
+          }
+
+          buildList.Add(tmpPos);
+          updateList.Add(tmpPos);
+          added++;
         }
-        return;
+
+        if(added > 8) {
+          return;
+        }
       }
     }
   }
@@ -65,7 +73,7 @@ public class LoadChunks : MonoBehaviour {
   {
     if (buildList.Count != 0)
     {
-      for (int i = 0; i < buildList.Count && i < 8; i++)
+      for (int i = 0; i < buildList.Count && i < 16; i++)
       {
         BuildChunk(buildList[0]);
         buildList.RemoveAt(0);
@@ -73,7 +81,7 @@ public class LoadChunks : MonoBehaviour {
       //If chunks were built return early
       return;
     }
-    if ( updateList.Count!=0)
+    if (updateList.Count!=0)
     {
       Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
       if (chunk != null)

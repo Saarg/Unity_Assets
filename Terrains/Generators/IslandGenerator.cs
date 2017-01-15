@@ -3,9 +3,9 @@ using System.Collections;
 
 public class IslandGenerator : Generator {
 
-	public static int _islandSizeX = 100;
-	public static int _islandSizeY = 100;
-  public static int _maxHeight = 100;
+	public int _islandSizeX = 100;
+	public int _islandSizeY = 100;
+  public int _maxHeight = 100;
 
   public Center[, ] _centers;
   public Corner[, ] _corners;
@@ -67,37 +67,13 @@ public class IslandGenerator : Generator {
       }
     }
 
-    CornerElevation();
+    GenerateHeight();
   }
 
-  private void CornerElevation() {
-    for (int xi = 0; xi < _islandSizeX+1; xi++) {
-      for (int yi = 0; yi < _islandSizeY+1; yi++) {
-        float multiplier = 1-(Vector2.Distance(_corners[xi, yi].point/_chunkSize, new Vector2(_islandSizeX/2, _islandSizeY/2)) /
-                           Vector2.Distance(new Vector2(0, _islandSizeY/2), new Vector2(_islandSizeX/2, _islandSizeY/2)));
-        _corners[xi, yi].elevation = Mathf.PerlinNoise((xi/(float)(_islandSizeX))/0.1f, (yi/(float)(_islandSizeY))/0.1f) * multiplier;
-      }
-    }
-
-    PolygonElevation();
-  }
-
-  private void PolygonElevation() {
+  private void GenerateHeight() {
     for (int xi = 0; xi < _islandSizeX; xi++) {
       for (int yi = 0; yi < _islandSizeY; yi++) {
-        _centers[xi, yi].elevation = 0;
-        _centers[xi, yi].corners.ForEach(delegate(Corner corner)
-        {
-          _centers[xi, yi].elevation += corner.elevation;
-        });
-        _centers[xi, yi].elevation /= _centers[xi, yi].corners.Count;
 
-        if(_centers[xi, yi].elevation < 0.1f) {
-          _centers[xi, yi].water = true;
-          _centers[xi, yi].elevation = 0.1f;
-        } else {
-          _centers[xi, yi].water = false;
-        }
         for (int xj = 0; xj < Chunk.chunkSize; xj++) {
           for (int yj = 0; yj < Chunk.chunkSize; yj++) {
             float color = 0.0f;
@@ -107,9 +83,10 @@ public class IslandGenerator : Generator {
                               Vector2.Distance(new Vector2(0, _islandSizeY/2 * _chunkSize), new Vector2(_islandSizeX/2 * _chunkSize, _islandSizeY/2 * _chunkSize)));
             color = Mathf.PerlinNoise(pos.x/(float)(_islandSizeX), pos.y/(float)(_islandSizeY)) * multiplier;
 
-            _texture.SetPixel(xi * _chunkSize + xj, yi * _chunkSize + yj, new Color(color, color, color, _centers[xi, yi].water ? 0.0f : 1.0f));
+            _texture.SetPixel(xi * _chunkSize + xj, yi * _chunkSize + yj, new Color(color, color, color, color < 0.2f ? 0.0f : 1.0f));
           }
         }
+
       }
     }
   }
