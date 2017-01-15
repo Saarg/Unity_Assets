@@ -3,9 +3,9 @@ using System.Collections;
 
 public class IslandGenerator : Generator {
 
-	public static int _islandSizeX = 50;
-	public static int _islandSizeY = 50;
-  public static int _maxHeight = 30;
+	public static int _islandSizeX = 100;
+	public static int _islandSizeY = 100;
+  public static int _maxHeight = 100;
 
   public Center[, ] _centers;
   public Corner[, ] _corners;
@@ -75,7 +75,7 @@ public class IslandGenerator : Generator {
       for (int yi = 0; yi < _islandSizeY+1; yi++) {
         float multiplier = 1-(Vector2.Distance(_corners[xi, yi].point/_chunkSize, new Vector2(_islandSizeX/2, _islandSizeY/2)) /
                            Vector2.Distance(new Vector2(0, _islandSizeY/2), new Vector2(_islandSizeX/2, _islandSizeY/2)));
-        _corners[xi, yi].elevation = Mathf.PerlinNoise(_chunkSize * (xi/(float)(_islandSizeX)), _chunkSize * (yi/(float)(_islandSizeY))) * multiplier;
+        _corners[xi, yi].elevation = Mathf.PerlinNoise((xi/(float)(_islandSizeX))/0.1f, (yi/(float)(_islandSizeY))/0.1f) * multiplier;
       }
     }
 
@@ -104,7 +104,7 @@ public class IslandGenerator : Generator {
 
             Vector2 pos = new Vector2(_chunkSize * xi + xj, _chunkSize * yi + yj);
             float multiplier = 1-(Vector2.Distance(pos, new Vector2(_islandSizeX/2 * _chunkSize, _islandSizeY/2 * _chunkSize)) /
-            Vector2.Distance(new Vector2(0, _islandSizeY/2 * _chunkSize), new Vector2(_islandSizeX/2 * _chunkSize, _islandSizeY/2 * _chunkSize)));
+                              Vector2.Distance(new Vector2(0, _islandSizeY/2 * _chunkSize), new Vector2(_islandSizeX/2 * _chunkSize, _islandSizeY/2 * _chunkSize)));
             color = Mathf.PerlinNoise(pos.x/(float)(_islandSizeX), pos.y/(float)(_islandSizeY)) * multiplier;
 
             _texture.SetPixel(xi * _chunkSize + xj, yi * _chunkSize + yj, new Color(color, color, color, _centers[xi, yi].water ? 0.0f : 1.0f));
