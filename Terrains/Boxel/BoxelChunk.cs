@@ -7,6 +7,7 @@ public class BoxelChunk : Chunk
   public Block[, ,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
   public override void Generate(Generator generator){
+    float startTime = Time.realtimeSinceStartup;
     save = true;
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
@@ -34,6 +35,7 @@ public class BoxelChunk : Chunk
     }
 
     SetBlocksUnmodified();
+    Debug.Log("Chunk generated in: " + ((Time.realtimeSinceStartup - startTime)*1000) + "ms");
   }
 
   public override Block GetBlock(int x, int y, int z)

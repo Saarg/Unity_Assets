@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class LoadChunks : MonoBehaviour {
   public World world;
   public int _renderDistance = 256;
-  public int _buildSpeed = 4;
 
   int timer = 0;
 
@@ -21,6 +20,8 @@ public class LoadChunks : MonoBehaviour {
   void Start() {
     _chunkWorker = new Thread(new ThreadStart(FindChunksToLoad));
     _chunkWorker.Start();
+
+    StartCoroutine("LoadAndRenderChunks");
   }
 
   void OnDestroy() {
@@ -35,10 +36,7 @@ public class LoadChunks : MonoBehaviour {
       Mathf.FloorToInt(transform.position.z / Chunk.chunkSize) * Chunk.chunkSize
     );
 
-    if (DeleteChunks())
-      return;
-    // FindChunksToLoad();
-    LoadAndRenderChunks();
+    DeleteChunks();
   }
 
   void FindChunksToLoad()
@@ -60,7 +58,7 @@ public class LoadChunks : MonoBehaviour {
           );
 
           //load a column of chunks in this position
-          for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + 2*Chunk.chunkSize; y += Chunk.chunkSize)
+          for (int y = newChunkPos.y - 2*Chunk.chunkSize; y <= newChunkPos.y + 2*Chunk.chunkSize; y += Chunk.chunkSize)
           {
             WorldPos tmpPos = new WorldPos(newChunkPos.x, y, newChunkPos.z);
 
@@ -71,12 +69,14 @@ public class LoadChunks : MonoBehaviour {
               continue;
             }
 
+            // Should do some preload work here
+
             buildList.Add(tmpPos);
             updateList.Add(tmpPos);
             added++;
           }
 
-          if(added > _buildSpeed) {
+          if(added > 0) {
             break;
           }
         }
@@ -91,25 +91,28 @@ public class LoadChunks : MonoBehaviour {
       world.CreateChunk(pos.x,pos.y,pos.z);
   }
 
-  void LoadAndRenderChunks()
+  IEnumerator LoadAndRenderChunks()
   {
-    float startTime = Time.realtimeSinceStartup;
-    if (buildList.Count != 0)
-    {
-      for (int i = 0; i < buildList.Count && (Time.realtimeSinceStartup - startTime) < 0.01f; i++)
+    while (true) {
+      float startTime = Time.realtimeSinceStartup;
+      if (buildList.Count != 0)
       {
-        BuildChunk(buildList[0]);
-        buildList.RemoveAt(0);
+        for (int i = 0; i < buildList.Count; i++)
+        {
+          BuildChunk(buildList[0]);
+          buildList.RemoveAt(0);
+
+          yield return null;
+        }
       }
-      //If chunks were built return early
-      return;
-    }
-    if (updateList.Count!=0)
-    {
-      Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
-      if (chunk != null)
-        chunk.update = true;
-      updateList.RemoveAt(0);
+      if (updateList.Count!=0)
+      {
+        Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
+        if (chunk != null)
+          chunk.update = true;
+        updateList.RemoveAt(0);
+      }
+      yield return null;
     }
   }
 

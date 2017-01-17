@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class Chunk : MonoBehaviour
 {
-  public static int chunkSize = 10;
+  public static int chunkSize = 8;
   public bool save = false;
 
   public bool update = false;

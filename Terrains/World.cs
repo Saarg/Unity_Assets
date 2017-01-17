@@ -25,7 +25,6 @@ public class World : MonoBehaviour {
 
   public void CreateChunk(int x, int y, int z)
   {
-    float startTime = Time.realtimeSinceStartup;
     WorldPos worldPos = new WorldPos(x, y, z);
 
     //Instantiate the chunk at the coordinates using the chunk prefab
@@ -50,7 +49,6 @@ public class World : MonoBehaviour {
       Serialization.Load(newChunk);
     }
     newChunk.update = true;
-    Debug.Log("Chunk generated in: " + ((Time.realtimeSinceStartup - startTime)*1000) + "ms");
   }
 
   public void DestroyChunk(int x, int y, int z)
