@@ -50,15 +50,23 @@ public class LoadChunks : MonoBehaviour {
         //Cycle through the array of positions
         for (int i = 0; i < chunkPositions.Length; i++)
         {
+          int posy;
+          try {
+            float height = world.terrain.GetHeight(playerPos.x + chunkPositions[i].x * Chunk.chunkSize, 0, playerPos.z + chunkPositions[i].z * Chunk.chunkSize);
+            posy = Mathf.FloorToInt(height / Chunk.chunkSize) * Chunk.chunkSize;
+          } catch {
+            break;
+          }
+
           //translate the player position and array position into chunk position
           WorldPos newChunkPos = new WorldPos(
             chunkPositions[i].x * Chunk.chunkSize + playerPos.x,
-            chunkPositions[i].y * Chunk.chunkSize + playerPos.y - Chunk.chunkSize,
+            chunkPositions[i].y * Chunk.chunkSize + posy,
             chunkPositions[i].z * Chunk.chunkSize + playerPos.z
           );
 
           //load a column of chunks in this position
-          for (int y = newChunkPos.y - 2*Chunk.chunkSize; y <= newChunkPos.y + 2*Chunk.chunkSize; y += Chunk.chunkSize)
+          for (int y = newChunkPos.y - Chunk.chunkSize; y <= newChunkPos.y + Chunk.chunkSize; y += Chunk.chunkSize)
           {
             WorldPos tmpPos = new WorldPos(newChunkPos.x, y, newChunkPos.z);
 
