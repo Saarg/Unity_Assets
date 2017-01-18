@@ -8,11 +8,12 @@ using System.Collections.Generic;
 
 public class Chunk : MonoBehaviour
 {
-  public static int chunkSize = 10;
+  public static int chunkSize = 8;
   public bool save = false;
 
   public bool update = false;
   public bool DisplayLimits = true;
+  public bool generated = false;
   public bool rendered;
 
   protected MeshFilter filter;
@@ -50,8 +51,9 @@ public class Chunk : MonoBehaviour
     }
   }
 
-  public virtual void Generate(Generator generator) {
-
+  public virtual IEnumerator Generate(Generator generator) {
+    generated = true;
+    return null;
   }
 
   public virtual Block GetBlock(int x, int y, int z) {

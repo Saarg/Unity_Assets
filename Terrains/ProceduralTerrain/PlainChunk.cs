@@ -6,7 +6,7 @@ public class PlainChunk : Chunk
 {
   private MeshData meshData = new MeshData();
 
-  public override void Generate(Generator generator) {
+  public override IEnumerator Generate(Generator generator) {
     meshData.useRenderDataForCol = true;
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
@@ -34,7 +34,9 @@ public class PlainChunk : Chunk
 
         meshData.AddQuadTriangles(0);
       }
+      yield return null;
     }
+    generated = true;
   }
 
   public override Block GetBlock(int x, int y, int z)

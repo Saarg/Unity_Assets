@@ -77,8 +77,6 @@ public class LoadChunks : MonoBehaviour {
               continue;
             }
 
-            // Should do some preload work here
-
             buildList.Add(tmpPos);
             updateList.Add(tmpPos);
             added++;
@@ -116,9 +114,10 @@ public class LoadChunks : MonoBehaviour {
       if (updateList.Count!=0)
       {
         Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
-        if (chunk != null)
+        if (chunk != null && chunk.generated) {
           chunk.update = true;
-        updateList.RemoveAt(0);
+          updateList.RemoveAt(0);
+        }
       }
       yield return null;
     }

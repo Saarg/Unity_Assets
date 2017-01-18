@@ -43,7 +43,8 @@ public class World : MonoBehaviour {
     //Add it to the chunks dictionary with the position as the key
     chunks.Add(worldPos, newChunk);
 
-    newChunk.Generate(terrain);
+    newChunk.StartCoroutine(newChunk.Generate(terrain));
+    // newChunk.Generate(terrain);
 
     if(newChunk.save) {
       Serialization.Load(newChunk);
@@ -56,7 +57,7 @@ public class World : MonoBehaviour {
     Chunk chunk = null;
     if (chunks.TryGetValue(new WorldPos(x, y, z), out chunk))
     {
-      if(chunk.save) {
+      if(chunk.save && chunk.rendered) {
         Serialization.SaveChunk(chunk);
       }
       Object.Destroy(chunk.gameObject);
@@ -83,7 +84,7 @@ public class World : MonoBehaviour {
   {
     Chunk containerChunk = GetChunk(x, y, z);
 
-    if (containerChunk != null)
+    if (containerChunk != null && containerChunk.generated)
     {
       Block block = containerChunk.GetBlock(
       x - containerChunk.pos.x,
@@ -127,7 +128,7 @@ public class World : MonoBehaviour {
     if (value1 == value2)
     {
       Chunk chunk = GetChunk(pos.x, pos.y, pos.z);
-      if (chunk != null)
+      if (chunk != null && chunk.generated)
         chunk.update = true;
     }
   }
@@ -137,14 +138,14 @@ public class World : MonoBehaviour {
     if (value1 == value2 && value3 == value4)
     {
       Chunk chunk = GetChunk(pos.x, pos.y, pos.z);
-      if (chunk != null)
+      if (chunk != null && chunk.generated)
         chunk.update = true;
     }
   }
 
   void OnDestroy() {
     foreach (Chunk chunk in chunks.Values) {
-      if(chunk.save) {
+      if(chunk.save && chunk.rendered) {
         Serialization.SaveChunk(chunk);
       }
     }

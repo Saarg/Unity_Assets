@@ -6,9 +6,10 @@ public class BoxelChunk : Chunk
 {
   public Block[, ,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
-  public override void Generate(Generator generator){
-    float startTime = Time.realtimeSinceStartup;
+  public override IEnumerator Generate(Generator generator){
     save = true;
+
+    int volume = Chunk.chunkSize*Chunk.chunkSize*Chunk.chunkSize;
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
     {
@@ -30,12 +31,18 @@ public class BoxelChunk : Chunk
           {
             world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockAir());
           }
+
+          if((xi*Chunk.chunkSize*Chunk.chunkSize + zi*Chunk.chunkSize + yi)%(volume/4) == 0) {
+            yield return null;
+          }
         }
       }
     }
 
     SetBlocksUnmodified();
-    Debug.Log("Chunk generated in: " + ((Time.realtimeSinceStartup - startTime)*1000) + "ms");
+
+    generated = true;
+    yield return null;
   }
 
   public override Block GetBlock(int x, int y, int z)
@@ -67,6 +74,8 @@ public class BoxelChunk : Chunk
 
   protected override void UpdateChunk()
   {
+    if(!generated) return;
+
     rendered = true;
     MeshData meshData = new MeshData();
 
