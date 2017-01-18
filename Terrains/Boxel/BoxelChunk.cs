@@ -19,17 +19,32 @@ public class BoxelChunk : Chunk
 
         for (int yi = 0; yi < Chunk.chunkSize; yi++)
         {
-          if (pos.y + yi <= height - 2)
-          {
-            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new Block());
-          }
-          else if (pos.y + yi <= height)
-          {
-            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockGrass());
-          }
-          else
-          {
-            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockAir());
+          if (xi == 0 || xi == Chunk.chunkSize-1 || yi == 0 || yi == Chunk.chunkSize-1 || zi == 0 || zi == Chunk.chunkSize-1) {
+            if (pos.y + yi <= height - 2)
+            {
+              world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new Block());
+            }
+            else if (pos.y + yi <= height)
+            {
+              world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockGrass());
+            }
+            else
+            {
+              world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockAir());
+            }
+          } else {
+            if (pos.y + yi <= height - 2)
+            {
+              SetBlock(xi, yi, zi, new Block());
+            }
+            else if (pos.y + yi <= height)
+            {
+              SetBlock(xi, yi, zi, new BlockGrass());
+            }
+            else
+            {
+              SetBlock( xi, yi, zi, new BlockAir());
+            }
           }
 
           if((xi*Chunk.chunkSize*Chunk.chunkSize + zi*Chunk.chunkSize + yi)%(volume/4) == 0) {
@@ -42,6 +57,8 @@ public class BoxelChunk : Chunk
     SetBlocksUnmodified();
 
     generated = true;
+    yield return new WaitForSeconds(2);
+    world.UpdateAround(pos);
     yield return null;
   }
 
