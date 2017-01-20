@@ -9,16 +9,16 @@ public class BoxelChunk : Chunk
   public override IEnumerator Generate(Generator generator){
     save = true;
 
-    int volume = Chunk.chunkSize*Chunk.chunkSize*Chunk.chunkSize;
+    //int volume = Chunk.chunkSize*Chunk.chunkSize*Chunk.chunkSize;
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
     {
-      for (int zi = 0; zi < Chunk.chunkSize; zi++)
+      for (int yi = 0; yi < Chunk.chunkSize; yi++)
       {
-        float height = generator.GetHeight(pos.x + xi, 0, pos.z + zi);
-
-        for (int yi = 0; yi < Chunk.chunkSize; yi++)
+        for (int zi = 0; zi < Chunk.chunkSize; zi++)
         {
+          float height = generator.GetHeight(pos.x + xi, 0, pos.z + zi);
+
           if (xi == 0 || xi == Chunk.chunkSize-1 || yi == 0 || yi == Chunk.chunkSize-1 || zi == 0 || zi == Chunk.chunkSize-1) {
             if (pos.y + yi <= height - 2)
             {
@@ -46,10 +46,6 @@ public class BoxelChunk : Chunk
               SetBlock( xi, yi, zi, new BlockAir());
             }
           }
-
-          if((xi*Chunk.chunkSize*Chunk.chunkSize + zi*Chunk.chunkSize + yi)%(volume/4) == 0) {
-            yield return null;
-          }
         }
       }
     }
@@ -57,6 +53,7 @@ public class BoxelChunk : Chunk
     SetBlocksUnmodified();
 
     generated = true;
+
     yield return new WaitForSeconds(2);
     world.UpdateAround(pos);
     yield return null;

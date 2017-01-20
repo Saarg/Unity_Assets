@@ -34,9 +34,12 @@ public class PlainChunk : Chunk
 
         meshData.AddQuadTriangles(0);
       }
-      yield return null;
     }
     generated = true;
+
+    // yield return new WaitForSeconds(2);
+    // world.UpdateAround(pos);
+    yield return null;
   }
 
   public override Block GetBlock(int x, int y, int z)
@@ -56,6 +59,8 @@ public class PlainChunk : Chunk
 
   protected override void UpdateChunk()
   {
+    if(!generated) return;
+
     rendered = true;
     RenderMesh(meshData);
   }

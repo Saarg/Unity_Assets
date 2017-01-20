@@ -103,13 +103,8 @@ public class LoadChunks : MonoBehaviour {
       float startTime = Time.realtimeSinceStartup;
       if (buildList.Count != 0)
       {
-        for (int i = 0; i < buildList.Count; i++)
-        {
-          BuildChunk(buildList[0]);
-          buildList.RemoveAt(0);
-
-          yield return null;
-        }
+        BuildChunk(buildList[0]);
+        buildList.RemoveAt(0);
       }
       if (updateList.Count!=0)
       {
@@ -186,4 +181,4 @@ public class LoadChunks : MonoBehaviour {
     new WorldPos(-6, 0, -5), new WorldPos(-6, 0,  5), new WorldPos(-5, 0, -6), new WorldPos(-5, 0,  6), new WorldPos( 5, 0, -6),
     new WorldPos( 5, 0,  6), new WorldPos( 6, 0, -5), new WorldPos( 6, 0,  5)
   };
-  }
+}
