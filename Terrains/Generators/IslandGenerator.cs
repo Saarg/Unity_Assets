@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class IslandGenerator : Generator {
 
@@ -8,25 +9,35 @@ public class IslandGenerator : Generator {
   public int _maxHeight = 100;
 
   private Texture2D _texture;
+  private Queue<WorldPos> _mapQueue = new Queue<WorldPos>();
+  public bool _DisplayMap = true;
 
   void OnGUI() {
-    if (!_texture) {
-      _texture = new Texture2D(_islandSizeX * _chunkSize, _islandSizeY * _chunkSize);
-    }
+    if (_DisplayMap) {
+      if (_mapQueue.Count > 0) {
+        if (!_texture) {
+          _texture = new Texture2D(_islandSizeX * _chunkSize/2, _islandSizeY * _chunkSize/2);
+        }
 
-    foreach(var chunkData in chunkDatas)
-    {
-      for (int xi = 0; xi < _chunkSize; xi++)
-			{
-				for (int yi = 0; yi < _chunkSize; yi++)
-				{
-          _texture.SetPixel(chunkData.Key.x * _chunkSize + xi, chunkData.Key.z * _chunkSize + yi, new Color(chunkData.Value._heightMap[xi, yi]/_maxHeight, chunkData.Value._heightMap[xi, yi]/_maxHeight, chunkData.Value._heightMap[xi, yi]/_maxHeight, chunkData.Value._heightMap[xi, yi]/_maxHeight < 0.2f ? 0.0f : 1.0f));
+        WorldPos chunkPos = _mapQueue.Dequeue();
+        ChunkData chunkData;
+        if (chunkDatas.TryGetValue(chunkPos, out chunkData))
+        {
+          for (int xi = 0; xi < 10; xi++)
+          {
+            for (int yi = 0; yi < 10; yi++)
+            {
+              float color = chunkData._heightMap[(xi / 10) * _chunkSize, (yi / 10) * _chunkSize]/_maxHeight;
+              _texture.SetPixel(chunkPos.x * 10 + xi, chunkPos.z * 10 + yi, new Color(color, color, color, color < 0.2f ? 0.0f : 1.0f));
+            }
+          }
+
+          _texture.Apply();
         }
       }
-    }
 
-    _texture.Apply();
-    GUI.DrawTexture(new Rect(0,10,200,200), _texture, ScaleMode.ScaleToFit);
+      GUI.DrawTexture(new Rect(0,0,200,200), _texture, ScaleMode.ScaleToFit);
+    }
   }
 
 	public override ChunkData Generate(WorldPos chunkPos) {
@@ -49,6 +60,7 @@ public class IslandGenerator : Generator {
 			}
 		}
 
+    _mapQueue.Enqueue(chunkPos);
 		return chunkData;
 	}
 }
