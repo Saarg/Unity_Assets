@@ -51,9 +51,8 @@ public class Chunk : MonoBehaviour
     }
   }
 
-  public virtual IEnumerator Generate(Generator generator) {
+  public virtual void Generate(Generator generator) {
     generated = true;
-    return null;
   }
 
   public virtual Block GetBlock(int x, int y, int z) {

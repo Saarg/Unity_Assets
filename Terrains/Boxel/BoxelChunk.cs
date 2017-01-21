@@ -6,10 +6,8 @@ public class BoxelChunk : Chunk
 {
   public Block[, ,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
-  public override IEnumerator Generate(Generator generator){
+  public override void Generate(Generator generator){
     save = true;
-
-    //int volume = Chunk.chunkSize*Chunk.chunkSize*Chunk.chunkSize;
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
     {
@@ -19,32 +17,10 @@ public class BoxelChunk : Chunk
         {
           float height = generator.GetHeight(pos.x + xi, 0, pos.z + zi);
 
-          if (xi == 0 || xi == Chunk.chunkSize-1 || yi == 0 || yi == Chunk.chunkSize-1 || zi == 0 || zi == Chunk.chunkSize-1) {
-            if (pos.y + yi <= height - 2)
-            {
-              world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new Block());
-            }
-            else if (pos.y + yi <= height)
-            {
-              world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockGrass());
-            }
-            else
-            {
-              world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, new BlockAir());
-            }
+          if(xi%(Chunk.chunkSize-1) == 0 && yi%(Chunk.chunkSize-1) == 0 && zi%(Chunk.chunkSize-1) == 0) {
+            blocks[xi, yi, zi] = pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block);
           } else {
-            if (pos.y + yi <= height - 2)
-            {
-              SetBlock(xi, yi, zi, new Block());
-            }
-            else if (pos.y + yi <= height)
-            {
-              SetBlock(xi, yi, zi, new BlockGrass());
-            }
-            else
-            {
-              SetBlock( xi, yi, zi, new BlockAir());
-            }
+            world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block));
           }
         }
       }
@@ -53,10 +29,7 @@ public class BoxelChunk : Chunk
     SetBlocksUnmodified();
 
     generated = true;
-
-    yield return new WaitForSeconds(2);
     world.UpdateAround(pos);
-    yield return null;
   }
 
   public override Block GetBlock(int x, int y, int z)

@@ -43,8 +43,7 @@ public class World : MonoBehaviour {
     //Add it to the chunks dictionary with the position as the key
     chunks.Add(worldPos, newChunk);
 
-    newChunk.StartCoroutine(newChunk.Generate(terrain));
-    // newChunk.Generate(terrain);
+    newChunk.Generate(terrain);
 
     if(newChunk.save) {
       Serialization.Load(newChunk);

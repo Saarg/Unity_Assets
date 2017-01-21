@@ -6,7 +6,7 @@ public class PlainChunk : Chunk
 {
   private MeshData meshData = new MeshData();
 
-  public override IEnumerator Generate(Generator generator) {
+  public override void Generate(Generator generator) {
     meshData.useRenderDataForCol = true;
 
     for (int xi = 0; xi < Chunk.chunkSize; xi++)
@@ -36,10 +36,6 @@ public class PlainChunk : Chunk
       }
     }
     generated = true;
-
-    // yield return new WaitForSeconds(2);
-    // world.UpdateAround(pos);
-    yield return null;
   }
 
   public override Block GetBlock(int x, int y, int z)
