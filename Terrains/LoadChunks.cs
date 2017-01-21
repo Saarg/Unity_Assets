@@ -20,8 +20,6 @@ public class LoadChunks : MonoBehaviour {
   void Start() {
     _chunkWorker = new Thread(new ThreadStart(FindChunksToLoad));
     _chunkWorker.Start();
-
-    StartCoroutine("LoadAndRenderChunks");
   }
 
   void OnDestroy() {
@@ -36,7 +34,10 @@ public class LoadChunks : MonoBehaviour {
       Mathf.FloorToInt(transform.position.z / Chunk.chunkSize) * Chunk.chunkSize
     );
 
-    DeleteChunks();
+    if (DeleteChunks()) {
+      return;
+    }
+    LoadAndRenderChunks();
   }
 
   void FindChunksToLoad()
@@ -97,24 +98,24 @@ public class LoadChunks : MonoBehaviour {
       world.CreateChunk(pos.x,pos.y,pos.z);
   }
 
-  IEnumerator LoadAndRenderChunks()
+  void LoadAndRenderChunks()
   {
-    while (true) {
-      float startTime = Time.realtimeSinceStartup;
-      if (buildList.Count != 0)
-      {
-        BuildChunk(buildList[0]);
-        buildList.RemoveAt(0);
+    float startTime = Time.realtimeSinceStartup;
+    if (buildList.Count != 0)
+    {
+      BuildChunk(buildList[0]);
+      buildList.RemoveAt(0);
+    }
+    if (updateList.Count!=0)
+    {
+      Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
+      if (chunk != null && chunk.generated) {
+        chunk.update = true;
+        updateList.RemoveAt(0);
       }
-      if (updateList.Count!=0)
-      {
-        Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
-        if (chunk != null && chunk.generated) {
-          chunk.update = true;
-          updateList.RemoveAt(0);
-        }
-      }
-      yield return null;
+    }
+    if((Time.realtimeSinceStartup - startTime)/1000 > 1) {
+      Debug.Log("LoadAndRender took " + ((Time.realtimeSinceStartup - startTime)/1000) + "ms");
     }
   }
 

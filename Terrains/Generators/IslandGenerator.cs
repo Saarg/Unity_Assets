@@ -16,21 +16,15 @@ public class IslandGenerator : Generator {
     if (_DisplayMap) {
       if (_mapQueue.Count > 0) {
         if (!_texture) {
-          _texture = new Texture2D(_islandSizeX * _chunkSize/2, _islandSizeY * _chunkSize/2);
+          _texture = new Texture2D(_islandSizeX, _islandSizeY);
         }
 
         WorldPos chunkPos = _mapQueue.Dequeue();
         ChunkData chunkData;
         if (chunkDatas.TryGetValue(chunkPos, out chunkData))
         {
-          for (int xi = 0; xi < 10; xi++)
-          {
-            for (int yi = 0; yi < 10; yi++)
-            {
-              float color = chunkData._heightMap[(xi / 10) * _chunkSize, (yi / 10) * _chunkSize]/_maxHeight;
-              _texture.SetPixel(chunkPos.x * 10 + xi, chunkPos.z * 10 + yi, new Color(color, color, color, color < 0.2f ? 0.0f : 1.0f));
-            }
-          }
+          float color = chunkData._heightMap[_chunkSize/2, _chunkSize/2]/_maxHeight;
+          _texture.SetPixel(chunkPos.x, chunkPos.z, new Color(color, color, color, color < 0.2f ? 0.0f : 1.0f));
 
           _texture.Apply();
         }

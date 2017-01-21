@@ -17,7 +17,7 @@ public class BoxelChunk : Chunk
         {
           float height = generator.GetHeight(pos.x + xi, 0, pos.z + zi);
 
-          if(xi%(Chunk.chunkSize-1) == 0 && yi%(Chunk.chunkSize-1) == 0 && zi%(Chunk.chunkSize-1) == 0) {
+          if(xi%(Chunk.chunkSize) == 0 && yi%(Chunk.chunkSize) == 0 && zi%(Chunk.chunkSize) == 0) {
             blocks[xi, yi, zi] = pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block);
           } else {
             world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block));
@@ -29,7 +29,7 @@ public class BoxelChunk : Chunk
     SetBlocksUnmodified();
 
     generated = true;
-    world.UpdateAround(pos);
+  //  world.UpdateAround(pos);
   }
 
   public override Block GetBlock(int x, int y, int z)
