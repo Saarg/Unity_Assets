@@ -31,14 +31,14 @@ public class Modify : MonoBehaviour
     }
 
     rot= new Vector2(
-      rot.x + _controls.getValue("Horizontal1")*3,
-      rot.y + _controls.getValue("Vertical1")*2
+      rot.x + _controls.getValue("Horizontal1") * 60 * Time.deltaTime,
+      rot.y + _controls.getValue("Vertical1") * 40 * Time.deltaTime
     );
 
     transform.parent.localRotation = Quaternion.AngleAxis(rot.x, Vector3.up);
     transform.localRotation = Quaternion.AngleAxis(rot.y, Vector3.left);
 
-    transform.parent.position += transform.parent.forward * -_controls.getValue("Forward1")/5;
-    transform.parent.position += transform.parent.right * _controls.getValue("Sideway1")/5;
+    transform.parent.position += transform.parent.forward * -_controls.getValue("Forward1") * 8 * Time.deltaTime;
+    transform.parent.position += transform.parent.right * _controls.getValue("Sideway1") * 8 * Time.deltaTime;
   }
 }
