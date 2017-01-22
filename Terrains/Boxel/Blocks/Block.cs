@@ -369,6 +369,6 @@ public class Block {
   }
 
   public virtual int GetSubMesh(Direction direction) {
-    return 1;
+    return 0;
   }
 }
