@@ -47,13 +47,19 @@ public class IslandGenerator : Generator {
           Vector2 pos = new Vector2(_chunkSize * chunkPos.x + xi, _chunkSize * chunkPos.z + zi);
           float multiplier = 1-(Vector2.Distance(pos, new Vector2(_islandSizeX/2 * _chunkSize, _islandSizeY/2 * _chunkSize)) /
                             Vector2.Distance(new Vector2(0, _islandSizeY/2 * _chunkSize), new Vector2(_islandSizeX/2 * _chunkSize, _islandSizeY/2 * _chunkSize)));
-          float color = Mathf.PerlinNoise(pos.x/(float)(_islandSizeX), pos.y/(float)(_islandSizeY)) * multiplier;
+          float height = Mathf.PerlinNoise(pos.x/(float)(_islandSizeX), pos.y/(float)(_islandSizeY)) * multiplier * _maxHeight;
 
-          chunkData._heightMap[xi, zi] = color * _maxHeight;
+          chunkData._heightMap[xi, zi] = height;
+
+          for (int yi = 0; yi < _chunkSize; yi++)
+          {
+            chunkData._blocks[xi, yi, zi] = chunkPos.y * _chunkSize + yi < height - 2 ? new Block() : (chunkPos.y * _chunkSize + yi < height ? new BlockGrass() as Block : new BlockAir() as Block);
+          }
 				}
 			}
 		}
 
+    chunkDatas.Add(chunkPos, chunkData);
     _mapQueue.Enqueue(chunkPos);
 		return chunkData;
 	}

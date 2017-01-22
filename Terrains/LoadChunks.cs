@@ -100,7 +100,6 @@ public class LoadChunks : MonoBehaviour {
 
   void LoadAndRenderChunks()
   {
-    float startTime = Time.realtimeSinceStartup;
     if (buildList.Count != 0)
     {
       BuildChunk(buildList[0]);
@@ -114,13 +113,11 @@ public class LoadChunks : MonoBehaviour {
         updateList.RemoveAt(0);
       }
     }
-    if((Time.realtimeSinceStartup - startTime)/1000 > 1) {
-      Debug.Log("LoadAndRender took " + ((Time.realtimeSinceStartup - startTime)/1000) + "ms");
-    }
   }
 
   bool DeleteChunks()
   {
+    float startTime = Time.realtimeSinceStartup;
     if (timer == 10)
     {
       var chunksToDelete = new List<WorldPos>();

@@ -123,20 +123,20 @@ public class World : MonoBehaviour {
   }
 
   public void UpdateAround(WorldPos pos) {
-    for(int y = pos.y-1 ; y <= pos.y-1 ; y++) {
-      Chunk chunk = GetChunk(pos.x, y, pos.z);
+    for(int y = pos.y-1 ; y <= pos.y+1 ; y++) {
+      Chunk chunk = GetChunk(pos.x, pos.y, pos.z);
       if (chunk != null) chunk.update = true;
 
-      chunk = GetChunk(pos.x-1, y, pos.z);
+      chunk = GetChunk(pos.x-1, pos.y, pos.z);
       if (chunk != null) chunk.update = true;
 
-      chunk = GetChunk(pos.x+1, y, pos.z);
+      chunk = GetChunk(pos.x+1, pos.y, pos.z);
       if (chunk != null) chunk.update = true;
 
-      chunk = GetChunk(pos.x, y, pos.z-1);
+      chunk = GetChunk(pos.x, pos.y, pos.z-1);
       if (chunk != null) chunk.update = true;
 
-      chunk = GetChunk(pos.x, y, pos.z+1);
+      chunk = GetChunk(pos.x, pos.y, pos.z+1);
       if (chunk != null) chunk.update = true;
 
       chunk = GetChunk(pos.x-1, y, pos.z-1);

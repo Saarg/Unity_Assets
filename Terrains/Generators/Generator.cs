@@ -26,28 +26,28 @@ public class Generator : MonoBehaviour {
   }
 
   public float GetHeight(int x, int y, int z) {
+    ChunkData chunkdata = GetChunkData(x, y, z);
+
+    return chunkdata._heightMap[Mathf.Abs(x)%_chunkSize, Mathf.Abs(z)%_chunkSize];
+  }
+
+  public ChunkData GetChunkData(int x, int y, int z) {
     WorldPos worldPos = new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize);
 
     ChunkData chunkdata;
     if(!chunkDatas.ContainsKey(worldPos)) {
       chunkdata = Generate(worldPos);
-      chunkDatas.Add(worldPos, chunkdata);
 
       if(_continueTh) {
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize - 1));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize - 1, y/_chunkSize, z/_chunkSize + 1));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize - 1));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize, y/_chunkSize, z/_chunkSize + 1));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize - 1));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize));
-        _chunkQueue.Enqueue(new WorldPos(x/_chunkSize + 1, y/_chunkSize, z/_chunkSize + 1));
+        foreach (WorldPos newPos in chunkPositions) {
+          _chunkQueue.Enqueue(new WorldPos(x+newPos.x, y, z+newPos.z));
+        }
       }
     } else {
       chunkDatas.TryGetValue(worldPos, out chunkdata);
     }
 
-    return chunkdata._heightMap[Mathf.Abs(x)%_chunkSize, Mathf.Abs(z)%_chunkSize];
+    return chunkdata;
   }
 
   public virtual ChunkData Generate(WorldPos pos) {
@@ -60,9 +60,17 @@ public class Generator : MonoBehaviour {
       {
         for (int zi = 0; zi < _chunkSize; zi++)
         {
-          chunkData._heightMap[xi, zi] = Mathf.PerlinNoise((pos.x*_chunkSize + xi)/60.0f, (pos.z*_chunkSize + zi)/60.0f)*20.0f;
+          float height = Mathf.PerlinNoise((pos.x*_chunkSize + xi)/60.0f, (pos.z*_chunkSize + zi)/60.0f)*20.0f;
+          chunkData._heightMap[xi, zi] = height;
+
+          for (int yi = 0; yi < Chunk.chunkSize; yi++)
+          {
+            chunkData._blocks[xi, yi, zi] = pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block);
+          }
         }
       }
+
+      chunkDatas.Add(pos, chunkData);
     }
 
     return chunkData;
@@ -74,9 +82,21 @@ public class Generator : MonoBehaviour {
       if(_chunkQueue.Count > 0) {
         WorldPos worldPos = _chunkQueue.Dequeue();
 
-        Generate(worldPos);
+        ChunkData chunkData = Generate(worldPos);
       }
     }
     Debug.Log("Ending terrain generator thread");
   }
+
+  static  WorldPos[] chunkPositions= {
+    new WorldPos( 0, 0,  0), new WorldPos(-1, 0,  0), new WorldPos( 0, 0, -1), new WorldPos( 0, 0,  1), new WorldPos( 1, 0,  0),
+    new WorldPos(-1, 0, -1), new WorldPos(-1, 0,  1), new WorldPos( 1, 0, -1), new WorldPos( 1, 0,  1), new WorldPos(-2, 0,  0),
+    new WorldPos( 0, 0, -2), new WorldPos( 0, 0,  2), new WorldPos( 2, 0,  0), new WorldPos(-2, 0, -1), new WorldPos(-2, 0,  1),
+    new WorldPos(-1, 0, -2), new WorldPos(-1, 0,  2), new WorldPos( 1, 0, -2), new WorldPos( 1, 0,  2), new WorldPos( 2, 0, -1),
+    new WorldPos( 2, 0,  1), new WorldPos(-2, 0, -2), new WorldPos(-2, 0,  2), new WorldPos( 2, 0, -2), new WorldPos( 2, 0,  2),
+    new WorldPos(-3, 0,  0), new WorldPos( 0, 0, -3), new WorldPos( 0, 0,  3), new WorldPos( 3, 0,  0), new WorldPos(-3, 0, -1),
+    new WorldPos(-3, 0,  1), new WorldPos(-1, 0, -3), new WorldPos(-1, 0,  3), new WorldPos( 1, 0, -3), new WorldPos( 1, 0,  3),
+    new WorldPos( 3, 0, -1), new WorldPos( 3, 0,  1), new WorldPos(-3, 0, -2), new WorldPos(-3, 0,  2), new WorldPos(-2, 0, -3),
+    new WorldPos(-2, 0,  3), new WorldPos( 2, 0, -3), new WorldPos( 2, 0,  3), new WorldPos( 3, 0, -2), new WorldPos( 3, 0,  2)
+  };
 }

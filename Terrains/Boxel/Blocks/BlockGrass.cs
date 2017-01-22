@@ -7,7 +7,6 @@ public class BlockGrass : Block
 {
   public BlockGrass() : base()
   {
-
   }
 
   public override int GetSubMesh(Direction direction) {
