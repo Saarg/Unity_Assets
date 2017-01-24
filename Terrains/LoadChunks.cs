@@ -20,6 +20,8 @@ public class LoadChunks : MonoBehaviour {
   void Start() {
     _chunkWorker = new Thread(new ThreadStart(FindChunksToLoad));
     _chunkWorker.Start();
+
+    StartCoroutine(DeleteChunks());
   }
 
   void OnDestroy() {
@@ -34,9 +36,6 @@ public class LoadChunks : MonoBehaviour {
       Mathf.FloorToInt(transform.position.z / Chunk.chunkSize) * Chunk.chunkSize
     );
 
-    if (DeleteChunks()) {
-      return;
-    }
     LoadAndRenderChunks();
   }
 
@@ -115,12 +114,12 @@ public class LoadChunks : MonoBehaviour {
     }
   }
 
-  bool DeleteChunks()
+  IEnumerator DeleteChunks()
   {
-    float startTime = Time.realtimeSinceStartup;
-    if (timer == 10)
-    {
+    yield return new WaitForSeconds(30.0f);
+    while (true) {
       var chunksToDelete = new List<WorldPos>();
+
       foreach (var chunk in world.chunks)
       {
         float distance = Vector3.Distance(
@@ -129,13 +128,12 @@ public class LoadChunks : MonoBehaviour {
         if (distance > _renderDistance)
           chunksToDelete.Add(chunk.Key);
       }
+
       foreach (var chunk in chunksToDelete)
         world.DestroyChunk(chunk.x, chunk.y, chunk.z);
-      timer = 0;
-      return true;    //Add this line
+
+      yield return new WaitForSeconds(10.0f);
     }
-    timer++;
-    return false;    //Add this line
   }
 
   static  WorldPos[] chunkPositions= {
