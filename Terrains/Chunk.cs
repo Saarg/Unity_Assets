@@ -30,7 +30,7 @@ public class Chunk : MonoBehaviour
   void Update() {
     if (update) {
       update = false;
-      UpdateChunk();
+      StartCoroutine(UpdateChunk());
     }
 
     if (DisplayLimits) {
@@ -68,8 +68,8 @@ public class Chunk : MonoBehaviour
   }
 
   // Updates the chunk based on its contents
-  protected virtual void UpdateChunk() {
-
+  protected virtual IEnumerator UpdateChunk() {
+    yield return null;
   }
 
   // Sends the calculated mesh information

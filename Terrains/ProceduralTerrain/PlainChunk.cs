@@ -53,11 +53,13 @@ public class PlainChunk : Chunk
 
   }
 
-  protected override void UpdateChunk()
+  protected override IEnumerator UpdateChunk()
   {
-    if(!generated) return;
+    if(!generated) yield break;
 
     rendered = true;
     RenderMesh(meshData);
+
+    yield return null;
   }
 }

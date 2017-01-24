@@ -56,12 +56,13 @@ public class BoxelChunk : Chunk
     }
   }
 
-  protected override void UpdateChunk()
+  protected override IEnumerator UpdateChunk()
   {
-    if(!generated) return;
+    if(!generated) yield break;
 
     rendered = true;
     MeshData meshData = new MeshData();
+    yield return null;
 
     for (int x = 0; x < chunkSize; x++)
     {
@@ -72,8 +73,12 @@ public class BoxelChunk : Chunk
           meshData = chunkData._blocks[x, y, z].Blockdata(this, x, y, z, meshData);
         }
       }
+      yield return null;
     }
 
+    yield return null;
+
     RenderMesh(meshData);
+    yield return null;
   }
 }

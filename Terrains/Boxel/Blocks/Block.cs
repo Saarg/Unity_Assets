@@ -24,7 +24,7 @@ public class Block {
     new SVector3(- 0.5f, - 0.5f, + 0.5f)
   };
 
-  protected SVector3 pos;
+  public SVector3 pos;
 
   private bool smoothEdges = true;
 

@@ -8,32 +8,6 @@ public class IslandGenerator : Generator {
 	public int _islandSizeY = 100;
   public int _maxHeight = 100;
 
-  private Texture2D _texture;
-  private Queue<WorldPos> _mapQueue = new Queue<WorldPos>();
-  public bool _DisplayMap = true;
-
-  void OnGUI() {
-    if (_DisplayMap) {
-      if (_mapQueue.Count > 0) {
-        if (!_texture) {
-          _texture = new Texture2D(_islandSizeX, _islandSizeY);
-        }
-
-        WorldPos chunkPos = _mapQueue.Dequeue();
-        ChunkData chunkData;
-        if (chunkDatas.TryGetValue(chunkPos, out chunkData))
-        {
-          float color = chunkData._heightMap[_chunkSize/2, _chunkSize/2]/_maxHeight;
-          _texture.SetPixel(chunkPos.x, chunkPos.z, new Color(color, color, color, color < 0.2f ? 0.0f : 1.0f));
-
-          _texture.Apply();
-        }
-      }
-
-      GUI.DrawTexture(new Rect(0,0,200,200), _texture, ScaleMode.ScaleToFit);
-    }
-  }
-
 	public override ChunkData Generate(WorldPos chunkPos) {
 		ChunkData chunkData;
 		if (!chunkDatas.TryGetValue(chunkPos, out chunkData))
@@ -60,7 +34,6 @@ public class IslandGenerator : Generator {
 		}
 
     chunkDatas.Add(chunkPos, chunkData);
-    _mapQueue.Enqueue(chunkPos);
 		return chunkData;
 	}
 }
