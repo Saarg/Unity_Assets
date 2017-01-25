@@ -72,14 +72,12 @@ public class Chunk : MonoBehaviour
     yield return null;
   }
 
-  // Sends the calculated mesh information
-  // to the mesh and collision components
+  // Sends the calculated mesh information to the mesh and collision components
   protected void RenderMesh(MeshData meshData) {
     filter.mesh.Clear();
     filter.mesh.vertices = meshData.vertices.ToArray();
     filter.mesh.uv = meshData.uv.ToArray();
 
-    //filter.mesh.subMeshCount = 2;
     foreach (int key in meshData.trianglesDict.Keys) {
       if(filter.mesh.subMeshCount <= key)
         filter.mesh.subMeshCount =  key+1;

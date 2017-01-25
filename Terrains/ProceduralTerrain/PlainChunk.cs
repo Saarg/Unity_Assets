@@ -6,6 +6,14 @@ public class PlainChunk : Chunk
 {
   private MeshData meshData = new MeshData();
 
+  private static Vector2[] UVs = {
+    new Vector2(1.0f, 0.0f),
+    new Vector2(1.0f, 1.0f),
+    new Vector2(0.0f, 1.0f),
+    new Vector2(0.0f, 0.0f)
+  };
+
+
   public override void Generate(Generator generator) {
     meshData.useRenderDataForCol = true;
 
@@ -33,6 +41,9 @@ public class PlainChunk : Chunk
         meshData.AddVertex(new Vector3(xi + 1, height[3], zi));
 
         meshData.AddQuadTriangles(0);
+
+
+        meshData.uv.AddRange(UVs);
       }
     }
     generated = true;
