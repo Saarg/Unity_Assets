@@ -91,17 +91,13 @@ public class LoadChunks : MonoBehaviour {
     Debug.Log("Ending Chunk thread");
   }
 
-  void BuildChunk(WorldPos pos)
-  {
-    if (world.GetChunk(pos.x,pos.y,pos.z) == null)
-      world.CreateChunk(pos.x,pos.y,pos.z);
-  }
-
   void LoadAndRenderChunks()
   {
     if (buildList.Count != 0)
     {
-      BuildChunk(buildList[0]);
+      if (world.GetChunk(buildList[0].x, buildList[0].y, buildList[0].z) == null)
+        world.CreateChunk(buildList[0].x, buildList[0].y, buildList[0].z);
+
       buildList.RemoveAt(0);
     }
     if (updateList.Count!=0)
@@ -132,7 +128,7 @@ public class LoadChunks : MonoBehaviour {
       foreach (var chunk in chunksToDelete)
         world.DestroyChunk(chunk.x, chunk.y, chunk.z);
 
-      yield return new WaitForSeconds(10.0f);
+      yield return new WaitForSeconds(1.0f);
     }
   }
 

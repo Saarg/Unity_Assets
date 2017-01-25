@@ -81,20 +81,15 @@ public class Chunk : MonoBehaviour
 
     //filter.mesh.subMeshCount = 2;
     foreach (int key in meshData.trianglesDict.Keys) {
-      filter.mesh.subMeshCount = filter.mesh.subMeshCount <= key ? key+1 : filter.mesh.subMeshCount;
+      if(filter.mesh.subMeshCount <= key)
+        filter.mesh.subMeshCount =  key+1;
 
       filter.mesh.SetTriangles(meshData.trianglesDict[key].ToArray(), key);
     }
 
     filter.mesh.RecalculateNormals();
 
-    coll.sharedMesh = null;
-    Mesh mesh = new Mesh();
-    mesh.vertices = meshData.colVertices.ToArray();
-    mesh.triangles = meshData.colTriangles.ToArray();
-    mesh.RecalculateNormals();
-
-    coll.sharedMesh = mesh;
+    coll.sharedMesh = filter.mesh;
   }
 
   public static bool InRange(int index)
