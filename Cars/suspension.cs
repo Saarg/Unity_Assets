@@ -20,7 +20,7 @@ public class suspension : MonoBehaviour {
 
 		_wheelModel.transform.Rotate (Vector3.forward * 90);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (_wheelModel && _wheelCollider) {

@@ -4,7 +4,40 @@ timeCreated: 1478881657
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    100000: Bob
+    100002: Bone
+    100004: Hean
+    100006: //RootNode
+    100008: LElbow
+    100010: LHip
+    100012: LKnee
+    100014: LShoulder
+    100016: Pelvis
+    100018: RElbow
+    100020: RHip
+    100022: RKnee
+    100024: RShoulder
+    100026: Spine
+    400000: Bob
+    400002: Bone
+    400004: Hean
+    400006: //RootNode
+    400008: LElbow
+    400010: LHip
+    400012: LKnee
+    400014: LShoulder
+    400016: Pelvis
+    400018: RElbow
+    400020: RHip
+    400022: RKnee
+    400024: RShoulder
+    400026: Spine
+    4300000: Bob
+    7400000: Default Take
+    7400002: PelvisAction
+    9500000: //RootNode
+    13700000: Bob
   materials:
     importMaterials: 1
     materialName: 0
@@ -15,6 +48,8 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -51,6 +86,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -61,7 +97,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1

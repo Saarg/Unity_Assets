@@ -7,8 +7,6 @@ public class LoadChunks : MonoBehaviour {
   public World world;
   public int _renderDistance = 256;
 
-  int timer = 0;
-
   List<WorldPos> updateList = new List<WorldPos>();
   List<WorldPos> buildList = new List<WorldPos>();
 

@@ -48,4 +48,23 @@ public struct SVector3{
   public static bool operator !=(SVector3 a, SVector3 b) {
     return (a.x != b.x || a.y != b.y || a.z != b.z);
   }
+
+  public override bool Equals(object obj)
+  {
+    if (GetHashCode() == obj.GetHashCode())
+    return true;
+    return false;
+  }
+
+  public override int GetHashCode()
+  {
+    unchecked
+    {
+      int hash = 47;
+      hash = hash * 227 + x.GetHashCode();
+      hash = hash * 227 + y.GetHashCode();
+      hash = hash * 227 + z.GetHashCode();
+      return hash;
+    }
+  }
 }
