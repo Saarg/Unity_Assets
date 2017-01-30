@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 [System.Serializable]
@@ -8,7 +9,8 @@ public struct MenuScene {
 	public string path;
   [HideInInspector]public GameObject button;
   public void StartScene () {
-    Application.LoadLevel(path);
+    SceneManager.LoadScene (path, LoadSceneMode.Single);
+
   }
 }
 

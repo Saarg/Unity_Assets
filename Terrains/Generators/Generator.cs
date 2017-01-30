@@ -83,6 +83,8 @@ public class Generator : MonoBehaviour {
         WorldPos worldPos = _chunkQueue.Dequeue();
 
         ChunkData chunkData = Generate(worldPos);
+
+        chunkDatas.Add(worldPos, chunkData);
       }
     }
     Debug.Log("Ending terrain generator thread");

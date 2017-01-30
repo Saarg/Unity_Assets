@@ -272,7 +272,7 @@ public class Block {
   protected virtual MeshData FaceDataSouth
   (Chunk chunk, int x, int y, int z, MeshData meshData)
   {
-    SVector3 pos = new SVector3(x, y, z);
+    pos = new SVector3(x, y, z);
 
     meshData.AddVertex(bottomVertices[0].toVector());
     meshData.AddVertex(topVertices[3].toVector());

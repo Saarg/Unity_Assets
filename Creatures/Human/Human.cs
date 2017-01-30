@@ -145,7 +145,7 @@ public class Human : MonoBehaviour {
       }
       GetComponent<SphereCollider> ().center = center;
       // Enable ball depending on damages
-      if(_LHip.useSpring && _LHip.useSpring && (_LKnee.useSpring || _RKnee.useSpring)) {
+      if(_LHip.useSpring && _RHip.useSpring && (_LKnee.useSpring || _RKnee.useSpring)) {
         GetComponent<SphereCollider> ().enabled = true;
       } else {
         GetComponent<SphereCollider> ().enabled = false;
@@ -156,7 +156,6 @@ public class Human : MonoBehaviour {
 
       // Add linear drag to control drift
       float dragXZ = _Drag; // drag value (1 is stop and 0 is no drag)
-      Vector3 vel;
       Vector3 locVel;
 
       locVel = _SpineTransform.InverseTransformDirection(_SpineRigidbody.velocity);

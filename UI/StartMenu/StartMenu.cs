@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class StartMenu : MonoBehaviour {
@@ -12,7 +13,8 @@ public class StartMenu : MonoBehaviour {
     // Init Control script
     _Controls = GameObject.Find ("Scripts").GetComponent<MultiOSControls> ();
 
-    Screen.lockCursor = true;
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
 	}
 
 	// Update is called once per frame
@@ -20,14 +22,16 @@ public class StartMenu : MonoBehaviour {
     if(_Controls.getValue(_MenuKey) == 1) {
       GetComponent<CanvasGroup> ().alpha = 1;
       GetComponent<CanvasGroup> ().interactable = true;
-      Screen.lockCursor = false;
+      Cursor.lockState = CursorLockMode.None;
+      Cursor.visible = true;
     }
 	}
 
   public void Resume () {
     GetComponent<CanvasGroup> ().alpha = 0;
     GetComponent<CanvasGroup> ().interactable = false;
-    Screen.lockCursor = true;
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
   }
 
   public void StartOptions () {
@@ -35,7 +39,7 @@ public class StartMenu : MonoBehaviour {
   }
 
   public void StartMainMenu () {
-    Application.LoadLevel(_MenuScene);
+    SceneManager.LoadScene (_MenuScene, LoadSceneMode.Single);
   }
 
   public void Quit () {

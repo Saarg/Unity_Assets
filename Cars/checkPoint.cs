@@ -3,18 +3,19 @@ using System.Collections;
 
 public class checkPoint : MonoBehaviour {
 
-	private float _startTime = 0.0f;
-	private float _checkTime = 0.0f;
+	private float _startTime {get; set;}
+	private float _checkTime {get; set;}
 	private bool _passed = false;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
+  // Use this for initialization
+  void Start () {
+    _startTime = 0.0f;
+    _checkTime = 0.0f;
+  }
+
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	public bool isPassed() {
