@@ -62,11 +62,6 @@ public class Generator : MonoBehaviour {
         {
           float height = Mathf.PerlinNoise((pos.x*_chunkSize + xi)/60.0f, (pos.z*_chunkSize + zi)/60.0f)*20.0f;
           chunkData._heightMap[xi, zi] = height;
-
-          for (int yi = 0; yi < Chunk.chunkSize; yi++)
-          {
-            chunkData._blocks[xi, yi, zi] = pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block);
-          }
         }
       }
 

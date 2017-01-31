@@ -24,16 +24,12 @@ public class IslandGenerator : Generator {
           float height = Mathf.PerlinNoise(pos.x/(float)(_islandSizeX), pos.y/(float)(_islandSizeY)) * multiplier * _maxHeight;
 
           chunkData._heightMap[xi, zi] = height;
-
-          for (int yi = 0; yi < _chunkSize; yi++)
-          {
-            chunkData._blocks[xi, yi, zi] = chunkPos.y * _chunkSize + yi < height - 2 ? new Block() : (chunkPos.y * _chunkSize + yi < height ? new BlockGrass() as Block : new BlockAir() as Block);
-          }
 				}
 			}
+      
+      chunkDatas.Add(chunkPos, chunkData);
 		}
 
-    chunkDatas.Add(chunkPos, chunkData);
 		return chunkData;
 	}
 }

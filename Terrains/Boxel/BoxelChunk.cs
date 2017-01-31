@@ -5,20 +5,22 @@ using System.Collections.Generic;
 public class BoxelChunk : Chunk
 {
   public ChunkData chunkData;
+  private Block[, ,] _blocks = new Block[chunkSize, chunkSize, chunkSize];
 
   public override void Generate(Generator generator){
     save = true;
 
     chunkData = generator.GetChunkData(pos.x, pos.y, pos.z);
 
-    // TODO better way to do this
-    for (int xi = 0; xi < chunkSize; xi+=chunkSize-1)
+    for (int xi = 0; xi < chunkSize; xi++)
     {
-      for (int yi = 0; yi < chunkSize; yi+=chunkSize-1)
+      for (int zi = 0; zi < chunkSize; zi++)
       {
-        for (int zi = 0; zi < chunkSize; zi+=chunkSize-1)
+        float height = chunkData._heightMap[xi, zi];
+
+        for (int yi = 0; yi < chunkSize; yi++)
         {
-          world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, chunkData._blocks[xi, yi, zi]);
+           world.SetBlock(pos.x + xi, pos.y + yi, pos.z + zi, pos.y + yi < height - 2 ? new Block() : (pos.y + yi < height ? new BlockGrass() as Block : new BlockAir() as Block));
         }
       }
     }
@@ -32,7 +34,7 @@ public class BoxelChunk : Chunk
   public override Block GetBlock(int x, int y, int z)
   {
     if (InRange(x) && InRange(y) && InRange(z))
-      return chunkData._blocks[x, y, z];
+      return _blocks[x, y, z];
     return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
   }
 
@@ -40,7 +42,7 @@ public class BoxelChunk : Chunk
   {
     if (InRange(x) && InRange(y) && InRange(z))
     {
-      chunkData._blocks[x, y, z] = block;
+      _blocks[x, y, z] = block;
     }
     else
     {
@@ -50,7 +52,7 @@ public class BoxelChunk : Chunk
 
   public override void SetBlocksUnmodified()
   {
-    foreach (Block block in chunkData._blocks)
+    foreach (Block block in _blocks)
     {
       block.changed = false;
     }
@@ -70,7 +72,7 @@ public class BoxelChunk : Chunk
       {
         for (int z = 0; z < chunkSize; z++)
         {
-          meshData = chunkData._blocks[x, y, z].Blockdata(this, x, y, z, meshData);
+          meshData = _blocks[x, y, z].Blockdata(this, x, y, z, meshData);
         }
       }
       yield return null;
